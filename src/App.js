@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./screens/Login/login";
 import Home from "./screens/Home/Home";
+import { connect } from "react-redux";
 
 class App extends React.Component {
   constructor(props) {
@@ -10,16 +11,21 @@ class App extends React.Component {
     this.state = {};
   }
   componentDidMount() {
+    console.log("in app");
     console.log(this.props);
   }
 
   render() {
+    let { isSignedIn } = this.props;
     return (
       <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route path="/login" component={Login} />
-            <Route path="/" component={Home} />
+            {isSignedIn ? (
+              <Route path="/" component={Home} />
+            ) : (
+              <Route path="/" component={Login} />
+            )}
           </Switch>
         </div>
       </BrowserRouter>
@@ -27,5 +33,7 @@ class App extends React.Component {
   }
 }
 
-export default App;
-// export default connect((state) => ({}), {})(App);
+const mapStateToProps = (state) => {
+  return { isSignedIn: state.auth.isSignedIn };
+};
+export default connect(mapStateToProps, null)(App);

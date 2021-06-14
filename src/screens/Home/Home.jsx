@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { logoutUser } from "../../redux/actions/authentication";
+
 import "./home.scss";
 const axios = require("axios").default;
 
@@ -13,13 +16,15 @@ class Home extends Component {
   componentDidMount() {
     axios.get(`https://question0a.herokuapp.com/api/v1/questions`).then((res) => {
       this.setState({ questions: res.data });
-      console.log(res.data);
-      console.log(typeof res.data[1]);
+      // console.log(res.data);
+      // console.log(typeof res.data[1]);
     });
+    console.log(this.props);
   }
 
   render() {
-    const q = this.state.questions.map((i, idx) => {
+    const { logoutUser } = this.props;
+    const questions = this.state.questions.map((i, idx) => {
       return (
         <Link to={"/question"} key={idx}>
           {i.id} {i.title}
@@ -41,16 +46,30 @@ class Home extends Component {
                 <div className="list-group">
                   {/* start card */}
 
-                  {q}
+                  {questions}
                   {/* end card */}
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <button onClick={() => logoutUser()}>logout</button>
       </div>
     );
   }
 }
+const mapStateToProps = (state) => {
+  return { user: state };
+};
 
-export default Home;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    submitNewMessage: (message) => {
+      // dispatch(addMessage(message));
+    },
+  };
+};
+
+const Container = connect(null, { logoutUser })(Home);
+
+export default Container;

@@ -1,22 +1,14 @@
 import "./login.scss";
 import React from "react";
+import { connect } from "react-redux";
+import { loginUser } from "../../redux/actions/authentication";
 // email: "dannd@example.com",
 // password: "238523a",
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      email: "dannd@example.com",
-      password: "238523a",
-      // email: "eve.holt@reqres.in",
-      // password: "cityslicka",
-      emailValid: false,
-      passwordValid: false,
-      formValid: false,
-      isAuthenticated: false,
-      token: "",
-    };
+    this.state = {};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -24,62 +16,16 @@ class Login extends React.Component {
   handleChange = (event) => {
     event.preventDefault();
     this.setState({ [event.target.name]: event.target.value });
-    const { name, value } = event.target;
-    let errors = this.state.errors;
-
-    switch (name) {
-      case "fullName":
-        errors.fullName = value.length < 5 ? "Full Name must be 5 characters long!" : "";
-        break;
-      case "email":
-        // errors.email =
-        //   "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" +
-        //   "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$".test(value)
-        //     ? ""
-        //     : "Email is not valid!";
-        break;
-      case "password":
-        errors.password = value.length < 8 ? "Password must be 8 characters long!" : "";
-        break;
-      default:
-        break;
-    }
-
-    this.setState({ errors, [name]: value }, () => {
-      console.log(errors);
-    });
   };
 
   handleSubmit(event) {
     event.preventDefault();
     const payload = {
-      email: this.state.email,
-      password: this.state.password,
+      email: event.target.email.value,
+      password: event.target.password.value,
     };
-
-    // fetch("https://reqres.in/api/login", {
-    fetch("https://question0a.herokuapp.com/api/v1/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      .then(
-        (data) => {
-          console.log(data);
-          this.setState({ token: data.token, isAuthenticated: true });
-        },
-        (error) => {
-          console.log(error);
-          this.setState({
-            isAuthenticated: false,
-            token: "No Data From Server",
-          });
-        }
-      );
+    console.log(payload);
+    this.props.loginUser(payload);
   }
 
   render() {
@@ -147,7 +93,9 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const Container = connect(null, { loginUser })(Login);
+
+export default Container;
 // Background Color: #f0f2f5
 // Color: 	#1c1e21
 // button Color: #1877f2, #4cd137
