@@ -3,18 +3,6 @@ import React from "react";
 // email: "dannd@example.com",
 // password: "238523a",
 
-const FunctionalComponent = () => {
-  const [count, setCount] = React.useState(0);
-  const [count, setCount] = React.useState(0);
-
-  return (
-    <div>
-      <p>count: {count}</p>
-      <button onClick={() => setCount(count + 1)}>Click</button>
-    </div>
-  );
-};
-
 class Login extends React.Component {
   constructor(props) {
     super(props);
