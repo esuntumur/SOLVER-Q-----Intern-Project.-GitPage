@@ -4,6 +4,8 @@ import { logoutUser } from "../../redux/actions/authentication";
 import {
   getAllQuestions,
   setSelectedQuestion,
+  backFromSelectedQuestion,
+  createQuestionToggle,
   deleteSelectedQuestion,
 } from "../../redux/actions/question";
 import CreateQuestion from "./CreateQuestion/index";
@@ -15,26 +17,58 @@ class Home extends Component {
   componentWillMount() {
     this.props.getAllQuestions();
   }
+  updateQuestionToggle() {
+    return 1;
+  }
   render() {
-    const { questions, logoutUser, deleteSelectedQuestion } = this.props;
+    const {
+      questions,
+      logoutUser,
+      backFromSelectedQuestion,
+      createQuestionToggle,
+      deleteSelectedQuestion,
+
+      user,
+    } = this.props;
+
     let { selectedQuestion } = this.props;
+    // const user_id = localStorage.getItem("user_id");
+    // console.log(user_id === selectedQuestion.user_id);
+    // console.log(`Logged Output ~ user_id`, user_id);
+    // console.log(`Logged Output ~ selectedQuestion.user_id`, selectedQuestion.user_id);
 
     return (
       <div>
+        {this.props.renderCreateQuestion && (
+          <CreateQuestion createQuestionToggle={createQuestionToggle} />
+        )}
         <div className="container d-flex justify-content-center mt-20">
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
             <div className="card">
               <h5 className="card-header">Home Page</h5>
+
               <div className="card-body">
-                <CreateQuestion />
+                <button onClick={createQuestionToggle}>Create question</button>
                 <div className="list-group">
+                  {/* ---------------АСУУЛТЫН ДЭЛГЭРЭНГҮЙ--------------- */}
                   {selectedQuestion ? (
                     <div>
                       {selectedQuestion.id} {selectedQuestion.title} <br />
                       {/* GO BACK 2 PAGE */}
-                      <button onClick={deleteSelectedQuestion}>{"Back "}</button>
+                      <button onClick={backFromSelectedQuestion}>{"Back "}</button>
+                      {user.id === selectedQuestion.user_id && (
+                        <button onClick={() => deleteSelectedQuestion(selectedQuestion)}>
+                          {"Delete this question "}
+                        </button>
+                      )}
+                      {user.id === selectedQuestion.user_id && (
+                        <button onClick={this.updateQuestionToggle.bind(this)}>
+                          {"Update this question "}
+                        </button>
+                      )}
                     </div>
                   ) : (
+                    // ---------------АСУУЛТУУДЫН ЖАГСААЛТ---------------
                     questions &&
                     questions.length > 0 &&
                     questions.map((i, idx) => (
@@ -45,10 +79,6 @@ class Home extends Component {
                       </button>
                     ))
                   )}
-                  {/* {this.props.selectedQ ? this.props.selectedQ : null} */}
-                  {/* start card */}
-                  {}
-                  {/* end card */}
                 </div>
               </div>
             </div>
@@ -60,11 +90,12 @@ class Home extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  // console.log(state.question);
-
+  console.log(`Logged Output ~ state.user in HOME `, state);
   return {
     questions: state.question.questions,
     selectedQuestion: state.question.selectedQuestion,
+    renderCreateQuestion: state.question.renderCreateQuestion,
+    user: state.auth.user,
   };
 };
 
@@ -72,6 +103,8 @@ const Container = connect(mapStateToProps, {
   logoutUser,
   getAllQuestions,
   setSelectedQuestion,
+  backFromSelectedQuestion,
+  createQuestionToggle,
   deleteSelectedQuestion,
 })(Home);
 

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./style.scss";
-import { createQuestion } from "../../../redux/actions/question";
+import { updateQuestion } from "../../../redux/actions/question";
 import { connect } from "react-redux";
-class CreateQuestion extends Component {
+class UpdateQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -15,16 +15,16 @@ class CreateQuestion extends Component {
         question: event.target.question.value,
       },
     };
-    this.props.createQuestion(payload);
+    this.props.updateQuestion(payload);
   }
   render() {
     return (
-      <div id="createQuestion">
+      <div id="updateQuestion">
         <div className="form-bg">
           <form className="form" onSubmit={this.submitHandler.bind(this)}>
             <div className="form-group">
               {" "}
-              <label className="sr-only">Title</label>{" "}
+              <label className="sr-only">UPDATE Title !!!</label>{" "}
               <input
                 type="text"
                 className="form-control"
@@ -35,7 +35,7 @@ class CreateQuestion extends Component {
             </div>
             <div className="form-group">
               {" "}
-              <label className="sr-only">Question details</label>{" "}
+              <label className="sr-only">UPDATE Question details !!!</label>{" "}
               <textarea
                 className="form-control"
                 required
@@ -45,9 +45,9 @@ class CreateQuestion extends Component {
               />{" "}
             </div>{" "}
             <button type="submit" className="btn text-center btn-blue">
-              Create
+              UPDATE
             </button>
-            <button onClick={this.props.createQuestionToggle}>Back</button>
+            <button onClick={this.props.updateQuestionToggle}>Back</button>
           </form>
         </div>
       </div>
@@ -55,5 +55,5 @@ class CreateQuestion extends Component {
   }
 }
 
-const Container = connect(null, { createQuestion })(CreateQuestion);
+const Container = connect(null, { updateQuestion })(UpdateQuestion);
 export default Container;

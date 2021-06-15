@@ -1,6 +1,4 @@
-/*===== GOOGLE FONTS =====*/
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
-/*===== VARIABLES CSS =====*/
 :root {
   /*===== Colores =====*/
   --first-color: #1a73e8;
@@ -11,139 +9,143 @@
   --body-font: "Roboto", sans-serif;
   --normal-font-size: 1rem;
   --small-font-size: 0.75rem;
-}
-
-/*===== BASE =====*/
+} /*===== BASE =====*/
 *,
 ::before,
 ::after {
   box-sizing: border-box;
 }
-body {
-  margin: 0;
-  padding: 0;
-  font-family: var(--body-font);
-  font-size: var(--normal-font-size);
-}
-h1 {
-  margin: 0;
-}
-.l-form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-.form {
-  width: 360px;
-  padding: 4rem 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(92, 99, 105, 0.2);
-}
-.form__title {
-  font-weight: 500;
-  margin-bottom: 3rem;
-}
-.form_div {
-  position: relative;
-  height: 48px;
-  margin-bottom: 1.5rem;
-}
-.form__input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  font-size: var(--normal-font-size);
-  border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  outline: none;
-  padding: 1rem;
-  background: none;
-  z-index: 1;
-}
-.form__label {
-  position: absolute;
-  left: 1rem;
-  top: 0.74rem;
-  padding: 0 0.25rem;
-  background-color: #fff;
-  color: var(--input-color);
-  font-size: var(--normal-font-size);
-  transition: 0.3s;
-}
-.form__button {
-  display: block;
-  margin-left: auto;
-  padding: 0.7rem 1.8rem;
-  width: 100%;
-  font-weight: bold;
-  outline: none;
-  border: none;
-  background-color: var(--first-color);
-  color: #fff;
-  font-size: var(--normal-font-size);
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.form__button:hover {
-  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.15);
-  text-decoration: none;
-}
-.form__input:focus + .form__label {
-  top: -0.5rem;
-  left: 0.8rem;
-  color: var(--first-color);
-  font-size: var(--small-font-size);
-  font-weight: 500;
-  z-index: 10;
-}
-.form__input:not(:placeholder-shown).form__input:not(:focus) + .form__label {
-  top: -0.5rem;
-  left: 0.8rem;
-  color: var(--first-color);
-  font-size: var(--small-font-size);
-  font-weight: 500;
-  z-index: 10;
-}
+#login {
+  /*===== GOOGLE FONTS =====*/
+  /*===== VARIABLES CSS =====*/
 
-.form__input:focus {
-  border: 1.5px solid var(--first-color);
-}
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--body-font);
+    font-size: var(--normal-font-size);
+    background-color: yellow;
+  }
+  h1 {
+    margin: 0;
+  }
+  .l-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .form {
+    width: 360px;
+    padding: 4rem 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(92, 99, 105, 0.2);
+  }
+  .form__title {
+    font-weight: 500;
+    margin-bottom: 3rem;
+  }
+  .form_div {
+    position: relative;
+    height: 48px;
+    margin-bottom: 1.5rem;
+  }
+  .form__input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: var(--normal-font-size);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    outline: none;
+    padding: 1rem;
+    background: none;
+    z-index: 1;
+  }
+  .form__label {
+    position: absolute;
+    left: 1rem;
+    top: 0.74rem;
+    padding: 0 0.25rem;
+    background-color: #fff;
+    color: var(--input-color);
+    font-size: var(--normal-font-size);
+    transition: 0.3s;
+  }
+  .form__button {
+    display: block;
+    margin-left: auto;
+    padding: 0.7rem 1.8rem;
+    width: 100%;
+    font-weight: bold;
+    outline: none;
+    border: none;
+    background-color: var(--first-color);
+    color: #fff;
+    font-size: var(--normal-font-size);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .form__button:hover {
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+  }
+  .form__input:focus + .form__label {
+    top: -0.5rem;
+    left: 0.8rem;
+    color: var(--first-color);
+    font-size: var(--small-font-size);
+    font-weight: 500;
+    z-index: 10;
+  }
+  .form__input:not(:placeholder-shown).form__input:not(:focus) + .form__label {
+    top: -0.5rem;
+    left: 0.8rem;
+    color: var(--first-color);
+    font-size: var(--small-font-size);
+    font-weight: 500;
+    z-index: 10;
+  }
 
-.fa {
-  padding: 10px;
-  border-radius: 7px;
-  font-size: 16px;
-  width: 100%;
-  font-weight: 700;
-  text-align: center;
-  text-decoration: none;
-  margin-bottom: 8px;
-  box-shadow: 0 2px 2px 0 rgb(41 48 59 / 24%), 0 0 2px 0 rgb(41 48 59 / 12%);
-  padding: 0.7rem 1.8rem;
-}
+  .form__input:focus {
+    border: 1.5px solid var(--first-color);
+  }
 
-.fa:hover {
-  opacity: 0.95;
-  color: white;
-  text-decoration: none;
-}
+  .fa {
+    padding: 10px;
+    border-radius: 7px;
+    font-size: 16px;
+    width: 100%;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 2px 0 rgb(41 48 59 / 24%), 0 0 2px 0 rgb(41 48 59 / 12%);
+    padding: 0.7rem 1.8rem;
+  }
 
-.fa-facebook {
-  background: #3b5998;
-  color: white;
-}
+  .fa:hover {
+    opacity: 0.95;
+    color: white;
+    text-decoration: none;
+  }
 
-.fa-google {
-  background: #dd4b39;
-  color: white;
-}
-* {
-  font-family: "sf pro text,-apple-system,BlinkMacSystemFont,Roboto,segoe ui,Helvetica,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol";
-}
-.gray {
-  color: gray;
+  .fa-facebook {
+    background: #3b5998;
+    color: white;
+  }
+
+  .fa-google {
+    background: #dd4b39;
+    color: white;
+  }
+  * {
+    font-family: "sf pro text,-apple-system,BlinkMacSystemFont,Roboto,segoe ui,Helvetica,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol";
+  }
+  .gray {
+    color: gray;
+  }
 }

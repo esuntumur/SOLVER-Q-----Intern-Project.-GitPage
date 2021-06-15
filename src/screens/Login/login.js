@@ -23,7 +23,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="login">
         <div className="l-form">
           <form className="form" onSubmit={this.handleSubmit}>
             <h4 className="form__title">Welcome</h4>
@@ -71,7 +71,3 @@ class Login extends React.Component {
 const Container = connect(null, { loginUser })(Login);
 
 export default Container;
-// Background Color: #f0f2f5
-// Color: 	#1c1e21
-// button Color: #1877f2, #4cd137
-// Hover Color: #44bd32
