@@ -62,3 +62,5 @@ export const updateSelectedQuestion = (selectedQuestion) => async (dispatch) => 
   });
   dispatch({ type: UPDATE_SELECTED_QUESTION, payload: selectedQuestion });
 };
+
+export const updateQuestion = () => async (dispatch) => {};

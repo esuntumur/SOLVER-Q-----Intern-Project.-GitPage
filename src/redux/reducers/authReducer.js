@@ -9,10 +9,8 @@ const initialState = {
 };
 
 const authReducer = (state = initialState, action) => {
-  console.log("in authReducer");
   switch (action.type) {
     case LOGIN:
-      console.log(`Logged Output ~ action.payload.user`, action.payload.user);
       return {
         ...state,
         isSignedIn: true,

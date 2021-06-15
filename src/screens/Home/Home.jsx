@@ -9,6 +9,10 @@ import {
   deleteSelectedQuestion,
 } from "../../redux/actions/question";
 import CreateQuestion from "./CreateQuestion/index";
+// import AA from "./AA";
+// import UpdateQuestion from "./UpdateQuestion/index";
+// const UpdateQuestion = () => <h1>AAA</h1>;
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +43,9 @@ class Home extends Component {
 
     return (
       <div>
+        {/* <AA />   */}
+        {/* <UpdateQuestion /> */}
+        {/* <UpdateQuestion /> */}
         {this.props.renderCreateQuestion && (
           <CreateQuestion createQuestionToggle={createQuestionToggle} />
         )}
@@ -79,6 +86,7 @@ class Home extends Component {
                       </button>
                     ))
                   )}
+                  {/* <UpdateQuestion /> */}
                 </div>
               </div>
             </div>
