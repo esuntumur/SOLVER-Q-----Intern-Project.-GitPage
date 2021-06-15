@@ -33,8 +33,15 @@ export const questionReducer = (state = initialState, action) => {
       };
     case DELETE_SELECTED_QUESTION:
       console.log("action.payload in REDUCER: ", action.payload);
+      const q = state.questions.filter((item) => {
+        return action.payload.id !== item.id;
+      });
+      console.log(`Logged Output ~ action.payload`, action.payload);
+      console.log(`Logged Output ~ q`, q);
+
       return {
         ...state,
+        questions: q,
       };
     default:
       return state;

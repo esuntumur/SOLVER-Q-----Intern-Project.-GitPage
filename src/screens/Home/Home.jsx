@@ -10,7 +10,7 @@ import {
 } from "../../redux/actions/question";
 import CreateQuestion from "./CreateQuestion/index";
 // import AA from "./AA";
-// import UpdateQuestion from "./UpdateQuestion/index";
+import UpdateQuestion from "./UpdateQuestion/index";
 // const UpdateQuestion = () => <h1>AAA</h1>;
 
 class Home extends Component {
@@ -36,7 +36,7 @@ class Home extends Component {
     } = this.props;
 
     let { selectedQuestion } = this.props;
-    // const user_id = localStorage.getItem("user_id");
+    const user_id = localStorage.getItem("user_id");
     // console.log(user_id === selectedQuestion.user_id);
     // console.log(`Logged Output ~ user_id`, user_id);
     // console.log(`Logged Output ~ selectedQuestion.user_id`, selectedQuestion.user_id);
@@ -45,7 +45,7 @@ class Home extends Component {
       <div>
         {/* <AA />   */}
         {/* <UpdateQuestion /> */}
-        {/* <UpdateQuestion /> */}
+        <UpdateQuestion />
         {this.props.renderCreateQuestion && (
           <CreateQuestion createQuestionToggle={createQuestionToggle} />
         )}
@@ -63,12 +63,12 @@ class Home extends Component {
                       {selectedQuestion.id} {selectedQuestion.title} <br />
                       {/* GO BACK 2 PAGE */}
                       <button onClick={backFromSelectedQuestion}>{"Back "}</button>
-                      {user.id === selectedQuestion.user_id && (
+                      {user_id == selectedQuestion.user_id && (
                         <button onClick={() => deleteSelectedQuestion(selectedQuestion)}>
                           {"Delete this question "}
                         </button>
                       )}
-                      {user.id === selectedQuestion.user_id && (
+                      {user_id == selectedQuestion.user_id && (
                         <button onClick={this.updateQuestionToggle.bind(this)}>
                           {"Update this question "}
                         </button>

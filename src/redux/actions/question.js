@@ -42,7 +42,7 @@ export const deleteSelectedQuestion = (selectedQuestion) => async (dispatch) => 
   });
   console.log("response in delete in action", response);
 
-  dispatch({ type: DELETE_SELECTED_QUESTION, payload: selectedQuestion });
+  dispatch({ type: DELETE_SELECTED_QUESTION, payload: response.data });
 };
 
 export const createQuestionToggle = () => async (dispatch) => {
