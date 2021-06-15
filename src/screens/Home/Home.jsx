@@ -1,75 +1,78 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/authentication";
-
-import "./home.scss";
-const axios = require("axios").default;
-
+import {
+  getAllQuestions,
+  setSelectedQuestion,
+  deleteSelectedQuestion,
+} from "../../redux/actions/question";
+import CreateQuestion from "./CreateQuestion/index";
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      questions: [],
-    };
+    this.state = {};
   }
-  componentDidMount() {
-    axios.get(`https://question0a.herokuapp.com/api/v1/questions`).then((res) => {
-      this.setState({ questions: res.data });
-      // console.log(res.data);
-      // console.log(typeof res.data[1]);
-    });
-    console.log(this.props);
+  componentWillMount() {
+    this.props.getAllQuestions();
   }
-
   render() {
-    const { logoutUser } = this.props;
-    const questions = this.state.questions.map((i, idx) => {
-      return (
-        <Link to={"/question"} key={idx}>
-          {i.id} {i.title}
-          {i.state}
-          {i.username}
-        </Link>
-      );
-    });
-    // console.log(typeof q);
+    const { questions, logoutUser, deleteSelectedQuestion } = this.props;
+    let { selectedQuestion } = this.props;
 
     return (
       <div>
-        Home Page
         <div className="container d-flex justify-content-center mt-20">
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
             <div className="card">
-              <h5 className="card-header">Mobile Phones with their warranty</h5>
+              <h5 className="card-header">Home Page</h5>
               <div className="card-body">
+                <CreateQuestion />
                 <div className="list-group">
+                  {selectedQuestion ? (
+                    <div>
+                      {selectedQuestion.id} {selectedQuestion.title} <br />
+                      {/* GO BACK 2 PAGE */}
+                      <button onClick={deleteSelectedQuestion}>{"Back "}</button>
+                    </div>
+                  ) : (
+                    questions &&
+                    questions.length > 0 &&
+                    questions.map((i, idx) => (
+                      <button onClick={() => this.props.setSelectedQuestion(i)} key={idx}>
+                        {i.id} {i.title}
+                        {i.state}
+                        {i.username}
+                      </button>
+                    ))
+                  )}
+                  {/* {this.props.selectedQ ? this.props.selectedQ : null} */}
                   {/* start card */}
-
-                  {questions}
+                  {}
                   {/* end card */}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <button onClick={() => logoutUser()}>logout</button>
+        <button onClick={() => logoutUser()}>гарах</button>
       </div>
     );
   }
 }
 const mapStateToProps = (state) => {
-  return { user: state };
-};
+  // console.log(state.question);
 
-const mapDispatchToProps = (dispatch) => {
   return {
-    submitNewMessage: (message) => {
-      // dispatch(addMessage(message));
-    },
+    questions: state.question.questions,
+    selectedQuestion: state.question.selectedQuestion,
   };
 };
 
-const Container = connect(null, { logoutUser })(Home);
+const Container = connect(mapStateToProps, {
+  logoutUser,
+  getAllQuestions,
+  setSelectedQuestion,
+  deleteSelectedQuestion,
+})(Home);
 
 export default Container;

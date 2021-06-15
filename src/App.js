@@ -10,10 +10,6 @@ class App extends React.Component {
     super(props);
     this.state = {};
   }
-  componentDidMount() {
-    console.log("in app");
-    console.log(this.props);
-  }
 
   render() {
     let { isSignedIn } = this.props;

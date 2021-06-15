@@ -9,14 +9,8 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  handleChange = (event) => {
-    event.preventDefault();
-    this.setState({ [event.target.name]: event.target.value });
-  };
 
   handleSubmit(event) {
     event.preventDefault();
@@ -24,35 +18,18 @@ class Login extends React.Component {
       email: event.target.email.value,
       password: event.target.password.value,
     };
-    console.log(payload);
     this.props.loginUser(payload);
   }
 
   render() {
     return (
       <div>
-        email: {this.state.email} <br />
-        password: {this.state.password} <br />
-        token: {this.state.token} <br />
-        isAuthenticated: {this.state.isAuthenticated ? "true" : "false"} <br />
-        {this.state.isAuthenticated ? (
-          <h1>Welcome, You're logged in!</h1>
-        ) : (
-          <h1>Invalid user! please check your inputs are correct.</h1>
-        )}
         <div className="l-form">
-          <form action className="form" onSubmit={this.handleSubmit}>
+          <form className="form" onSubmit={this.handleSubmit}>
             <h4 className="form__title">Welcome</h4>
             {/* ---------------Email------------- */}
             <div className="form_div">
-              <input
-                type="text"
-                className="form__input"
-                placeholder=" "
-                name="email"
-                value={this.state.email}
-                onChange={this.handleChange}
-              />
+              <input type="text" className="form__input" placeholder=" " name="email" />
               <label htmlFor className="form__label">
                 Email
               </label>
@@ -64,20 +41,18 @@ class Login extends React.Component {
                 className="form__input"
                 placeholder=" "
                 name="password"
-                value={this.state.password}
-                onChange={this.handleChange}
               />
               <label htmlFor className="form__label">
                 Password
               </label>
             </div>
             {/* ---------------SUBMIT--------------- */}
-            <input type="submit" className="form__button mb-3" value="Log In" />
+            <input type="submit" className="form__button mb-3" value="Login" />
 
             {/* ---------------Social buttons--------------- */}
-            <div class="dropdown-divider"></div>
+            <div className="dropdown-divider"></div>
             <p className="gray">or login with</p>
-            <div class="social_icon2">
+            <div className="social_icon2">
               <a href="/" className="fa fa-google form__button">
                 {" "}
                   Continue with Google
