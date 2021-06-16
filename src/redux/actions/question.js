@@ -6,6 +6,7 @@ import {
   CREATE_QUESTION_TOGGLE,
   DELETE_SELECTED_QUESTION,
   UPDATE_SELECTED_QUESTION,
+  UPDATE_QUESTION_TOGGLE,
 } from "./type";
 import API from "../../API";
 
@@ -48,19 +49,21 @@ export const deleteSelectedQuestion = (selectedQuestion) => async (dispatch) => 
 export const createQuestionToggle = () => async (dispatch) => {
   dispatch({ type: CREATE_QUESTION_TOGGLE });
 };
+export const updateQuestionToggle = (updateQuestionData) => async (dispatch) => {
+  console.log(`Logged Output ~ updateQuestionData`, updateQuestionData);
+  console.log("update question toggle && dispatching ");
 
-export const updateSelectedQuestion = (selectedQuestion) => async (dispatch) => {
-  // console.log(`Logged Output ~ selectedQuestion in ACTION`, selectedQuestion);
+  dispatch({ type: UPDATE_QUESTION_TOGGLE });
+};
+export const updateQuestion = (payload) => async (dispatch) => {
   // ! АРАЙ ДУУСААГҮЙ PARAMS НӨХӨХ
-  const params = {
-    id: selectedQuestion.id,
-  };
-  const response = await API.post(`/questions/${selectedQuestion.id}`, params, {
-    header: {
+
+  const response = await API.put(`/questions/${payload.id}`, payload.params, {
+    headers: {
       Authorization: token,
     },
   });
-  dispatch({ type: UPDATE_SELECTED_QUESTION, payload: selectedQuestion });
-};
+  console.log(`Logged Output ~ response`, response);
 
-export const updateQuestion = () => async (dispatch) => {};
+  dispatch({ type: UPDATE_SELECTED_QUESTION, payload: response.data });
+};
