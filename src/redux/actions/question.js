@@ -7,13 +7,42 @@ import {
   DELETE_SELECTED_QUESTION,
   UPDATE_SELECTED_QUESTION,
   UPDATE_QUESTION_TOGGLE,
+  VOTE_SELECTED_QUESTION,
 } from "./type";
 import API from "../../API";
 
 const token = localStorage.getItem("token");
+// todo VOTE QUESTION: questions/1/vote              json => {vote: { question_id: selectedQuestion.id }}
+export const voteSelectedQuestion = (selectedQuestion) => async (dispatch) => {
+  const response = await API.post(
+    `/questions/${selectedQuestion.id}/vote`,
+    {
+      vote: { question_id: selectedQuestion.id },
+    },
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+
+  if (response.data.message === undefined) {
+    dispatch({ type: VOTE_SELECTED_QUESTION, payload: response.data });
+  }
+};
+export const createQuestion = (newQuestionDetail) => async (dispatch) => {
+  const response = await API.post("/questions", newQuestionDetail, {
+    headers: {
+      Authorization: token,
+    },
+  });
+
+  dispatch({ type: CREATE_QUESTION, payload: response.data });
+};
 
 export const getAllQuestions = () => async (dispatch) => {
   const response = await API.get("/questions");
+  console.log(`Logged Output ~ response`, response);
 
   dispatch({ type: FETCH_QUESTION, payload: response.data });
 };
@@ -25,16 +54,6 @@ export const setSelectedQuestion = (selectedQuestion) => async (dispatch) => {
 
 export const backFromSelectedQuestion = () => async (dispatch) => {
   dispatch({ type: BACK_FROM_SELECTED_QUESTION });
-};
-
-export const createQuestion = (newQuestionDetail) => async (dispatch) => {
-  const response = await API.post("/questions", newQuestionDetail, {
-    headers: {
-      Authorization: token,
-    },
-  });
-
-  dispatch({ type: CREATE_QUESTION, payload: response.data });
 };
 
 export const deleteSelectedQuestion = (selectedQuestion) => async (dispatch) => {
@@ -56,8 +75,7 @@ export const updateQuestionToggle = (updateQuestionData) => async (dispatch) => 
   dispatch({ type: UPDATE_QUESTION_TOGGLE });
 };
 export const updateQuestion = (payload) => async (dispatch) => {
-  // ! АРАЙ ДУУСААГҮЙ PARAMS НӨХӨХ
-
+  console.log(`Logged Output ~ payload.params`, payload.params);
   const response = await API.put(`/questions/${payload.id}`, payload.params, {
     headers: {
       Authorization: token,

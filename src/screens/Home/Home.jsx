@@ -1,6 +1,8 @@
 /* eslint-disable eqeqeq */
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { logoutUser } from "../../redux/actions/authentication";
 import {
   getAllQuestions,
@@ -9,9 +11,11 @@ import {
   createQuestionToggle,
   deleteSelectedQuestion,
   updateQuestionToggle,
+  voteSelectedQuestion,
 } from "../../redux/actions/question";
 import CreateQuestion from "./CreateQuestion/index";
 import UpdateQuestion from "./UpdateQuestion/index";
+import CommentList from "./CommentList";
 import "./home.scss";
 class Home extends Component {
   constructor(props) {
@@ -21,6 +25,10 @@ class Home extends Component {
   componentWillMount() {
     this.props.getAllQuestions();
   }
+  componentDidMount() {
+    this.props.getAllQuestions();
+  }
+
   render() {
     const {
       questions,
@@ -30,61 +38,94 @@ class Home extends Component {
       deleteSelectedQuestion,
       updateQuestionToggle,
       renderUpdateQuestion,
+      voteSelectedQuestion,
     } = this.props;
-
+    const notify = () => toast("Wow so easy!");
+    const notifyCreateQuestion = () => toast("create question form!");
+    // todo VOTE QUESTION: questions/1/vote              json => {vote: {question_id: selectedQuestion.id }}
+    // todo VOTE COMMENT: questions/1/comments/18/vote   json => {vote: { comment_id: selectedComment.id }}
     let { selectedQuestion } = this.props;
     const user_id = localStorage.getItem("user_id");
+    // if (selectedQuestion.user.id == undefined) selectedQuestion.user.id = false;
     return (
       <div>
+        <button onClick={notify}>Notify!</button>
+        <ToastContainer />
+        {/* <UpdateQuestion /> */}
+        {/* <UpdateQuestion /> */}
         {/* <UpdateQuestion /> */}
         {this.props.renderCreateQuestion && (
           <CreateQuestion createQuestionToggle={createQuestionToggle} />
         )}
-        <div className="container d-flex justify-content-center mt-20">
-          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <div className="container-fluid d-flex justify-content-center mt-20">
+          <div className="col-sm-12 col-12">
             <div className="card ">
-              <div className="nav width ">
+              <div className="nav">
                 <h5 className="card-header">Home Page</h5>
-                <button onClick={() => logoutUser()} className="btn btn-primary">
+                <button
+                  onClick={() => {
+                    logoutUser();
+                  }}
+                  className="btn btn-primary"
+                >
                   гарах
                 </button>
-                <button onClick={createQuestionToggle} className="btn btn-primary">
+                <button
+                  onClick={() => {
+                    createQuestionToggle();
+                    notifyCreateQuestion();
+                  }}
+                  className="btn btn-primary"
+                >
                   Create question
                 </button>
+                <h6>user_id: {user_id}</h6>
               </div>
-              <div className="list-group float-start red-500">
+              <div className="card">
                 {/* ---------------АСУУЛТЫН ДЭЛГЭРЭНГҮЙ ХЭСЭГ--------------- */}
-                {selectedQuestion ? (
+                {selectedQuestion.user ? (
                   <div>
-                    {selectedQuestion.id} {selectedQuestion.title} <br />
-                    {/*  ----------DELETE, BACK Question BUTTON---------------- */}
-                    <button onClick={backFromSelectedQuestion}>{"Back "}</button>
-                    {user_id == selectedQuestion.user_id && (
+                    <h3>Question details</h3>
+                    {/*  ----------VOTE Question BUTTON---------------- */}
+                    {user_id != selectedQuestion.user.id && (
+                      <button onClick={() => voteSelectedQuestion(selectedQuestion)}>
+                        {"VOTE"}
+                      </button>
+                    )}
+                    {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
+                    <br />
+                    selectedQuestion.id: {selectedQuestion.id}, <br />
+                    votes: {selectedQuestion.votes}, <br />
+                    title: {selectedQuestion.title} user_id: {selectedQuestion.user.id}{" "}
+                    <br />
+                    {/*  ----------DELETE Question BUTTON---------------- */}
+                    {user_id == selectedQuestion.user.id && (
                       <button onClick={() => deleteSelectedQuestion(selectedQuestion)}>
                         {"Delete this question "}
                       </button>
                     )}
                     {/*  ----------update Question BUTTON---------------- */}
-                    {user_id == selectedQuestion.user_id && (
+                    {user_id == selectedQuestion.user.id && (
                       <button onClick={updateQuestionToggle}>
                         {"Update this question "}
                       </button>
                     )}
                     {/*  ----------update Question FORM---------------- */}
                     {renderUpdateQuestion ? (
-                      <UpdateQuestion
-                        selectedQuestion={selectedQuestion}
-                        createQuestionToggle={createQuestionToggle}
-                      />
+                      <UpdateQuestion selectedQuestion={selectedQuestion} />
                     ) : null}
+                    {/*  ----------BACK BUTTON---------------- */}
+                    <button onClick={backFromSelectedQuestion}>{"Back "}</button>
+                    {/*  ----------COMMENT LIST SECTION---------------- */}
+                    {<CommentList selectedQuestion={selectedQuestion} />}
                   </div>
                 ) : (
                   // ---------------АСУУЛТУУДЫН ЖАГСААЛТ---------------
                   questions &&
                   questions.length > 0 &&
                   questions.map((i, idx) => (
-                    <div className="list-group-item float-start card-item">
-                      <button onClick={() => this.props.setSelectedQuestion(i)} key={idx}>
+                    <div className="list-group-item float-start card-item" key={idx}>
+                      <button onClick={() => this.props.setSelectedQuestion(i)}>
                         Details
                         {i.id} {i.title}
                         {i.state}
@@ -102,11 +143,6 @@ class Home extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(`Logged Output ~ state.user in HOME `, state);
-  console.log(
-    `Logged Output ~ state.question.renderUpdateQuestion`,
-    state.question.renderUpdateQuestion
-  );
   return {
     questions: state.question.questions,
     selectedQuestion: state.question.selectedQuestion,
@@ -124,6 +160,7 @@ const Container = connect(mapStateToProps, {
   createQuestionToggle,
   deleteSelectedQuestion,
   updateQuestionToggle,
+  voteSelectedQuestion,
 })(Home);
 
 export default Container;

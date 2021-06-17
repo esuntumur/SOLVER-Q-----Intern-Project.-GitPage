@@ -7,6 +7,9 @@ import {
   DELETE_SELECTED_QUESTION,
   UPDATE_QUESTION_TOGGLE,
   UPDATE_SELECTED_QUESTION,
+  VOTE_SELECTED_QUESTION,
+  GET_ALL_COMMENTS,
+  VOTE_COMMENT,
 } from "../actions/type";
 
 const initialState = {
@@ -17,12 +20,26 @@ const initialState = {
 };
 export const questionReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_ALL_COMMENTS:
+      return { ...state, comments: action.payload };
+    case VOTE_COMMENT:
+      // ! payload:  selectedQuestion  selectedComment.votes =+ 1
+      console.log(`Logged Output ~ selectedComment`, this.props.selectedComment);
+      console.log(`Logged Output ~ selectedQuestion`, this.props.selectedQuestion);
+      let comments = state.comments.filter((comment) => comment.id !== action.payload.id);
+      comments.push(action.payload);
+      return { ...state, comments: comments };
     case FETCH_QUESTION:
       return { ...state, questions: action.payload };
     case SET_SELECTED_QUESTION:
       return { ...state, selectedQuestion: action.payload };
     case BACK_FROM_SELECTED_QUESTION:
-      return { ...state, selectedQuestion: null };
+      return { ...state, selectedQuestion: false };
+    case VOTE_SELECTED_QUESTION: {
+      let q = state.questions.filter((e) => e.id !== action.payload.id);
+      q.push(action.payload);
+      return { ...state, questions: q };
+    }
     case CREATE_QUESTION:
       return {
         ...state,
@@ -40,16 +57,8 @@ export const questionReducer = (state = initialState, action) => {
         renderUpdateQuestion: !state.renderUpdateQuestion,
       };
     case UPDATE_SELECTED_QUESTION: {
-      console.log(`Logged Output ~ action`, action);
-      console.log(`Logged Output ~ action.payload`, action.payload);
-      console.log(`Logged Output ~ action.payload.id`, action.payload.id);
-      console.log(`Logged Output ~ action.payload.id`, action.payload.id);
       let q = state.questions.filter((e) => e.id !== action.payload.id);
-      console.log(`Logged Output ~ action.payload.id`, action.payload.id);
-      console.log(`Logged Output ~ q`, q);
-      console.log(`Logged Output ~ state.questions`, state.questions);
       q.push(action.payload);
-      console.log(`Logged Output ~ q AFTER PUSH`, q);
       return {
         ...state,
         questions: q,
