@@ -15,7 +15,7 @@ import {
 } from "../../redux/actions/question";
 import CreateQuestion from "./CreateQuestion/index";
 import UpdateQuestion from "./UpdateQuestion/index";
-import CommentList from "./CommentList";
+import CommentList from "./comment";
 import "./home.scss";
 class Home extends Component {
   constructor(props) {
@@ -40,101 +40,196 @@ class Home extends Component {
       renderUpdateQuestion,
       voteSelectedQuestion,
     } = this.props;
-    const notify = () => toast("Wow so easy!");
     const notifyCreateQuestion = () => toast("create question form!");
-    // todo VOTE QUESTION: questions/1/vote              json => {vote: {question_id: selectedQuestion.id }}
-    // todo VOTE COMMENT: questions/1/comments/18/vote   json => {vote: { comment_id: selectedComment.id }}
     let { selectedQuestion } = this.props;
     const user_id = localStorage.getItem("user_id");
-    // if (selectedQuestion.user.id == undefined) selectedQuestion.user.id = false;
+    // selectedQuestion.votes.includes(user_id);
+    console.log(
+      `Logged Output ~ selectedQuestion`
+      // selectedQuestion.votes.includes(user_id)
+    );
+
+    console.log("questions ", questions);
+
     return (
       <div>
-        <button onClick={notify}>Notify!</button>
-        <ToastContainer />
-        {/* <UpdateQuestion /> */}
-        {/* <UpdateQuestion /> */}
-        {/* <UpdateQuestion /> */}
-        {this.props.renderCreateQuestion && (
-          <CreateQuestion createQuestionToggle={createQuestionToggle} />
-        )}
-        <div className="container-fluid d-flex justify-content-center mt-20">
-          <div className="col-sm-12 col-12">
-            <div className="card ">
-              <div className="nav">
-                <h5 className="card-header">Home Page</h5>
+        <div className="container-fluid">
+          <div className="row d-flex justify-content-center ">
+            {/*//*------------------NAVIGATION BAR------------------- */}
+            <nav className="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
+              <div className="container-fluid">
+                {/* LOGO NAME -> HOME */}
+                <a className="navbar-brand" href="/">
+                  Home Page + logo
+                </a>
+                {/* NAV TOGGLER in Mobile -> BUTTON */}
                 <button
-                  onClick={() => {
-                    logoutUser();
-                  }}
-                  className="btn btn-primary"
+                  className="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarNavDropdown"
+                  aria-controls="navbarNavDropdown"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
                 >
-                  гарах
+                  <span className="navbar-toggler-icon" />
                 </button>
-                <button
-                  onClick={() => {
-                    createQuestionToggle();
-                    notifyCreateQuestion();
-                  }}
-                  className="btn btn-primary"
-                >
-                  Create question
-                </button>
-                <h6>user_id: {user_id}</h6>
+                <div className="collapse navbar-collapse" id="navbarNavDropdown">
+                  <ul className="navbar-nav">
+                    {/* CREATE QUESTION -> BUTTON*/}
+                    <li className="nav-item">
+                      <button
+                        onClick={() => {
+                          createQuestionToggle();
+                          notifyCreateQuestion();
+                        }}
+                        className="btn btn-primary"
+                      >
+                        Create question
+                      </button>
+                      <ToastContainer />
+                      {/* CREATE QUESTION -> FORM */}
+                      {this.props.renderCreateQuestion && (
+                        <CreateQuestion createQuestionToggle={createQuestionToggle} />
+                      )}
+                    </li>
+
+                    {/* PROFILE -> DROPDOWN BUTTON */}
+                    <li className="nav-item dropdown">
+                      <a
+                        className="nav-link dropdown-toggle"
+                        href="/"
+                        id="navbarDropdownMenuLink"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Profile
+                      </a>
+                      <ul
+                        className="dropdown-menu"
+                        aria-labelledby="navbarDropdownMenuLink"
+                      >
+                        <li>
+                          <button
+                            onClick={() => {
+                              logoutUser();
+                            }}
+                            className="btn btn-primary"
+                          >
+                            гарах
+                          </button>
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li className="nav-item">
+                      <p>user_id: {user_id}</p>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="card">
-                {/* ---------------АСУУЛТЫН ДЭЛГЭРЭНГҮЙ ХЭСЭГ--------------- */}
-                {selectedQuestion.user ? (
-                  <div>
-                    <h3>Question details</h3>
-                    {/*  ----------VOTE Question BUTTON---------------- */}
-                    {user_id != selectedQuestion.user.id && (
-                      <button onClick={() => voteSelectedQuestion(selectedQuestion)}>
+            </nav>
+
+            {/*//*------------------BODY------------------- */}
+            <div className="col-10">
+              {/* ---------------АСУУЛТЫН ДЭЛГЭРЭНГҮЙ ХЭСЭГ--------------- */}
+              {selectedQuestion.user ? (
+                <div>
+                  <h3>Question details</h3>
+                  {/*  ----------VOTE Question BUTTON---------------- */}
+                  {/* // TODO -votes = []  */}
+                  {/* {user_id != selectedQuestion.user.id ? (
+                      <button
+                        onClick={(e) => {
+                          voteSelectedQuestion(selectedQuestion, user_id);
+                        }}
+                      >
                         {"VOTE"}
                       </button>
-                    )}
-                    {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
-                    <br />
-                    selectedQuestion.id: {selectedQuestion.id}, <br />
-                    votes: {selectedQuestion.votes}, <br />
-                    title: {selectedQuestion.title} user_id: {selectedQuestion.user.id}{" "}
-                    <br />
-                    {/*  ----------DELETE Question BUTTON---------------- */}
-                    {user_id == selectedQuestion.user.id && (
-                      <button onClick={() => deleteSelectedQuestion(selectedQuestion)}>
-                        {"Delete this question "}
-                      </button>
-                    )}
-                    {/*  ----------update Question BUTTON---------------- */}
-                    {user_id == selectedQuestion.user.id && (
-                      <button onClick={updateQuestionToggle}>
-                        {"Update this question "}
-                      </button>
-                    )}
-                    {/*  ----------update Question FORM---------------- */}
-                    {renderUpdateQuestion ? (
-                      <UpdateQuestion selectedQuestion={selectedQuestion} />
-                    ) : null}
-                    {/*  ----------BACK BUTTON---------------- */}
-                    <button onClick={backFromSelectedQuestion}>{"Back "}</button>
-                    {/*  ----------COMMENT LIST SECTION---------------- */}
-                    {<CommentList selectedQuestion={selectedQuestion} />}
-                  </div>
-                ) : (
-                  // ---------------АСУУЛТУУДЫН ЖАГСААЛТ---------------
-                  questions &&
-                  questions.length > 0 &&
-                  questions.map((i, idx) => (
-                    <div className="list-group-item float-start card-item" key={idx}>
-                      <button onClick={() => this.props.setSelectedQuestion(i)}>
-                        Details
-                        {i.id} {i.title}
-                        {i.state}
-                        {i.username}
-                      </button>
+                    ) : null} */}
+                  {/* {user_id != selectedQuestion.user.id  ? (
+                      !selectedQuestion.votes.includes(user_id) ? (
+                        <button
+                          onClick={(e) => {
+                            voteSelectedQuestion(selectedQuestion, user_id);
+                          }}
+                        >
+                          {"VOTE"}
+                        </button>
+                      ) : (
+                        <button disabled>
+                          {"VOTED"}
+                        </button>
+                      )
+                    ) : null} */}
+                  {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
+                  <br />
+                  selectedQuestion.id: {selectedQuestion.id}, <br />
+                  {/* //  TODO votes: []
+                    {selectedQuestion.votes.length}, <br /> */}
+                  votes: {selectedQuestion.votes} <br />
+                  title: {selectedQuestion.title} user_id: {selectedQuestion.user.id}{" "}
+                  <br />
+                  {/*  ----------DELETE Question BUTTON---------------- */}
+                  {user_id == selectedQuestion.user.id && (
+                    <button
+                      onClick={() => {
+                        deleteSelectedQuestion(selectedQuestion);
+                        backFromSelectedQuestion();
+                      }}
+                    >
+                      {"Delete this question "}
+                    </button>
+                  )}
+                  {/*  ----------update Question BUTTON---------------- */}
+                  {user_id == selectedQuestion.user.id && (
+                    <button onClick={updateQuestionToggle}>
+                      {"Update this question "}
+                    </button>
+                  )}
+                  {/*  ----------BACK BUTTON---------------- */}
+                  <button onClick={backFromSelectedQuestion}>{"Back"}</button>
+                  {/*  ----------update Question FORM---------------- */}
+                  {renderUpdateQuestion ? (
+                    <UpdateQuestion
+                      selectedQuestion={selectedQuestion}
+                      backFromSelectedQuestion={backFromSelectedQuestion}
+                    />
+                  ) : null}
+                  {/*  ----------COMMENT LIST SECTION,  SUBMIT EDITOR---------------- */}
+                  {<CommentList selectedQuestion={selectedQuestion} user_id={user_id} />}
+                </div>
+              ) : (
+                // * --------------------------АСУУЛТУУДЫН ЖАГСААЛТ--------------------------
+                questions &&
+                questions.length > 0 &&
+                questions.map((i, idx) => (
+                  <div className="card card-hover border-success mb-5 " key={idx}>
+                    <div className="row">
+                      <div className="col-1">
+                        <div className="row">Votes: {i.votes.length}</div>
+                        <div className="row">{i.state}</div>
+                        <div className="row">{i.user.username}</div>
+                      </div>
+                      <div className="col-11">
+                        <h5
+                          className="card-header"
+                          onClick={() => this.props.setSelectedQuestion(i)}
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title="Tooltip on top"
+                        >
+                          {i.title}
+                        </h5>
+                        <div className="card-body">
+                          <p className="card-text">{i.question}</p>
+                        </div>
+                      </div>
                     </div>
-                  ))
-                )}
-              </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
