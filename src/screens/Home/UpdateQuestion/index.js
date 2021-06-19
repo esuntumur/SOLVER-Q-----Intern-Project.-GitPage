@@ -20,8 +20,10 @@ class UpdateQuestion extends Component {
           question: event.target.question.value,
         },
       },
+      backFromSelectedQuestion: this.props.backFromSelectedQuestion,
     };
     this.props.updateQuestion(payload);
+    this.props.backFromSelectedQuestion();
   }
   render() {
     return (

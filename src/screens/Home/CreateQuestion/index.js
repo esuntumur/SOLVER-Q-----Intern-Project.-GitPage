@@ -16,6 +16,7 @@ class CreateQuestion extends Component {
       },
     };
     this.props.createQuestion(payload);
+    this.props.createQuestionToggle();
   }
   render() {
     return (
@@ -47,7 +48,6 @@ class CreateQuestion extends Component {
             <button type="submit" className="btn text-center btn-blue">
               Create
             </button>
-            <button onClick={this.props.createQuestionToggle}>Back</button>
           </form>
         </div>
       </div>
