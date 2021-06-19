@@ -12,6 +12,8 @@ import {
   deleteSelectedQuestion,
   updateQuestionToggle,
   voteSelectedQuestion,
+  // voteSelectedQuestion,
+  // voteSelectedQuestion,
 } from "../../redux/actions/question";
 import CreateQuestion from "./CreateQuestion/index";
 import UpdateQuestion from "./UpdateQuestion/index";
