@@ -67,16 +67,25 @@ export const questionReducer = (
       };
     }
     case VOTE_COMMENT: {
-      // * payload: { selectedQuestion, selectedComment, user_id },
-      // TODO payload:  selectedQuestion  selectedComment.votes.push(user_id)
-      let q = state.questions.forEach((e, i, r) => {
-        // if (e.id === action.payload.selectedQuestion.id) {
-        //   e.
-        // }
+      // * action.payload: { selectedComment, user_id },
+      // TODO payload:   selectedComment.votes.push(user_id)
+      console.log(`Logged Output ~ state`, state);
+      console.log(`Logged Output ~ payload`, action.payload);
+
+      state.comments.forEach((comment) => {
+        console.log(
+          `Logged Output ~ every comment-id and selec com id`,
+          comment.id,
+          " ",
+          action.payload.selectedComment.id
+        );
+        if (comment.id === action.payload.selectedComment.id) {
+          console.log(`Logged Output ~ condition comment`, comment);
+          comment.votes.push(action.payload.user_id);
+        }
       });
-      let comments = state.comments.filter((comment) => comment.id !== action.payload.id);
-      comments.push(action.payload);
-      return { ...state, comments: comments };
+      console.log(`Logged Output ~ state`, state);
+      return { ...state };
     }
     case SEND_COMMENT: {
       console.log("in send comment reducer");

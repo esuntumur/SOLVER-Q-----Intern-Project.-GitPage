@@ -15,6 +15,10 @@ export class CommentList extends Component {
     this.state = {};
   }
   componentWillMount() {
+    console.log(
+      `Logged Output ~ this.props.selectedQuestion`,
+      this.props.selectedQuestion
+    );
     this.props.getCommentsByPageNumber(
       this.props.selectedQuestion,
       this.props.currentPageComment
@@ -26,16 +30,38 @@ export class CommentList extends Component {
       this.props.currentPageComment
     );
   }
-  getsendComment(event) {
+
+  async getsendComment(event) {
     event.preventDefault();
-    this.props.sendComment(this.props.selectedQuestion, event.target.answer.value);
+    await this.props.sendComment(this.props.selectedQuestion, event.target.answer.value);
+    await this.props.getCommentsByPageNumber(
+      this.props.selectedQuestion,
+      this.props.currentPageComment
+    );
+  }
+  async voteCommentAsync(
+    comment,
+    user_id,
+    getCommentsByPageNumber,
+    selectedQuestion,
+    currentPageComment
+  ) {
+    await this.props.voteComment(comment, user_id, getCommentsByPageNumber);
+    await getCommentsByPageNumber(selectedQuestion, currentPageComment);
   }
   render() {
-    const { comments, deleteComment, updateComment } = this.props;
-    let { currentPageComment, maxPageComment } = this.props;
+    const {
+      getCommentsByPageNumber,
+      comments,
+      deleteComment,
+      updateComment,
+      voteComment,
+    } = this.props;
+    let { currentPageComment, maxPageComment, selectedQuestion, user_id } = this.props;
+    user_id *= 1;
     return (
       <div>
-        {/* EDITOR */}
+        {/* //* Create COMMENT */}
         <form onSubmit={this.getsendComment.bind(this)} className="row mt-5">
           <div className="col-2"> Comment: </div>
           <div className="col-9">
@@ -44,22 +70,34 @@ export class CommentList extends Component {
           <div className="col-1">
             <input type="submit" value="Send" className="btn btn-primary" />
           </div>
-            
         </form>
+
+        {/* //* Comment LIST */}
         <h3>Comment list</h3>
         {comments.map((comment, idx) => (
           <div className="card mb-4" key={idx}>
             <div className="row">
-              <div className="col-1">
+              {/* //* Comment -> VOTE, count && user name, profile */}
+              <div className="col-2">
                 <div className="row">
                   <img src="..." alt="..." />
+                  {comment.user.username} 
                 </div>
+
+                {/* //* VOTE Comment */}
                 <div className="row">
-                  {/* // TODO BACK comment.votes=[] bhgv */}
-                  {/* {!comment.votes.includes(user_id) ? (
+                  {!comment.votes.includes(user_id) ? (
                     <button
                       className="btn btn-primary"
-                      onClick={() => voteComment(selectedQuestion, comment, user_id)}
+                      onClick={() => {
+                        this.voteCommentAsync.bind(this)(
+                          comment,
+                          user_id,
+                          getCommentsByPageNumber,
+                          selectedQuestion,
+                          currentPageComment
+                        );
+                      }}
                     >
                       Vote
                     </button>
@@ -67,21 +105,21 @@ export class CommentList extends Component {
                     <button className="btn btn-primary" disabled>
                       Voted
                     </button>
-                  )} */}
+                  )}
                 </div>
-                {/* //TODO => BACK comments deer votes[] nemeheer */}
                 <div className="row">Votes: {comment.votes.length}</div>
               </div>
 
+              {/* //* Comment -> Answer TEXT */}
               <div className="col-8">
                 <div className="card-body">
                   <h5 className="card-title">{comment.answer}</h5>
-                  comment id: {comment.id}      comment user: {comment.user.id} 
-                  {comment.user.username} <br />
+
+                  <br />
                   <br />
                 </div>
               </div>
-              <div className="col-3">
+              <div className="col-2">
                 <div className="row">
                   <button onClick={deleteComment}>Delete</button>{" "}
                 </div>
@@ -93,16 +131,30 @@ export class CommentList extends Component {
             </div>
           </div>
         ))}
+        {/* //* comment PAGINATION - prev, next buttons  */}
         <div className="d-flex justify-content-center">
           {currentPageComment >= 2 ? (
-            <button onClick={() => getCommentsByPageNumber(--currentPageComment)}>
+            <button
+              onClick={() => {
+                getCommentsByPageNumber(selectedQuestion, --currentPageComment);
+                console.log("previous clicked comment");
+              }}
+            >
               previous
             </button>
           ) : null}
              
           {currentPageComment}  
           {currentPageComment >= maxPageComment ? null : (
-            <button onClick={() => getCommentsByPageNumber(++currentPageComment)}>
+            <button
+              onClick={() => {
+                getCommentsByPageNumber(
+                  this.props.selectedQuestion,
+                  ++currentPageComment
+                );
+                console.log("next clicked comment");
+              }}
+            >
               next
             </button>
           )}
@@ -113,14 +165,16 @@ export class CommentList extends Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(`Logged Output ~ state`, state);
+
   return {
     comments: state.question.comments,
     maxPageComment: state.question.maxPageComment,
-    currentPageComment: state.question.maxPageComment,
+    currentPageComment: state.question.currentPageComment,
   };
 };
 
-const mapDispatchToProps = {
+let mapDispatchToProps = {
   getCommentsByPageNumber,
   voteComment,
   sendComment,

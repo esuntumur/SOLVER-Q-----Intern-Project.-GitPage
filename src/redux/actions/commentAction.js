@@ -8,14 +8,13 @@ import {
 } from "./type";
 export const getCommentsByPageNumber =
   (selectedQuestion, currentPageComment) => async (dispatch) => {
-    const response = await API.post(`questions/${selectedQuestion.id}/comments`, {
+    await API.post(`questions/${selectedQuestion.id}/comments`, {
       commentPage: currentPageComment,
+    }).then((response) => {
+      dispatch({ type: GET_COMMENTS_BY_PAGE_NUMBER, payload: response.data });
     });
-    console.log(`Logged Output ~ response`, response);
-    console.log(`Logged Output ~ response.data.comments`, response.data); // comments maxPageQuestion curr
-    console.log(`Logged Output ~ response.data. maxPage`, response.data.maxPage); // comments maxPageQuestion curr
-    dispatch({ type: GET_COMMENTS_BY_PAGE_NUMBER, payload: response.data });
   };
+
 // TODO BACK bologv bga
 export const deleteComment = (selectedQuestion, commentText) => async (dispatch) => {
   // const response = await API.delete(`/questions/${selectedQuestion.id}`, {
@@ -38,12 +37,12 @@ export const updateComment = (selectedQuestion, commentText) => async (dispatch)
 };
 
 export const sendComment = (selectedQuestion, commentText) => async (dispatch) => {
-  const response = await API.post(
+  await API.post(
     "comments",
     {
       comment: {
-        answer: commentText,
         question_id: selectedQuestion.id,
+        answer: commentText,
       },
     },
     {
@@ -51,32 +50,22 @@ export const sendComment = (selectedQuestion, commentText) => async (dispatch) =
         Authorization: token,
       },
     }
-  );
-  console.log(`Logged Output ~ response data`, response.data);
-
-  dispatch({ type: SEND_COMMENT, payload: response.data.object });
-  // dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER });
+  ).then((response) => {
+    dispatch({ type: SEND_COMMENT, payload: response.data.object });
+  });
 };
 
 const token = localStorage.getItem("token");
-export const voteComment =
-  (selectedQuestion, selectedComment, user_id) => async (dispatch) => {
-    // ! duusaagui -- back boloogv bga
-    // todo VOTE COMMENT: questions/1/comments/18/vote   json => {vote: { comment_id: selectedComment.id }}
-    const response = await API.post(
-      `/questions/${selectedQuestion.id}/comments/${selectedComment.id}/vote`,
-      {
-        vote: { comment_id: selectedComment.id },
-      },
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    ).then(() => {
-      dispatch({
-        type: VOTE_COMMENT,
-        payload: { selectedQuestion, selectedComment, user_id },
-      });
+export const voteComment = (selectedComment, user_id) => async (dispatch) => {
+  // todo VOTE COMMENT: questions/1/comments/18/vote   json => {vote: { comment_id: selectedComment.id }}
+  await API.post(`/comments/${selectedComment.id}/vote`, null, {
+    headers: {
+      Authorization: token,
+    },
+  }).then(() => {
+    dispatch({
+      type: VOTE_COMMENT,
+      payload: { selectedComment, user_id },
     });
-  };
+  });
+};
