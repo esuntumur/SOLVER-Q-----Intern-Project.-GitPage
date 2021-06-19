@@ -15,6 +15,10 @@ export class CommentList extends Component {
     this.state = {};
   }
   componentWillMount() {
+    console.log(
+      `Logged Output ~ this.props.selectedQuestion`,
+      this.props.selectedQuestion
+    );
     this.props.getCommentsByPageNumber(
       this.props.selectedQuestion,
       this.props.currentPageComment
@@ -26,16 +30,29 @@ export class CommentList extends Component {
       this.props.currentPageComment
     );
   }
+  // componentDidUpdate(prevProps, prevState) {
+  //   this.props.getCommentsByPageNumber(
+  //     this.props.selectedQuestion,
+  //     this.props.currentPageComment
+  //   );
+  // }
   getsendComment(event) {
     event.preventDefault();
     this.props.sendComment(this.props.selectedQuestion, event.target.answer.value);
   }
   render() {
-    const { comments, deleteComment, updateComment } = this.props;
-    let { currentPageComment, maxPageComment } = this.props;
+    const {
+      getCommentsByPageNumber,
+      comments,
+      deleteComment,
+      updateComment,
+      voteComment,
+    } = this.props;
+    let { currentPageComment, maxPageComment, selectedQuestion, user_id } = this.props;
+    user_id *= 1;
     return (
       <div>
-        {/* EDITOR */}
+        {/* Write COMMENT send FORM  */}
         <form onSubmit={this.getsendComment.bind(this)} className="row mt-5">
           <div className="col-2"> Comment: </div>
           <div className="col-9">
@@ -44,22 +61,27 @@ export class CommentList extends Component {
           <div className="col-1">
             <input type="submit" value="Send" className="btn btn-primary" />
           </div>
-            
         </form>
         <h3>Comment list</h3>
         {comments.map((comment, idx) => (
           <div className="card mb-4" key={idx}>
             <div className="row">
-              <div className="col-1">
+              <div className="col-2">
                 <div className="row">
                   <img src="..." alt="..." />
                 </div>
                 <div className="row">
-                  {/* // TODO BACK comment.votes=[] bhgv */}
-                  {/* {!comment.votes.includes(user_id) ? (
+                  {/* // TODO VOTE COMMENT */}
+                  {!comment.votes.includes(user_id) ? (
                     <button
                       className="btn btn-primary"
-                      onClick={() => voteComment(selectedQuestion, comment, user_id)}
+                      onClick={() => {
+                        voteComment(comment, user_id);
+                        this.props.getCommentsByPageNumber(
+                          this.props.selectedQuestion,
+                          this.props.currentPageComment
+                        );
+                      }}
                     >
                       Vote
                     </button>
@@ -67,7 +89,7 @@ export class CommentList extends Component {
                     <button className="btn btn-primary" disabled>
                       Voted
                     </button>
-                  )} */}
+                  )}
                 </div>
                 {/* //TODO => BACK comments deer votes[] nemeheer */}
                 <div className="row">Votes: {comment.votes.length}</div>
@@ -81,7 +103,7 @@ export class CommentList extends Component {
                   <br />
                 </div>
               </div>
-              <div className="col-3">
+              <div className="col-2">
                 <div className="row">
                   <button onClick={deleteComment}>Delete</button>{" "}
                 </div>
@@ -95,14 +117,27 @@ export class CommentList extends Component {
         ))}
         <div className="d-flex justify-content-center">
           {currentPageComment >= 2 ? (
-            <button onClick={() => getCommentsByPageNumber(--currentPageComment)}>
+            <button
+              onClick={() => {
+                getCommentsByPageNumber(selectedQuestion, --currentPageComment);
+                console.log("previous clicked comment");
+              }}
+            >
               previous
             </button>
           ) : null}
              
           {currentPageComment}  
           {currentPageComment >= maxPageComment ? null : (
-            <button onClick={() => getCommentsByPageNumber(++currentPageComment)}>
+            <button
+              onClick={() => {
+                getCommentsByPageNumber(
+                  this.props.selectedQuestion,
+                  ++currentPageComment
+                );
+                console.log("next clicked comment");
+              }}
+            >
               next
             </button>
           )}
@@ -113,14 +148,16 @@ export class CommentList extends Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(`Logged Output ~ state`, state);
+
   return {
     comments: state.question.comments,
     maxPageComment: state.question.maxPageComment,
-    currentPageComment: state.question.maxPageComment,
+    currentPageComment: state.question.currentPageComment,
   };
 };
 
-const mapDispatchToProps = {
+let mapDispatchToProps = {
   getCommentsByPageNumber,
   voteComment,
   sendComment,

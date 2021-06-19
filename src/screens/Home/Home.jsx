@@ -29,7 +29,6 @@ class Home extends Component {
   }
   componentDidMount() {
     this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
-    console.log("questions", this.props.questions);
   }
 
   render() {
@@ -47,15 +46,6 @@ class Home extends Component {
     const notifyCreateQuestion = () => toast("create question form!");
     let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
     const user_id = localStorage.getItem("user_id");
-    // selectedQuestion.votes.includes(user_id);
-    console.log(
-      `Logged Output ~ selectedQuestion`
-      // selectedQuestion.votes.includes(user_id)
-    );
-
-    console.log("questions ", questions);
-    console.log(" selectedQuestion.user ", selectedQuestion.user);
-    console.log("questions ", questions.length > 0);
     return (
       <div>
         <div className="container-fluid">
@@ -143,16 +133,6 @@ class Home extends Component {
                 <div>
                   <h3>Question details</h3>
                   {/*  ----------VOTE Question BUTTON---------------- */}
-                  {/* // TODO -votes = []  */}
-                  {user_id != selectedQuestion.user.id ? (
-                    <button
-                      onClick={(e) => {
-                        voteSelectedQuestion(selectedQuestion, user_id);
-                      }}
-                    >
-                      {"VOTE"}
-                    </button>
-                  ) : null}
                   {user_id != selectedQuestion.user.id ? (
                     !selectedQuestion.votes.includes(user_id) ? (
                       <button
@@ -198,13 +178,13 @@ class Home extends Component {
                       backFromSelectedQuestion={backFromSelectedQuestion}
                     />
                   ) : null}
-                  {/*  ----------COMMENT LIST SECTION,  SUBMIT EDITOR---------------- */}
+                  {/* //* ----COMMENT LIST SECTION + SUBMIT EDITOR------ */}
                   {<CommentList selectedQuestion={selectedQuestion} user_id={user_id} />}
                 </div>
               ) : (
-                // * ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
-                // questions &&
-                //   questions.length > 0 &&
+                // * ----Question LIST --------------
+                questions &&
+                questions.length > 0 &&
                 questions.map((i, idx) => (
                   <div className="card card-hover border-success mb-5 " key={idx}>
                     <div className="row">
@@ -231,6 +211,7 @@ class Home extends Component {
                   </div>
                 ))
               )}
+              {/* //* Question Paginatino -> BUTTONS */}
               {!selectedQuestion.user ? (
                 <div className="d-flex justify-content-center">
                   {currentPageQuestion >= 2 ? (
@@ -259,8 +240,6 @@ class Home extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(`Logged Output ~ state`, state);
-
   return {
     questions: state.question.questions,
     selectedQuestion: state.question.selectedQuestion,

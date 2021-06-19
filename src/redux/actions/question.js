@@ -15,10 +15,9 @@ const token = localStorage.getItem("token");
 // todo VOTE QUESTION: questions/1/vote      json => {vote: { question_id: selectedQuestion.id }}
 
 export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
-  const response = await API.post("/questions/page", { questionPage: pageNum });
-  console.log(`Logged Output ~ response`, response.data);
-
-  dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER, payload: response.data });
+  await API.post("/questions/page", { questionPage: pageNum }).then((response) => {
+    dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER, payload: response.data });
+  });
 };
 
 export const createQuestionToggle = () => async (dispatch) => {
@@ -31,13 +30,11 @@ export const createQuestion = (params) => async (dispatch) => {
       Authorization: token,
     },
   });
-  console.log(`Logged Output ~ response`, response);
 
   dispatch({ type: CREATE_QUESTION, payload: response.data.object });
 };
 
 export const setSelectedQuestion = (selectedQuestion) => async (dispatch) => {
-  // console.log("selectedQuestion: ", selectedQuestion);
   dispatch({ type: SET_SELECTED_QUESTION, payload: selectedQuestion });
 };
 
@@ -51,13 +48,11 @@ export const updateQuestionToggle = (updateQuestionData) => async (dispatch) => 
 
 // TODO => update question
 export const updateQuestion = (payload) => async (dispatch) => {
-  console.log(`Logged Output ~ payload.params`, payload.params);
   const response = await API.put(`/questions/${payload.id}`, payload.params, {
     headers: {
       Authorization: token,
     },
   }).then((response) => {
-    console.log(`Logged Output ~ response in UpdateQuestion`, response.data);
     dispatch({ type: UPDATE_SELECTED_QUESTION, payload: response.data.object });
   });
 };
@@ -66,7 +61,6 @@ export const deleteSelectedQuestion = (selectedQuestion) => async (dispatch) => 
   const response = await API.delete(`/questions/${selectedQuestion.id}`, {
     headers: { Authorization: token },
   });
-  console.log("response in delete in action", response);
 
   dispatch({ type: DELETE_SELECTED_QUESTION, payload: response.data });
 };
@@ -84,11 +78,8 @@ export const voteSelectedQuestion = (selectedQuestion, user_id) => async (dispat
     }
   )
     .then(() => {
-      console.log("dispatch hiilee 200");
       dispatch({ type: VOTE_SELECTED_QUESTION, payload: { selectedQuestion, user_id } });
     })
     //!CATCH ILREH ?
-    .catch((error) => {
-      console.log("dispatch hiihgv 401", error);
-    });
+    .catch((error) => {});
 };
