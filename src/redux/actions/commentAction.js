@@ -1,9 +1,40 @@
 import API from "../../API";
-import { GET_ALL_COMMENTS, VOTE_COMMENT, SEND_COMMENT } from "./type";
-export const getAllComments = (selectedQuestion) => async (dispatch) => {
-  const response = await API.get(`questions/${selectedQuestion.id}`);
-
-  dispatch({ type: GET_ALL_COMMENTS, payload: response.data.question.comments });
+import {
+  GET_COMMENTS_BY_PAGE_NUMBER,
+  VOTE_COMMENT,
+  SEND_COMMENT,
+  DELETE_COMMENT,
+  UPDATE_COMMENT,
+} from "./type";
+export const getCommentsByPageNumber =
+  (selectedQuestion, currentPageComment) => async (dispatch) => {
+    const response = await API.post(`questions/${selectedQuestion.id}/comments`, {
+      commentPage: currentPageComment,
+    });
+    console.log(`Logged Output ~ response`, response);
+    console.log(`Logged Output ~ response.data.comments`, response.data); // comments maxPageQuestion curr
+    console.log(`Logged Output ~ response.data. maxPage`, response.data.maxPage); // comments maxPageQuestion curr
+    dispatch({ type: GET_COMMENTS_BY_PAGE_NUMBER, payload: response.data });
+  };
+// TODO BACK bologv bga
+export const deleteComment = (selectedQuestion, commentText) => async (dispatch) => {
+  // const response = await API.delete(`/questions/${selectedQuestion.id}`, {
+  //   headers: { Authorization: token },
+  // }).then(response){
+  // console.log("response in delete in action", response);
+  // dispatch({ type: DELETE_COMMENT, payload: {selectedQuestion, response.data.object} });
+  // };
+};
+// TODO BACK bologv bga
+export const updateComment = (selectedQuestion, commentText) => async (dispatch) => {
+  // const response = await API.put(`/questions/${payload.id}`, payload.params, {
+  //   headers: {
+  //     Authorization: token,
+  //   },
+  // }).then((response) => {
+  //   console.log(`Logged Output ~ response in UpdateQuestion`, response.data);
+  //   dispatch({ type: UPDATE_COMMENT, payload: response.data.object });
+  // });
 };
 
 export const sendComment = (selectedQuestion, commentText) => async (dispatch) => {
@@ -23,7 +54,8 @@ export const sendComment = (selectedQuestion, commentText) => async (dispatch) =
   );
   console.log(`Logged Output ~ response data`, response.data);
 
-  // dispatch({ type: SEND_COMMENT });
+  dispatch({ type: SEND_COMMENT, payload: response.data.object });
+  // dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER });
 };
 
 const token = localStorage.getItem("token");

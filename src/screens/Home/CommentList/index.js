@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import {
-  getAllComments,
+  getCommentsByPageNumber,
   voteComment,
   sendComment,
+  deleteComment,
+  updateComment,
 } from "../../../redux/actions/commentAction";
 
 export class CommentList extends Component {
@@ -13,18 +15,24 @@ export class CommentList extends Component {
     this.state = {};
   }
   componentWillMount() {
-    this.props.getAllComments(this.props.selectedQuestion);
+    this.props.getCommentsByPageNumber(
+      this.props.selectedQuestion,
+      this.props.currentPageComment
+    );
   }
   componentDidMount() {
-    this.props.getAllComments(this.props.selectedQuestion);
+    this.props.getCommentsByPageNumber(
+      this.props.selectedQuestion,
+      this.props.currentPageComment
+    );
   }
   getsendComment(event) {
     event.preventDefault();
     this.props.sendComment(this.props.selectedQuestion, event.target.answer.value);
   }
   render() {
-    const { comments, voteComment, selectedQuestion, sendComment, user_id } = this.props;
-    console.log(`Logged Output ~ comments`, comments);
+    const { comments, deleteComment, updateComment } = this.props;
+    let { currentPageComment, maxPageComment } = this.props;
     return (
       <div>
         {/* EDITOR */}
@@ -47,8 +55,8 @@ export class CommentList extends Component {
                   <img src="..." alt="..." />
                 </div>
                 <div className="row">
-                  {/* // TODO BACK comment.votes=[]  */}
-                  {!comment.votes.includes(user_id) ? (
+                  {/* // TODO BACK comment.votes=[] bhgv */}
+                  {/* {!comment.votes.includes(user_id) ? (
                     <button
                       className="btn btn-primary"
                       onClick={() => voteComment(selectedQuestion, comment, user_id)}
@@ -59,12 +67,13 @@ export class CommentList extends Component {
                     <button className="btn btn-primary" disabled>
                       Voted
                     </button>
-                  )}
+                  )} */}
                 </div>
+                {/* //TODO => BACK comments deer votes[] nemeheer */}
                 <div className="row">Votes: {comment.votes.length}</div>
               </div>
 
-              <div className="col-11">
+              <div className="col-8">
                 <div className="card-body">
                   <h5 className="card-title">{comment.answer}</h5>
                   comment id: {comment.id}      comment user: {comment.user.id} 
@@ -72,19 +81,52 @@ export class CommentList extends Component {
                   <br />
                 </div>
               </div>
+              <div className="col-3">
+                <div className="row">
+                  <button onClick={deleteComment}>Delete</button>{" "}
+                </div>
+                <div className="row">
+                  {" "}
+                  <button onClick={updateComment}>Update</button>{" "}
+                </div>
+              </div>
             </div>
           </div>
         ))}
+        <div className="d-flex justify-content-center">
+          {currentPageComment >= 2 ? (
+            <button onClick={() => getCommentsByPageNumber(--currentPageComment)}>
+              previous
+            </button>
+          ) : null}
+             
+          {currentPageComment}  
+          {currentPageComment >= maxPageComment ? null : (
+            <button onClick={() => getCommentsByPageNumber(++currentPageComment)}>
+              next
+            </button>
+          )}
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  return { comments: state.question.comments };
+  return {
+    comments: state.question.comments,
+    maxPageComment: state.question.maxPageComment,
+    currentPageComment: state.question.maxPageComment,
+  };
 };
 
-const mapDispatchToProps = { getAllComments, voteComment, sendComment };
+const mapDispatchToProps = {
+  getCommentsByPageNumber,
+  voteComment,
+  sendComment,
+  deleteComment,
+  updateComment,
+};
 // ;
 const Container = connect(mapStateToProps, mapDispatchToProps)(CommentList);
 export default Container;

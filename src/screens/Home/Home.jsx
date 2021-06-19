@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { logoutUser } from "../../redux/actions/authentication";
 import {
-  getAllQuestions,
+  getQuestionsByPageNumber,
   setSelectedQuestion,
   backFromSelectedQuestion,
   createQuestionToggle,
@@ -15,7 +15,7 @@ import {
 } from "../../redux/actions/question";
 import CreateQuestion from "./CreateQuestion/index";
 import UpdateQuestion from "./UpdateQuestion/index";
-import CommentList from "./comment";
+import CommentList from "./CommentList";
 import "./home.scss";
 class Home extends Component {
   constructor(props) {
@@ -23,10 +23,11 @@ class Home extends Component {
     this.state = {};
   }
   componentWillMount() {
-    this.props.getAllQuestions();
+    this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
   }
   componentDidMount() {
-    this.props.getAllQuestions();
+    this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
+    console.log("questions", this.props.questions);
   }
 
   render() {
@@ -39,9 +40,10 @@ class Home extends Component {
       updateQuestionToggle,
       renderUpdateQuestion,
       voteSelectedQuestion,
+      getQuestionsByPageNumber,
     } = this.props;
     const notifyCreateQuestion = () => toast("create question form!");
-    let { selectedQuestion } = this.props;
+    let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
     const user_id = localStorage.getItem("user_id");
     // selectedQuestion.votes.includes(user_id);
     console.log(
@@ -50,7 +52,8 @@ class Home extends Component {
     );
 
     console.log("questions ", questions);
-
+    console.log(" selectedQuestion.user ", selectedQuestion.user);
+    console.log("questions ", questions.length > 0);
     return (
       <div>
         <div className="container-fluid">
@@ -139,7 +142,17 @@ class Home extends Component {
                   <h3>Question details</h3>
                   {/*  ----------VOTE Question BUTTON---------------- */}
                   {/* // TODO -votes = []  */}
-                  {/* {user_id != selectedQuestion.user.id ? (
+                  {user_id != selectedQuestion.user.id ? (
+                    <button
+                      onClick={(e) => {
+                        voteSelectedQuestion(selectedQuestion, user_id);
+                      }}
+                    >
+                      {"VOTE"}
+                    </button>
+                  ) : null}
+                  {user_id != selectedQuestion.user.id ? (
+                    !selectedQuestion.votes.includes(user_id) ? (
                       <button
                         onClick={(e) => {
                           voteSelectedQuestion(selectedQuestion, user_id);
@@ -147,28 +160,14 @@ class Home extends Component {
                       >
                         {"VOTE"}
                       </button>
-                    ) : null} */}
-                  {/* {user_id != selectedQuestion.user.id  ? (
-                      !selectedQuestion.votes.includes(user_id) ? (
-                        <button
-                          onClick={(e) => {
-                            voteSelectedQuestion(selectedQuestion, user_id);
-                          }}
-                        >
-                          {"VOTE"}
-                        </button>
-                      ) : (
-                        <button disabled>
-                          {"VOTED"}
-                        </button>
-                      )
-                    ) : null} */}
+                    ) : (
+                      <button disabled>{"VOTED"}</button>
+                    )
+                  ) : null}
                   {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
                   <br />
                   selectedQuestion.id: {selectedQuestion.id}, <br />
-                  {/* //  TODO votes: []
-                    {selectedQuestion.votes.length}, <br /> */}
-                  votes: {selectedQuestion.votes} <br />
+                  votes: {selectedQuestion.votes.length} <br />
                   title: {selectedQuestion.title} user_id: {selectedQuestion.user.id}{" "}
                   <br />
                   {/*  ----------DELETE Question BUTTON---------------- */}
@@ -201,9 +200,9 @@ class Home extends Component {
                   {<CommentList selectedQuestion={selectedQuestion} user_id={user_id} />}
                 </div>
               ) : (
-                // * --------------------------АСУУЛТУУДЫН ЖАГСААЛТ--------------------------
-                questions &&
-                questions.length > 0 &&
+                // * ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
+                // questions &&
+                //   questions.length > 0 &&
                 questions.map((i, idx) => (
                   <div className="card card-hover border-success mb-5 " key={idx}>
                     <div className="row">
@@ -230,6 +229,26 @@ class Home extends Component {
                   </div>
                 ))
               )}
+              {!selectedQuestion.user ? (
+                <div className="d-flex justify-content-center">
+                  {currentPageQuestion >= 2 ? (
+                    <button
+                      onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
+                    >
+                      previous
+                    </button>
+                  ) : null}
+                     
+                  {currentPageQuestion}  
+                  {currentPageQuestion >= maxPageQuestion ? null : (
+                    <button
+                      onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
+                    >
+                      next
+                    </button>
+                  )}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
@@ -238,18 +257,22 @@ class Home extends Component {
   }
 }
 const mapStateToProps = (state) => {
+  console.log(`Logged Output ~ state`, state);
+
   return {
     questions: state.question.questions,
     selectedQuestion: state.question.selectedQuestion,
     renderCreateQuestion: state.question.renderCreateQuestion,
     user: state.auth.user,
     renderUpdateQuestion: state.question.renderUpdateQuestion,
+    maxPageQuestion: state.question.maxPageQuestion,
+    currentPageQuestion: state.question.currentPageQuestion,
   };
 };
 
 const Container = connect(mapStateToProps, {
   logoutUser,
-  getAllQuestions,
+  getQuestionsByPageNumber,
   setSelectedQuestion,
   backFromSelectedQuestion,
   createQuestionToggle,

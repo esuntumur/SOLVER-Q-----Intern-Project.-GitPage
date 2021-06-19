@@ -1,5 +1,5 @@
 import {
-  FETCH_QUESTION,
+  GET_QUESTION_BY_PAGE_NUMBER,
   CREATE_QUESTION_TOGGLE,
   CREATE_QUESTION,
   SET_SELECTED_QUESTION,
@@ -14,19 +14,19 @@ import API from "../../API";
 const token = localStorage.getItem("token");
 // todo VOTE QUESTION: questions/1/vote      json => {vote: { question_id: selectedQuestion.id }}
 
-export const getAllQuestions = () => async (dispatch) => {
-  const response = await API.get("/questions");
-  console.log(`Logged Output ~ response`, response);
+export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
+  const response = await API.post("/questions/page", { questionPage: pageNum });
+  console.log(`Logged Output ~ response`, response.data);
 
-  dispatch({ type: FETCH_QUESTION, payload: response.data });
+  dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER, payload: response.data });
 };
 
 export const createQuestionToggle = () => async (dispatch) => {
   dispatch({ type: CREATE_QUESTION_TOGGLE });
 };
 
-export const createQuestion = (newQuestionDetail) => async (dispatch) => {
-  const response = await API.post("/questions", newQuestionDetail, {
+export const createQuestion = (params) => async (dispatch) => {
+  const response = await API.post("/questions", params, {
     headers: {
       Authorization: token,
     },

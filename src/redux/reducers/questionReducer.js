@@ -1,5 +1,5 @@
 import {
-  FETCH_QUESTION,
+  GET_QUESTION_BY_PAGE_NUMBER,
   SET_SELECTED_QUESTION,
   BACK_FROM_SELECTED_QUESTION,
   CREATE_QUESTION,
@@ -8,8 +8,11 @@ import {
   UPDATE_QUESTION_TOGGLE,
   UPDATE_SELECTED_QUESTION,
   VOTE_SELECTED_QUESTION,
-  GET_ALL_COMMENTS,
+  GET_COMMENTS_BY_PAGE_NUMBER,
   VOTE_COMMENT,
+  SEND_COMMENT,
+  DELETE_COMMENT,
+  UPDATE_COMMENT,
 } from "../actions/type";
 
 const initialState = {
@@ -18,14 +21,51 @@ const initialState = {
   selectedQuestion: false,
   renderCreateQuestion: false,
   renderUpdateQuestion: false,
+  maxPageQuestion: 1,
+  currentPageQuestion: 1,
+  maxPageComment: 1,
+  currentPageComment: 1,
 };
 export const questionReducer = (
   state = JSON.parse(JSON.stringify(initialState)),
   action
 ) => {
   switch (action.type) {
-    case GET_ALL_COMMENTS:
-      return { ...state, comments: action.payload };
+    case DELETE_COMMENT: {
+      console.log("action.payload in REDUCER: ", action.payload); // selectedQ , comment
+      const c = state.comments.filter((item) => {
+        return action.payload.comment.id !== item.id;
+      });
+      return {
+        ...state,
+        comments: c,
+      };
+    }
+    case UPDATE_COMMENT: {
+      let idx;
+      const c = state.comments.filter((item) => {
+        idx = item.id;
+        return action.payload.id !== item.id;
+      });
+      c.splice(--idx, 1, action.payload);
+      console.log(`Logged Output ~ state.questions`, state.questions);
+      console.log(`Logged Output ~  q`, c);
+
+      return {
+        ...state,
+        comments: c,
+      };
+    }
+    case GET_COMMENTS_BY_PAGE_NUMBER: {
+      console.log("action.payoad", action.payload);
+
+      return {
+        ...state,
+        comments: action.payload.comments,
+        maxPageComment: action.payload.maxPage,
+        currentPageComment: action.payload.currentPage,
+      };
+    }
     case VOTE_COMMENT: {
       // * payload: { selectedQuestion, selectedComment, user_id },
       // TODO payload:  selectedQuestion  selectedComment.votes.push(user_id)
@@ -38,8 +78,24 @@ export const questionReducer = (
       comments.push(action.payload);
       return { ...state, comments: comments };
     }
-    case FETCH_QUESTION:
-      return { ...state, questions: action.payload };
+    case SEND_COMMENT: {
+      console.log("in send comment reducer");
+
+      state.comments.unshift(action.payload);
+      console.log(`Logged Output ~ state`, state);
+
+      return { ...state };
+    }
+    case GET_QUESTION_BY_PAGE_NUMBER: {
+      console.log("action.payload", action.payload);
+
+      return {
+        ...state,
+        questions: action.payload.questions,
+        maxPageQuestion: action.payload.maxPage,
+        currentPageQuestion: action.payload.currentPage,
+      };
+    }
     case SET_SELECTED_QUESTION:
       return { ...state, selectedQuestion: action.payload };
     case BACK_FROM_SELECTED_QUESTION:
