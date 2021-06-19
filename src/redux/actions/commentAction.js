@@ -37,12 +37,12 @@ export const updateComment = (selectedQuestion, commentText) => async (dispatch)
 };
 
 export const sendComment = (selectedQuestion, commentText) => async (dispatch) => {
-  const response = await API.post(
+  await API.post(
     "comments",
     {
       comment: {
-        answer: commentText,
         question_id: selectedQuestion.id,
+        answer: commentText,
       },
     },
     {
@@ -50,17 +50,15 @@ export const sendComment = (selectedQuestion, commentText) => async (dispatch) =
         Authorization: token,
       },
     }
-  );
-
-  dispatch({ type: SEND_COMMENT, payload: response.data.object });
-  // dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER });
+  ).then((response) => {
+    dispatch({ type: SEND_COMMENT, payload: response.data.object });
+  });
 };
 
 const token = localStorage.getItem("token");
 export const voteComment = (selectedComment, user_id) => async (dispatch) => {
-  // ! duusaagui -- back boloogv bga
   // todo VOTE COMMENT: questions/1/comments/18/vote   json => {vote: { comment_id: selectedComment.id }}
-  const response = await API.post(`/comments/${selectedComment.id}/vote`, null, {
+  await API.post(`/comments/${selectedComment.id}/vote`, null, {
     headers: {
       Authorization: token,
     },
@@ -70,5 +68,4 @@ export const voteComment = (selectedComment, user_id) => async (dispatch) => {
       payload: { selectedComment, user_id },
     });
   });
-  //
 };

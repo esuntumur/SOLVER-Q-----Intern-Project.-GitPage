@@ -30,15 +30,24 @@ export class CommentList extends Component {
       this.props.currentPageComment
     );
   }
-  // componentDidUpdate(prevProps, prevState) {
-  //   this.props.getCommentsByPageNumber(
-  //     this.props.selectedQuestion,
-  //     this.props.currentPageComment
-  //   );
-  // }
-  getsendComment(event) {
+
+  async getsendComment(event) {
     event.preventDefault();
-    this.props.sendComment(this.props.selectedQuestion, event.target.answer.value);
+    await this.props.sendComment(this.props.selectedQuestion, event.target.answer.value);
+    await this.props.getCommentsByPageNumber(
+      this.props.selectedQuestion,
+      this.props.currentPageComment
+    );
+  }
+  async voteCommentAsync(
+    comment,
+    user_id,
+    getCommentsByPageNumber,
+    selectedQuestion,
+    currentPageComment
+  ) {
+    await this.props.voteComment(comment, user_id, getCommentsByPageNumber);
+    await getCommentsByPageNumber(selectedQuestion, currentPageComment);
   }
   render() {
     const {
@@ -52,7 +61,7 @@ export class CommentList extends Component {
     user_id *= 1;
     return (
       <div>
-        {/* Write COMMENT send FORM  */}
+        {/* //* Create COMMENT */}
         <form onSubmit={this.getsendComment.bind(this)} className="row mt-5">
           <div className="col-2"> Comment: </div>
           <div className="col-9">
@@ -62,24 +71,31 @@ export class CommentList extends Component {
             <input type="submit" value="Send" className="btn btn-primary" />
           </div>
         </form>
+
+        {/* //* Comment LIST */}
         <h3>Comment list</h3>
         {comments.map((comment, idx) => (
           <div className="card mb-4" key={idx}>
             <div className="row">
+              {/* //* Comment -> VOTE, count && user name, profile */}
               <div className="col-2">
                 <div className="row">
                   <img src="..." alt="..." />
+                  {comment.user.username} 
                 </div>
+
+                {/* //* VOTE Comment */}
                 <div className="row">
-                  {/* // TODO VOTE COMMENT */}
                   {!comment.votes.includes(user_id) ? (
                     <button
                       className="btn btn-primary"
                       onClick={() => {
-                        voteComment(comment, user_id);
-                        this.props.getCommentsByPageNumber(
-                          this.props.selectedQuestion,
-                          this.props.currentPageComment
+                        this.voteCommentAsync.bind(this)(
+                          comment,
+                          user_id,
+                          getCommentsByPageNumber,
+                          selectedQuestion,
+                          currentPageComment
                         );
                       }}
                     >
@@ -91,15 +107,15 @@ export class CommentList extends Component {
                     </button>
                   )}
                 </div>
-                {/* //TODO => BACK comments deer votes[] nemeheer */}
                 <div className="row">Votes: {comment.votes.length}</div>
               </div>
 
+              {/* //* Comment -> Answer TEXT */}
               <div className="col-8">
                 <div className="card-body">
                   <h5 className="card-title">{comment.answer}</h5>
-                  comment id: {comment.id}      comment user: {comment.user.id} 
-                  {comment.user.username} <br />
+
+                  <br />
                   <br />
                 </div>
               </div>
@@ -115,6 +131,7 @@ export class CommentList extends Component {
             </div>
           </div>
         ))}
+        {/* //* comment PAGINATION - prev, next buttons  */}
         <div className="d-flex justify-content-center">
           {currentPageComment >= 2 ? (
             <button
