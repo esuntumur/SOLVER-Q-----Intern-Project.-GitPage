@@ -13,6 +13,7 @@ import {
   SEND_COMMENT,
   DELETE_COMMENT,
   UPDATE_COMMENT,
+  UPDATE_COMMENT_TOGGLE,
 } from "../actions/type";
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
   selectedQuestion: false,
   renderCreateQuestion: false,
   renderUpdateQuestion: false,
+  renderUpdateCommentForm: false,
   maxPageQuestion: 1,
   currentPageQuestion: 1,
   maxPageComment: 1,
@@ -31,16 +33,21 @@ export const questionReducer = (
   action
 ) => {
   switch (action.type) {
+    case UPDATE_COMMENT_TOGGLE: {
+      return { ...state, renderUpdateCommentForm: !state.renderUpdateCommentForm };
+    }
+    // TODO
     case DELETE_COMMENT: {
-      console.log("action.payload in REDUCER: ", action.payload); // selectedQ , comment
-      const c = state.comments.filter((item) => {
-        return action.payload.comment.id !== item.id;
+      // payload comment object
+      const c = state.comments.filter((comment) => {
+        return comment.id !== action.payload.id;
       });
       return {
         ...state,
         comments: c,
       };
     }
+    // TODO
     case UPDATE_COMMENT: {
       let idx;
       const c = state.comments.filter((item) => {

@@ -7,7 +7,7 @@ class CreateQuestion extends Component {
     super(props);
     this.state = {};
   }
-  submitHandler(event) {
+  async submitHandler(event) {
     event.preventDefault();
     const payload = {
       questions: {
@@ -15,8 +15,8 @@ class CreateQuestion extends Component {
         question: event.target.question.value,
       },
     };
-    this.props.createQuestion(payload);
-    this.props.createQuestionToggle();
+    await this.props.createQuestion(payload);
+    await this.props.createQuestionToggle();
   }
   render() {
     return (
