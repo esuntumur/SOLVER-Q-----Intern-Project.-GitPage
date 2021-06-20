@@ -26,7 +26,7 @@ class Login extends React.Component {
       <div id="login">
         <div className="l-form">
           <form className="form" onSubmit={this.handleSubmit}>
-            <h4 className="form__title">Welcome</h4>
+            <h4 className="form__title">Log In</h4>
             {/* ---------------Email------------- */}
             <div className="form_div">
               <input type="text" className="form__input" placeholder=" " name="email" />
@@ -62,7 +62,45 @@ class Login extends React.Component {
               </a>
             </div>
           </form>
-        </div>
+
+          <form className="form" onSubmit={this.handleSubmit}>
+            <h4 className="form__title">Sign Up</h4>
+            {/* ---------------Full Name------------- */}
+            <div className="form_div">
+              <input type="text" className="form__input" placeholder=" " name="email" />
+              <label htmlFor className="form__label">
+                Full Name
+              </label>
+            </div>         
+            {/* ---------------Password--------------- */}
+            <div className="form_div">
+              <input
+                type="password"
+                className="form__input"
+                placeholder=" "
+                name="password"
+              />
+              <label htmlFor className="form__label">
+                Password
+              </label>
+            </div>
+            {/* ---------------SUBMIT--------------- */}
+            <input type="submit" className="form__button mb-3" value="Sign Up" />
+
+            {/* ---------------Social buttons--------------- */}
+            <div className="dropdown-divider"></div>
+            <p className="gray">or sign up with</p>
+            <div className="social_icon2">
+              <a href="/" className="fa fa-google form__button">
+                {" "}
+                  Continue with Google
+              </a>
+              <a href="/" className="fa fa-facebook form__button form__button">
+                   Continue with Facebook
+              </a>
+            </div>
+          </form>
+        </div>        
       </div>
     );
   }

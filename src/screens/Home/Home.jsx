@@ -59,6 +59,7 @@ class Home extends Component {
     console.log("questions ", questions);
     console.log(" selectedQuestion.user ", selectedQuestion.user);
     console.log("questions ", questions.length > 0);
+
     return (
       <div>
         <div className="container-fluid">
@@ -67,7 +68,7 @@ class Home extends Component {
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
               <div className="container-fluid">
                 {/* LOGO NAME -> HOME */}
-                <a className="navbar-brand" href="/">
+                <a className="navbar-brand navbar-name" href="/">
                   <img
                     className="navbar-logo"
                     src="./logo192.png"
@@ -75,7 +76,7 @@ class Home extends Component {
                     width="30"
                     height="30"
                   />
-                  NAME
+                  SOLVER
                 </a>
                 {/* NAV TOGGLER in Mobile -> BUTTON */}
                 <button
@@ -128,14 +129,14 @@ class Home extends Component {
                     </li>
                     {/* CREATE QUESTION -> BUTTON*/}
                     <li className="nav-item">
-                      <p
-                        className="nav-link"
-                        onClick={() => {
-                          createQuestionToggle();
-                        }}
-                      >
-                        Create question
-                      </p>
+                      <a
+                          className="nav-link"
+                          onClick={() => {
+                            createQuestionToggle();
+                          }}
+                        >
+                          Create question
+                      </a>
                       {/* CREATE QUESTION -> FORM */}
                       {this.props.renderCreateQuestion && (
                         <CreateQuestion createQuestionToggle={createQuestionToggle} />
@@ -143,19 +144,20 @@ class Home extends Component {
                     </li>
                     {/*//*-----Search BAR------ */}
                     <li className="nav-item">
+                      <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type='text/css'/>
                       <form
-                        className="form-inline navbar-form d-flex w-75 justify-content-center"
+                        className="form-inline from-control d-flex w-75 justify-content-center navbar-form"
                         onSubmit={this.searchSubmitHandler.bind(this)}
                       >
                         <input
-                          className="form-control me-2"
+                          className="form-control"
                           type="search"
                           placeholder="Search"
                           aria-label="Search"
                           name="search"
                         />
-                        <button className="btn btn-outline-success" type="submit">
-                          Search
+                        <button className="btn btn-sm form-button" type="submit">
+                          <i className="fa fa-search"></i>
                         </button>
                       </form>
                     </li>
@@ -166,35 +168,56 @@ class Home extends Component {
 
             {/*//*------------------BODY------------------- */}
             <div>
+              <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type='text/css'/>
               {/* ---------------АСУУЛТЫН ДЭЛГЭРЭНГҮЙ ХЭСЭГ--------------- */}
               {selectedQuestion.user ? (
-                <div className="q-details">
-                  <h3 className="q-header">Question details</h3>
+                <div>
+                  <div className="d-flex align-items-center">
+                    <h3 className="q-header"><b>{selectedQuestion.title}</b></h3>
+                    {/*  ----------BACK BUTTON---------------- */}
+                    <button 
+                      className="btn btn-info btn-sm back-button"
+                      onClick={backFromSelectedQuestion}>{"Back"}</button>
+                  </div>
+                  <div className="flex align-items-start flex-column">
                   {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
-                  <br />
-                  <b>Question ID:</b> {selectedQuestion.id}
-                  <br />
-                  <b>Votes:</b>
-                  {selectedQuestion.votes.length} <br />
-                  <b>Title:</b> {selectedQuestion.title} <br />
-                  <b>User ID:</b> {selectedQuestion.user.id} <br />
-                  {/*  ----------VOTE Question BUTTON---------------- */}
-                  {user_id != selectedQuestion.user.id ? (
-                    !selectedQuestion.votes.includes(user_id) ? (
-                      <button
-                        className="btn btn-info btn-sm"
-                        onClick={(e) => {
-                          voteSelectedQuestion(selectedQuestion, user_id);
-                        }}
-                      >
-                        {"VOTE"}
-                      </button>
-                    ) : (
-                      <button className="btn btn-info btn-sm" disabled>
-                        {"VOTED"}
-                      </button>
-                    )
-                  ) : null}
+                    <div className="d-flex align-items-start">
+                      <div className="d-flex align-items-center flex-column mb-3 q-button">
+                        {/*  ----------VOTE Question BUTTON---------------- */}
+                        {user_id != selectedQuestion.user.id ? (
+                          !selectedQuestion.votes.includes(user_id) ? (
+                            <button
+                              className="btn btn-lg"
+                              onClick={(e) => {
+                                voteSelectedQuestion(selectedQuestion, user_id);
+                              }}
+                            >
+                              <i className="fa fa-chevron-up"></i>
+                            </button>
+                          ) : (
+                            <button 
+                              className="btn btn-lg" 
+                              disabled>
+                              <i className="fa fa-chevron-up"></i>
+                            </button>
+                          )
+                        ) : null}
+                        <button className="btn btn-lg">
+                          <b>{selectedQuestion.votes.length}</b>
+                        </button>
+                        <button className="btn btn-lg">
+                          <i className="fa fa-chevron-down"></i>
+                        </button>
+                      </div>
+                      <div className="q-content">
+                        {selectedQuestion.question}
+                      </div>
+                    </div>
+                    <div className="q-comments">
+                      {/*  ----------COMMENT LIST SECTION,  SUBMIT EDITOR---------------- */}
+                      {<CommentList selectedQuestion={selectedQuestion} user_id={user_id} />}
+                    </div>
+                  </div>
                   {/*  ----------DELETE Question BUTTON---------------- */}
                   {user_id == selectedQuestion.user.id && (
                     <button
@@ -212,8 +235,6 @@ class Home extends Component {
                       {"Update this question "}
                     </button>
                   )}
-                  {/*  ----------BACK BUTTON---------------- */}
-                  <button onClick={backFromSelectedQuestion}>{"Back"}</button>
                   {/*  ----------update Question FORM---------------- */}
                   {renderUpdateQuestion ? (
                     <UpdateQuestion
@@ -221,8 +242,6 @@ class Home extends Component {
                       backFromSelectedQuestion={backFromSelectedQuestion}
                     />
                   ) : null}
-                  {/*  ----------COMMENT LIST SECTION,  SUBMIT EDITOR---------------- */}
-                  {<CommentList selectedQuestion={selectedQuestion} user_id={user_id} />}
                 </div>
               ) : (
                 // * ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
@@ -230,32 +249,39 @@ class Home extends Component {
                 //   questions.length > 0 &&
                 questions.map((i, idx) => (
                   <div className="questions-container">
-                    <div className="card card-hover mb-5 rounded" key={idx}>
                       <div className="card-group">
-                        <div className="col-sm-2">
-                          <div className="card text-white bg-dark">
-                            <div className="card-body">
-                              {i.votes.length} votes
-                              <br />
-                              {i.state}
-                              <br />
-                              {i.user.username}
-                            </div>
+                      <div className="col-sm-2">
+                        <div className="card text-white bg-dark">
+                          <div className="card-body">
+                            {i.votes.length} votes
+                            <br/>
+                            <br/>
+                            {!i.votes.includes(user_id) ? (
+                              <button
+                                className="btn icon-brd"
+                              >
+                                <i className="fa fa-heart-o heart-icon"></i>
+                              </button>
+                            ) : (
+                              <button className="btn icon-brd" disabled>
+                                <i className="fa fa-heart heart-icon"> Voted</i>
+                              </button>
+                            )}
                           </div>
                         </div>
-                        <div className="card bg-light">
-                          <h5
-                            className="card-header"
-                            onClick={() => this.props.setSelectedQuestion(i)}
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Tooltip on top"
-                          >
-                            <b>{i.title}</b>
-                          </h5>
-                          <div className="card-body">
-                            <p className="card-text">{i.question}</p>
-                          </div>
+                      </div>
+                      <div className="card bg-light">
+                        <h5
+                          className="card-header"
+                          onClick={() => this.props.setSelectedQuestion(i)}
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title="Tooltip on top"
+                        >
+                          <b>{i.title}</b>
+                        </h5>
+                        <div className="card-body">
+                          <p className="card-text">{i.question}</p>
                         </div>
                       </div>
                     </div>
@@ -270,7 +296,7 @@ class Home extends Component {
                   >
                     {currentPageQuestion >= 2 ? (
                       <button
-                        className="btn btn-secondary pg-btn"
+                        className="btn btn-dark pg-btn"
                         onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
                       >
                         <span aria-hidden="true">&laquo;</span>
@@ -282,7 +308,7 @@ class Home extends Component {
                     </button>
                     {currentPageQuestion >= maxPageQuestion ? null : (
                       <button
-                        className="btn btn-secondary"
+                        className="btn btn-dark"
                         onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
                       >
                         <span aria-hidden="true">&raquo;</span>

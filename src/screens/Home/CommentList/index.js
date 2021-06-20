@@ -10,6 +10,8 @@ import {
   updateCommentToggle,
 } from "../../../redux/actions/commentAction";
 
+import "./commentList.scss";
+
 export class CommentList extends Component {
   constructor(props) {
     super(props);
@@ -77,116 +79,130 @@ export class CommentList extends Component {
     user_id *= 1;
     return (
       <div>
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type='text/css'/>
         {/* //* Create COMMENT */}
-        <form onSubmit={this.sendCommentAsync.bind(this)} className="row mt-5">
-          <div className="col-2"> Comment: </div>
-          <div className="col-9">
-            <input type="text" name="answer" className="w-100 " />
-          </div>
-          <div className="col-1">
-            <input type="submit" value="Send" className="btn btn-primary" />
+        <form onSubmit={this.sendCommentAsync.bind(this)} className="flex-column">
+          <h4>Comment: </h4>
+          <div className="d-flex align-items-center">
+            <div className="q-comment">
+              <input type="text" name="answer" className="w-100 " />
+            </div>
+            <div className="q-submit-btn">
+              <button className="btn comment-btn" type="submit">
+                <i className="fa fa-paper-plane comment-plane"></i>
+              </button>
+            </div>
           </div>
         </form>
 
         {/* //* Comment LIST */}
-        <h3>Comment list</h3>
-        {comments.map((comment, idx) => (
+        <div className="comments">
+          {comments.map((comment, idx) => (
           <div className="card mb-4" key={idx}>
-            <div className="row">
+            <div className="card-group">
               {/* //* Comment -> VOTE, count && user name, profile */}
-              <div className="col-2">
-                <div className="row">
-                  <img src="..." alt="..." />
-                  {comment.user.username} 
-                </div>
 
-                {/* //* VOTE Comment */}
-                <div className="row">
-                  {!comment.votes.includes(user_id) ? (
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => {
-                        this.voteCommentAsync.bind(this)(comment);
-                      }}
-                    >
-                      Vote
-                    </button>
-                  ) : (
-                    <button className="btn btn-primary" disabled>
-                      Voted
-                    </button>
-                  )}
+              <div className="card-1 text-white rounded">
+                <div className="card-body">
+                  {/* <img src="..." alt="..." /> */}
+                  <div>{comment.votes.length} votes</div>
+                  <div>
+                    {/* //* VOTE Comment */}
+                    {!comment.votes.includes(user_id) ? (
+                      <button
+                        className="btn btn-info vote-btn"
+                        onClick={() => {
+                          this.voteCommentAsync.bind(this)(comment);
+                        }}
+                      >
+                        Vote
+                      </button>
+                    ) : (
+                      <button className="btn btn-info vote-btn" disabled>
+                        Voted
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <div className="row">Votes: {comment.votes.length}</div>
               </div>
 
               {/* //* Comment -> Answer TEXT */}
-              <div className="col">
+              <div className="card rounded card-2">
                 <div className="card-body">
                   <h5 className="card-title">{comment.answer}</h5>
-
-                  <br />
-                  <br />
                 </div>
               </div>
 
-              {/* //* Comment -> Delete, Update -> buttons */}
-              {comment.user.id === user_id && (
-                <div className="col-2">
-                  <div className="row">
-                    <button
-                      onClick={() => {
-                        this.deleteCommentAsync.bind(this)(comment);
-                      }}
-                    >
-                      Delete
-                    </button>{" "}
-                  </div>
-                  <div className="row ">
-                    {" "}
-                    <button
-                      onClick={() => {
-                        updateCommentToggle();
-                      }}
-                    >
-                      Update
-                    </button>{" "}
-                    <div className="d-flex">
-                      {renderUpdateCommentForm ? <UpdateComment /> : null}
+              <div className="card align-items-center">
+                {/* //* Comment -> Delete, Update -> buttons */}
+                {comment.user.id === user_id && (
+                  <div className="col-1.5">
+                    <div className="row">
+                      <button
+                        className="comment-del-up rounded btn btn-info shadow"
+                        type="button"
+                        onClick={() => {
+                          this.deleteCommentAsync.bind(this)(comment);
+                        }}
+                      >
+                        Delete
+                      </button>{" "}
+                    </div>
+                    <div className="row ">
+                      {" "}
+                      <button
+                        className="comment-del-up rounded btn btn-info shadow"
+                        type="button"
+                        onClick={() => {
+                          updateCommentToggle();
+                        }}
+                      >
+                        Update
+                      </button>{" "}
+                      <div className="d-flex">
+                        {renderUpdateCommentForm ? <UpdateComment /> : null}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
-        ))}
+          ))}
+        </div>
         {/* //* comment PAGINATION - prev, next buttons  */}
-        <div className="d-flex justify-content-center">
-          {currentPageComment >= 2 ? (
-            <button
-              onClick={() => {
-                getCommentsByPageNumber(selectedQuestion, --currentPageComment);
-                console.log("previous clicked comment");
-              }}
-            >
-              previous
-            </button>
-          ) : null}
-             
-          {currentPageComment}  
-          {currentPageComment >= maxPageComment ? null : (
-            <button
-              onClick={() => {
-                getCommentsByPageNumber(
-                  this.props.selectedQuestion,
-                  ++currentPageComment
-                );
-                console.log("next clicked comment");
-              }}
-            >
-              next
-            </button>
-          )}
+        <div className="text-center">
+          <div className="flex btn-group btn-group-toggle pg-buttons">
+            {currentPageComment >= 2 ? (
+              <button
+                className="btn btn-dark pg-btn-prev"
+                onClick={() => {
+                  getCommentsByPageNumber(selectedQuestion, --currentPageComment);
+                  console.log("previous clicked comment");
+                }}
+              >
+                <span aria-hidden="true">&laquo;</span>
+              </button>
+            ) : null}
+               
+            <button type="button" className="btn btn-secondary" disabled>
+              {currentPageComment} 
+            </button> 
+            {currentPageComment >= maxPageComment ? null : (
+              <button
+                className="btn btn-dark pg-btn-next"
+                onClick={() => {
+                  getCommentsByPageNumber(
+                    this.props.selectedQuestion,
+                    ++currentPageComment
+                  );
+                  console.log("next clicked comment");
+                }}
+              >
+                <span aria-hidden="true">&raquo;</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
     );
