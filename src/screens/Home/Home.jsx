@@ -19,6 +19,8 @@ import CreateQuestion from "./CreateQuestion/index";
 import UpdateQuestion from "./UpdateQuestion/index";
 import CommentList from "./CommentList";
 import "./home.scss";
+import "./logo192.png";
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -49,13 +51,14 @@ class Home extends Component {
     return (
       <div>
         <div className="container-fluid">
-          <div className="row d-flex justify-content-center ">
+          <div className="row d-flex">
             {/*//*------------------NAVIGATION BAR------------------- */}
-            <nav className="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
               <div className="container-fluid">
                 {/* LOGO NAME -> HOME */}
                 <a className="navbar-brand" href="/">
-                  Home Page + logo
+                  <img className="navbar-logo" src="./logo192.png" alt="" width="30" height="30"/>
+                  NAME
                 </a>
                 {/* NAV TOGGLER in Mobile -> BUTTON */}
                 <button
@@ -71,24 +74,10 @@ class Home extends Component {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
                   <ul className="navbar-nav">
-                    {/* CREATE QUESTION -> BUTTON*/}
+                    {/* HOME */}
                     <li className="nav-item">
-                      <button
-                        onClick={() => {
-                          createQuestionToggle();
-                          notifyCreateQuestion();
-                        }}
-                        className="btn btn-primary"
-                      >
-                        Create question
-                      </button>
-                      <ToastContainer />
-                      {/* CREATE QUESTION -> FORM */}
-                      {this.props.renderCreateQuestion && (
-                        <CreateQuestion createQuestionToggle={createQuestionToggle} />
-                      )}
+                      <a className="nav-link" href="/">Home</a>
                     </li>
-
                     {/* PROFILE -> DROPDOWN BUTTON */}
                     <li className="nav-item dropdown">
                       <a
@@ -97,29 +86,48 @@ class Home extends Component {
                         id="navbarDropdownMenuLink"
                         role="button"
                         data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
+                        aria-haspopup="true"
+                        aria-expanded="false">
                         Profile
                       </a>
-                      <ul
+                      <div
                         className="dropdown-menu"
-                        aria-labelledby="navbarDropdownMenuLink"
-                      >
-                        <li>
-                          <button
-                            onClick={() => {
-                              logoutUser();
-                            }}
-                            className="btn btn-primary"
-                          >
-                            гарах
-                          </button>
-                        </li>
-                      </ul>
+                        aria-labelledby="navbarDropdownMenuLink">
+                        <p className="dropdown-item">User ID: {user_id}</p>
+                        <div className="dropdown-divider"></div>
+                        <button
+                          onClick={() => {
+                            logoutUser();
+                          }}
+                          className="btn btn-primary dropdown-item"
+                        >
+                          Log out
+                        </button>                     
+                      </div>
                     </li>
-
+                    {/* CREATE QUESTION -> BUTTON*/}
                     <li className="nav-item">
-                      <p>user_id: {user_id}</p>
+                      <a className="nav-link"
+                        onClick={() => {
+                          createQuestionToggle();
+                          notifyCreateQuestion();
+                        }}
+                      >
+                        Create question
+                      </a>
+                      <ToastContainer />
+                      {/* CREATE QUESTION -> FORM */}
+                      {this.props.renderCreateQuestion && (
+                        <CreateQuestion createQuestionToggle={createQuestionToggle} />
+                      )}
+                    </li>
+                    <li className="nav-item">
+                      <form className="form-inline navbar-form">
+                        <input className="form-control mr-sm-2 navbar-input" 
+                              type="search" 
+                              placeholder="Search..." 
+                              aria-label="Search"/>
+                      </form>
                     </li>
                   </ul>
                 </div>
@@ -127,15 +135,23 @@ class Home extends Component {
             </nav>
 
             {/*//*------------------BODY------------------- */}
-            <div className="col-10">
+            <div>
               {/* ---------------АСУУЛТЫН ДЭЛГЭРЭНГҮЙ ХЭСЭГ--------------- */}
               {selectedQuestion.user ? (
-                <div>
-                  <h3>Question details</h3>
+                <div className="q-details">
+                  <h3 className="q-header">Question details</h3>
+                  {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
+                  <br />
+                  <b>Question ID:</b> {selectedQuestion.id}<br />
+                  <b>Votes:</b>{selectedQuestion.votes.length} <br />
+                  <b>Title:</b> {selectedQuestion.title} <br />
+                  <b>User ID:</b> {selectedQuestion.user.id}{" "}
+                  <br />
                   {/*  ----------VOTE Question BUTTON---------------- */}
                   {user_id != selectedQuestion.user.id ? (
                     !selectedQuestion.votes.includes(user_id) ? (
                       <button
+                        className="btn btn-info btn-sm"
                         onClick={(e) => {
                           voteSelectedQuestion(selectedQuestion, user_id);
                         }}
@@ -143,15 +159,9 @@ class Home extends Component {
                         {"VOTE"}
                       </button>
                     ) : (
-                      <button disabled>{"VOTED"}</button>
+                      <button className="btn btn-info btn-sm" disabled>{"VOTED"}</button>
                     )
                   ) : null}
-                  {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
-                  <br />
-                  selectedQuestion.id: {selectedQuestion.id}, <br />
-                  votes: {selectedQuestion.votes.length} <br />
-                  title: {selectedQuestion.title} user_id: {selectedQuestion.user.id}{" "}
-                  <br />
                   {/*  ----------DELETE Question BUTTON---------------- */}
                   {user_id == selectedQuestion.user.id && (
                     <button
@@ -186,25 +196,33 @@ class Home extends Component {
                 questions &&
                 questions.length > 0 &&
                 questions.map((i, idx) => (
-                  <div className="card card-hover border-success mb-5 " key={idx}>
-                    <div className="row">
-                      <div className="col-1">
-                        <div className="row">Votes: {i.votes.length}</div>
-                        <div className="row">{i.state}</div>
-                        <div className="row">{i.user.username}</div>
-                      </div>
-                      <div className="col-11">
-                        <h5
-                          className="card-header"
-                          onClick={() => this.props.setSelectedQuestion(i)}
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          title="Tooltip on top"
-                        >
-                          {i.title}
-                        </h5>
-                        <div className="card-body">
-                          <p className="card-text">{i.question}</p>
+                  <div className="questions-container">
+                    <div className="card card-hover mb-5 rounded" key={idx}>
+                      <div className="card-group">
+                        <div className="col-sm-2">
+                          <div className="card text-white bg-dark">
+                            <div className="card-body">
+                              {i.votes.length} votes
+                              <br/>
+                              {i.state}
+                              <br/>
+                              {i.user.username}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="card bg-light">
+                          <h5
+                            className="card-header"
+                            onClick={() => this.props.setSelectedQuestion(i)}
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Tooltip on top"
+                          >
+                            <b>{i.title}</b>
+                          </h5>
+                          <div className="card-body">
+                            <p className="card-text">{i.question}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -213,23 +231,34 @@ class Home extends Component {
               )}
               {/* //* Question Paginatino -> BUTTONS */}
               {!selectedQuestion.user ? (
-                <div className="d-flex justify-content-center">
-                  {currentPageQuestion >= 2 ? (
-                    <button
-                      onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
-                    >
-                      previous
+                <div className="text-center">
+                  <div className="flex btn-group btn-group-toggle pg-buttons"
+                      data-toggle="buttons">
+                    {currentPageQuestion >= 2 ? (
+                      <button
+                        className="btn btn-secondary pg-btn"
+                        onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
+                      >
+                        <span aria-hidden="true">&laquo;</span>
+                      </button>
+                    ) : null}
+                       
+                    <button 
+                      type="button"
+                      className="btn btn-secondary"
+                      disabled>
+                        {currentPageQuestion}
                     </button>
-                  ) : null}
-                     
-                  {currentPageQuestion}  
-                  {currentPageQuestion >= maxPageQuestion ? null : (
-                    <button
-                      onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
-                    >
-                      next
-                    </button>
-                  )}
+
+                    {currentPageQuestion >= maxPageQuestion ? null : (
+                      <button
+                        className="btn btn-secondary"
+                        onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
+                      >
+                        <span aria-hidden="true">&raquo;</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               ) : null}
             </div>
