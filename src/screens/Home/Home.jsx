@@ -12,8 +12,7 @@ import {
   deleteSelectedQuestion,
   updateQuestionToggle,
   voteSelectedQuestion,
-  // voteSelectedQuestion,
-  // voteSelectedQuestion,
+  searchQuestion,
 } from "../../redux/actions/question";
 import CreateQuestion from "./CreateQuestion/index";
 import UpdateQuestion from "./UpdateQuestion/index";
@@ -31,6 +30,12 @@ class Home extends Component {
   }
   componentDidMount() {
     this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
+    console.log("questions", this.props.questions);
+  }
+  async searchSubmitHandler(event) {
+    event.preventDefault();
+    await this.props.searchQuestion(event.target.search.value);
+    // await this.props.setSelectedQuestion(i);
   }
 
   render() {
@@ -48,6 +53,15 @@ class Home extends Component {
     const notifyCreateQuestion = () => toast("create question form!");
     let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
     const user_id = localStorage.getItem("user_id");
+    // selectedQuestion.votes.includes(user_id);
+    console.log(
+      `Logged Output ~ selectedQuestion`
+      // selectedQuestion.votes.includes(user_id)
+    );
+
+    console.log("questions ", questions);
+    console.log(" selectedQuestion.user ", selectedQuestion.user);
+    console.log("questions ", questions.length > 0);
     return (
       <div>
         <div className="container-fluid">
@@ -134,6 +148,23 @@ class Home extends Component {
               </div>
             </nav>
 
+            {/*//*------------------Search BAR------------------- */}
+            <form
+              className="d-flex w-75 justify-content-center mt-4 mb-3"
+              onSubmit={this.searchSubmitHandler.bind(this)}
+            >
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+                name="search"
+              />
+              <button className="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+
             {/*//*------------------BODY------------------- */}
             <div>
               {/* ---------------АСУУЛТЫН ДЭЛГЭРЭНГҮЙ ХЭСЭГ--------------- */}
@@ -188,13 +219,13 @@ class Home extends Component {
                       backFromSelectedQuestion={backFromSelectedQuestion}
                     />
                   ) : null}
-                  {/* //* ----COMMENT LIST SECTION + SUBMIT EDITOR------ */}
+                  {/*  ----------COMMENT LIST SECTION,  SUBMIT EDITOR---------------- */}
                   {<CommentList selectedQuestion={selectedQuestion} user_id={user_id} />}
                 </div>
               ) : (
-                // * ----Question LIST --------------
-                questions &&
-                questions.length > 0 &&
+                // * ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
+                // questions &&
+                //   questions.length > 0 &&
                 questions.map((i, idx) => (
                   <div className="questions-container">
                     <div className="card card-hover mb-5 rounded" key={idx}>
@@ -229,7 +260,6 @@ class Home extends Component {
                   </div>
                 ))
               )}
-              {/* //* Question Paginatino -> BUTTONS */}
               {!selectedQuestion.user ? (
                 <div className="text-center">
                   <div className="flex btn-group btn-group-toggle pg-buttons"
@@ -269,6 +299,8 @@ class Home extends Component {
   }
 }
 const mapStateToProps = (state) => {
+  console.log(`Logged Output ~ state`, state);
+
   return {
     questions: state.question.questions,
     selectedQuestion: state.question.selectedQuestion,
@@ -289,6 +321,7 @@ const Container = connect(mapStateToProps, {
   deleteSelectedQuestion,
   updateQuestionToggle,
   voteSelectedQuestion,
+  searchQuestion,
 })(Home);
 
 export default Container;

@@ -19,6 +19,12 @@ export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
     dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER, payload: response.data });
   });
 };
+// TODO => searchQuestion
+export const searchQuestion = (searchValue) => async (dispatch) => {
+  await API.post("/questions/search", { searchValue: searchValue }).then((response) => {
+    dispatch({ type: SET_SELECTED_QUESTION, payload: response.data.object });
+  });
+};
 
 export const createQuestionToggle = () => async (dispatch) => {
   dispatch({ type: CREATE_QUESTION_TOGGLE });

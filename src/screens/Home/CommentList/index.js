@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
+import UpdateComment from "./UpdateComment";
 import {
   getCommentsByPageNumber,
   voteComment,
   sendComment,
   deleteComment,
   updateComment,
+  updateCommentToggle,
 } from "../../../redux/actions/commentAction";
 
 export class CommentList extends Component {
@@ -14,24 +15,24 @@ export class CommentList extends Component {
     super(props);
     this.state = {};
   }
-  componentWillMount() {
+  async componentWillMount() {
     console.log(
       `Logged Output ~ this.props.selectedQuestion`,
       this.props.selectedQuestion
     );
-    this.props.getCommentsByPageNumber(
+    await this.props.getCommentsByPageNumber(
       this.props.selectedQuestion,
       this.props.currentPageComment
     );
   }
-  componentDidMount() {
-    this.props.getCommentsByPageNumber(
+  async componentDidMount() {
+    await this.props.getCommentsByPageNumber(
       this.props.selectedQuestion,
       this.props.currentPageComment
     );
   }
 
-  async getsendComment(event) {
+  async sendCommentAsync(event) {
     event.preventDefault();
     await this.props.sendComment(this.props.selectedQuestion, event.target.answer.value);
     await this.props.getCommentsByPageNumber(
@@ -39,30 +40,45 @@ export class CommentList extends Component {
       this.props.currentPageComment
     );
   }
-  async voteCommentAsync(
-    comment,
-    user_id,
-    getCommentsByPageNumber,
-    selectedQuestion,
-    currentPageComment
-  ) {
-    await this.props.voteComment(comment, user_id, getCommentsByPageNumber);
-    await getCommentsByPageNumber(selectedQuestion, currentPageComment);
+  async voteCommentAsync(comment) {
+    await this.props.voteComment(
+      comment,
+      this.props.user_id,
+      this.props.getCommentsByPageNumber
+    );
+    await this.props.getCommentsByPageNumber(
+      this.props.selectedQuestion,
+      this.props.currentPageComment
+    );
+  }
+  async deleteCommentAsync(comment) {
+    await this.props.deleteComment(comment);
+    await this.props.getCommentsByPageNumber(
+      this.props.selectedQuestion,
+      this.props.currentPageComment
+    );
+  }
+  async updateCommentAsync(comment) {
+    await this.props.updateComment(comment);
+    await this.props.getCommentsByPageNumber(
+      this.props.selectedQuestion,
+      this.props.currentPageComment
+    );
   }
   render() {
-    const {
-      getCommentsByPageNumber,
-      comments,
-      deleteComment,
-      updateComment,
-      voteComment,
+    const { getCommentsByPageNumber, comments, updateCommentToggle } = this.props;
+    let {
+      currentPageComment,
+      maxPageComment,
+      selectedQuestion,
+      user_id,
+      renderUpdateCommentForm,
     } = this.props;
-    let { currentPageComment, maxPageComment, selectedQuestion, user_id } = this.props;
     user_id *= 1;
     return (
       <div>
         {/* //* Create COMMENT */}
-        <form onSubmit={this.getsendComment.bind(this)} className="row mt-5">
+        <form onSubmit={this.sendCommentAsync.bind(this)} className="row mt-5">
           <div className="col-2"> Comment: </div>
           <div className="col-9">
             <input type="text" name="answer" className="w-100 " />
@@ -90,13 +106,7 @@ export class CommentList extends Component {
                     <button
                       className="btn btn-primary"
                       onClick={() => {
-                        this.voteCommentAsync.bind(this)(
-                          comment,
-                          user_id,
-                          getCommentsByPageNumber,
-                          selectedQuestion,
-                          currentPageComment
-                        );
+                        this.voteCommentAsync.bind(this)(comment);
                       }}
                     >
                       Vote
@@ -111,7 +121,7 @@ export class CommentList extends Component {
               </div>
 
               {/* //* Comment -> Answer TEXT */}
-              <div className="col-8">
+              <div className="col">
                 <div className="card-body">
                   <h5 className="card-title">{comment.answer}</h5>
 
@@ -119,15 +129,34 @@ export class CommentList extends Component {
                   <br />
                 </div>
               </div>
-              <div className="col-2">
-                <div className="row">
-                  <button onClick={deleteComment}>Delete</button>{" "}
+
+              {/* //* Comment -> Delete, Update -> buttons */}
+              {comment.user.id === user_id && (
+                <div className="col-2">
+                  <div className="row">
+                    <button
+                      onClick={() => {
+                        this.deleteCommentAsync.bind(this)(comment);
+                      }}
+                    >
+                      Delete
+                    </button>{" "}
+                  </div>
+                  <div className="row ">
+                    {" "}
+                    <button
+                      onClick={() => {
+                        updateCommentToggle();
+                      }}
+                    >
+                      Update
+                    </button>{" "}
+                    <div className="d-flex">
+                      {renderUpdateCommentForm ? <UpdateComment /> : null}
+                    </div>
+                  </div>
                 </div>
-                <div className="row">
-                  {" "}
-                  <button onClick={updateComment}>Update</button>{" "}
-                </div>
-              </div>
+              )}
             </div>
           </div>
         ))}
@@ -171,6 +200,7 @@ const mapStateToProps = (state) => {
     comments: state.question.comments,
     maxPageComment: state.question.maxPageComment,
     currentPageComment: state.question.currentPageComment,
+    renderUpdateCommentForm: state.question.renderUpdateCommentForm,
   };
 };
 
@@ -180,6 +210,7 @@ let mapDispatchToProps = {
   sendComment,
   deleteComment,
   updateComment,
+  updateCommentToggle,
 };
 // ;
 const Container = connect(mapStateToProps, mapDispatchToProps)(CommentList);
