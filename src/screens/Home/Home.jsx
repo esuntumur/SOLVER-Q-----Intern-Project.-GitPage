@@ -1,8 +1,6 @@
 /* eslint-disable eqeqeq */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { logoutUser } from "../../redux/actions/authentication";
 import {
   getQuestionsByPageNumber,
@@ -50,7 +48,6 @@ class Home extends Component {
       voteSelectedQuestion,
       getQuestionsByPageNumber,
     } = this.props;
-    const notifyCreateQuestion = () => toast("create question form!");
     let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
     const user_id = localStorage.getItem("user_id");
     // selectedQuestion.votes.includes(user_id);
@@ -71,7 +68,13 @@ class Home extends Component {
               <div className="container-fluid">
                 {/* LOGO NAME -> HOME */}
                 <a className="navbar-brand" href="/">
-                  <img className="navbar-logo" src="./logo192.png" alt="" width="30" height="30"/>
+                  <img
+                    className="navbar-logo"
+                    src="./logo192.png"
+                    alt=""
+                    width="30"
+                    height="30"
+                  />
                   NAME
                 </a>
                 {/* NAV TOGGLER in Mobile -> BUTTON */}
@@ -90,7 +93,9 @@ class Home extends Component {
                   <ul className="navbar-nav">
                     {/* HOME */}
                     <li className="nav-item">
-                      <a className="nav-link" href="/">Home</a>
+                      <a className="nav-link" href="/">
+                        Home
+                      </a>
                     </li>
                     {/* PROFILE -> DROPDOWN BUTTON */}
                     <li className="nav-item dropdown">
@@ -101,12 +106,14 @@ class Home extends Component {
                         role="button"
                         data-bs-toggle="dropdown"
                         aria-haspopup="true"
-                        aria-expanded="false">
+                        aria-expanded="false"
+                      >
                         Profile
                       </a>
                       <div
                         className="dropdown-menu"
-                        aria-labelledby="navbarDropdownMenuLink">
+                        aria-labelledby="navbarDropdownMenuLink"
+                      >
                         <p className="dropdown-item">User ID: {user_id}</p>
                         <div className="dropdown-divider"></div>
                         <button
@@ -116,54 +123,46 @@ class Home extends Component {
                           className="btn btn-primary dropdown-item"
                         >
                           Log out
-                        </button>                     
+                        </button>
                       </div>
                     </li>
                     {/* CREATE QUESTION -> BUTTON*/}
                     <li className="nav-item">
-                      <a className="nav-link"
+                      <p
+                        className="nav-link"
                         onClick={() => {
                           createQuestionToggle();
-                          notifyCreateQuestion();
                         }}
                       >
                         Create question
-                      </a>
-                      <ToastContainer />
+                      </p>
                       {/* CREATE QUESTION -> FORM */}
                       {this.props.renderCreateQuestion && (
                         <CreateQuestion createQuestionToggle={createQuestionToggle} />
                       )}
                     </li>
+                    {/*//*-----Search BAR------ */}
                     <li className="nav-item">
-                      <form className="form-inline navbar-form">
-                        <input className="form-control mr-sm-2 navbar-input" 
-                              type="search" 
-                              placeholder="Search..." 
-                              aria-label="Search"/>
+                      <form
+                        className="form-inline navbar-form d-flex w-75 justify-content-center"
+                        onSubmit={this.searchSubmitHandler.bind(this)}
+                      >
+                        <input
+                          className="form-control me-2"
+                          type="search"
+                          placeholder="Search"
+                          aria-label="Search"
+                          name="search"
+                        />
+                        <button className="btn btn-outline-success" type="submit">
+                          Search
+                        </button>
                       </form>
                     </li>
                   </ul>
                 </div>
               </div>
             </nav>
-
-            {/*//*------------------Search BAR------------------- */}
-            <form
-              className="d-flex w-75 justify-content-center mt-4 mb-3"
-              onSubmit={this.searchSubmitHandler.bind(this)}
-            >
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-                name="search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
 
             {/*//*------------------BODY------------------- */}
             <div>
@@ -173,11 +172,12 @@ class Home extends Component {
                   <h3 className="q-header">Question details</h3>
                   {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
                   <br />
-                  <b>Question ID:</b> {selectedQuestion.id}<br />
-                  <b>Votes:</b>{selectedQuestion.votes.length} <br />
-                  <b>Title:</b> {selectedQuestion.title} <br />
-                  <b>User ID:</b> {selectedQuestion.user.id}{" "}
+                  <b>Question ID:</b> {selectedQuestion.id}
                   <br />
+                  <b>Votes:</b>
+                  {selectedQuestion.votes.length} <br />
+                  <b>Title:</b> {selectedQuestion.title} <br />
+                  <b>User ID:</b> {selectedQuestion.user.id} <br />
                   {/*  ----------VOTE Question BUTTON---------------- */}
                   {user_id != selectedQuestion.user.id ? (
                     !selectedQuestion.votes.includes(user_id) ? (
@@ -190,7 +190,9 @@ class Home extends Component {
                         {"VOTE"}
                       </button>
                     ) : (
-                      <button className="btn btn-info btn-sm" disabled>{"VOTED"}</button>
+                      <button className="btn btn-info btn-sm" disabled>
+                        {"VOTED"}
+                      </button>
                     )
                   ) : null}
                   {/*  ----------DELETE Question BUTTON---------------- */}
@@ -234,9 +236,9 @@ class Home extends Component {
                           <div className="card text-white bg-dark">
                             <div className="card-body">
                               {i.votes.length} votes
-                              <br/>
+                              <br />
                               {i.state}
-                              <br/>
+                              <br />
                               {i.user.username}
                             </div>
                           </div>
@@ -262,8 +264,10 @@ class Home extends Component {
               )}
               {!selectedQuestion.user ? (
                 <div className="text-center">
-                  <div className="flex btn-group btn-group-toggle pg-buttons"
-                      data-toggle="buttons">
+                  <div
+                    className="flex btn-group btn-group-toggle pg-buttons"
+                    data-toggle="buttons"
+                  >
                     {currentPageQuestion >= 2 ? (
                       <button
                         className="btn btn-secondary pg-btn"
@@ -273,13 +277,9 @@ class Home extends Component {
                       </button>
                     ) : null}
                        
-                    <button 
-                      type="button"
-                      className="btn btn-secondary"
-                      disabled>
-                        {currentPageQuestion}
+                    <button type="button" className="btn btn-secondary" disabled>
+                      {currentPageQuestion}
                     </button>
-
                     {currentPageQuestion >= maxPageQuestion ? null : (
                       <button
                         className="btn btn-secondary"

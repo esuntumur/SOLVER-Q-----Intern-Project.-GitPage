@@ -54,7 +54,7 @@ export const updateQuestionToggle = (updateQuestionData) => async (dispatch) => 
 
 // TODO => update question
 export const updateQuestion = (payload) => async (dispatch) => {
-  const response = await API.put(`/questions/${payload.id}`, payload.params, {
+  await API.put(`/questions/${payload.id}`, payload.params, {
     headers: {
       Authorization: token,
     },
@@ -72,7 +72,7 @@ export const deleteSelectedQuestion = (selectedQuestion) => async (dispatch) => 
 };
 
 export const voteSelectedQuestion = (selectedQuestion, user_id) => async (dispatch) => {
-  const response = await API.post(
+  await API.post(
     `/questions/${selectedQuestion.id}/vote`,
     {
       vote: { question_id: selectedQuestion.id },
