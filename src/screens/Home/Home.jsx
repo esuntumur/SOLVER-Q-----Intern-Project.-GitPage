@@ -66,17 +66,17 @@ class Home extends Component {
         <div className="container-fluid">
           <div className="row d-flex">
             {/*//*------------------NAVIGATION BAR------------------- */}
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-              <div className="container-fluid">
-                {/* LOGO NAME -> HOME */}
-                <a className="navbar-brand navbar-name" href="/">
-                  <img
-                    className="navbar-logo"
-                    src="./logo192.png"
-                    alt=""
-                    width="30"
-                    height="30"
-                  />
+            <nav className="navbar navbar-expand-lg shadow py-4 rounded">
+              {/* LOGO NAME -> HOME */}
+              <div>
+                <img
+                      className="navbar-logo"
+                      src="./logo192.png"
+                      alt=""
+                      width="30"
+                      height="30"
+                    />
+                <a className="navbar-brand link-dark" href="/">
                   SOLVER
                 </a>
                 {/* NAV TOGGLER in Mobile -> BUTTON */}
@@ -91,85 +91,78 @@ class Home extends Component {
                 >
                   <span className="navbar-toggler-icon" />
                 </button>
-                <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                  <ul className="navbar-nav">
-                    {/* HOME */}
-                    <li className="nav-item">
-                      <a className="nav-link" href="/">
-                        Home
-                      </a>
-                    </li>
-                    {/* PROFILE -> DROPDOWN BUTTON */}
-                    <li className="nav-item dropdown">
-                      <a
-                        className="nav-link dropdown-toggle"
-                        href="/"
-                        id="navbarDropdownMenuLink"
-                        role="button"
-                        data-bs-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        Profile
-                      </a>
-                      <div
-                        className="dropdown-menu"
-                        aria-labelledby="navbarDropdownMenuLink"
-                      >
-                        <p className="dropdown-item">User ID: {user_id}</p>
-                        <div className="dropdown-divider"></div>
-                        <button
-                          onClick={() => {
-                            logoutUser();
-                          }}
-                          className="btn btn-primary dropdown-item"
-                        >
-                          Log out
-                        </button>
-                      </div>
-                    </li>
-                    {/* CREATE QUESTION -> BUTTON*/}
-                    <li className="nav-item">
-                      <a
-                        href="/"
-                        className="nav-link"
-                        // style={{ display: "inline" }}
+              </div>
+              <div className="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul className="navbar-nav">
+                  {/* PROFILE -> DROPDOWN BUTTON */}
+                  <li className="nav-item dropdown">
+                    <a
+                      className="nav-link dropdown-toggle link-dark rounded"
+                      href="/"
+                      id="navbarDropdownMenuLink"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      Profile
+                    </a>
+                    <div
+                      className="dropdown-menu"
+                      aria-labelledby="navbarDropdownMenuLink"
+                    >
+                      <p className="dropdown-item">User ID: {user_id}</p>
+                      <div className="dropdown-divider"></div>
+                      <button
                         onClick={() => {
-                          createQuestionToggle();
+                          logoutUser();
                         }}
+                        className="btn btn-primary dropdown-item"
                       >
-                        Create question
-                      </a>
-                      {/* CREATE QUESTION -> FORM */}
-                      {this.props.renderCreateQuestion && (
-                        <CreateQuestion createQuestionToggle={createQuestionToggle} />
-                      )}
-                    </li>
-                    {/*//*-----Search BAR------ */}
-                    <li className="nav-item">
-                      <link
-                        rel="stylesheet"
-                        href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
-                        type="text/css"
+                        Log out
+                      </button>
+                    </div>
+                  </li>
+                  {/* CREATE QUESTION -> BUTTON*/}
+                  <li className="nav-item">
+                    <button
+                      className="btn btn-primary text-dark"
+                      // style={{ display: "inline" }}
+                      onClick={() => {
+                        createQuestionToggle();
+                      }}
+                    >
+                      Create question
+                    </button>
+                    {/* CREATE QUESTION -> FORM */}
+                    {this.props.renderCreateQuestion && (
+                      <CreateQuestion createQuestionToggle={createQuestionToggle} />
+                    )}
+                  </li>
+                  {/*//*-----Search BAR------ */}
+                  <li className="nav-item">
+                    <link
+                      rel="stylesheet"
+                      href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
+                      type="text/css"
+                    />
+                    <form
+                      className="form-inline from-control d-flex w-75 justify-content-center navbar-form"
+                      onSubmit={this.searchSubmitHandler.bind(this)}
+                    >
+                      <input
+                        className="form-control"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                        name="search"
                       />
-                      <form
-                        className="form-inline from-control d-flex w-75 justify-content-center navbar-form"
-                        onSubmit={this.searchSubmitHandler.bind(this)}
-                      >
-                        <input
-                          className="form-control"
-                          type="search"
-                          placeholder="Search"
-                          aria-label="Search"
-                          name="search"
-                        />
-                        <button className="btn btn-sm form-button" type="submit">
-                          <i className="fa fa-search"></i>
-                        </button>
-                      </form>
-                    </li>
-                  </ul>
-                </div>
+                      <button className="btn btn-sm form-button" type="submit">
+                        <i className="fa fa-search"></i>
+                      </button>
+                    </form>
+                  </li>
+                </ul>
               </div>
             </nav>
 

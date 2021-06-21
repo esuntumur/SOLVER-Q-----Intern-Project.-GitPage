@@ -1,5 +1,12 @@
-.navbar-name {
-  color: rgba(0, 221, 255, 255) !important;
+.navbar-nav > li > a:hover{
+  background-color: rgb(132,164,200) !important;
+  color: white !important;
+}
+
+.navbar-nav > li > a:focus {
+  color: rgb(132,164,200) !important;
+  font-weight: bold !important;
+  background-color: white !important;
 }
 
 .navbar-logo {
@@ -8,6 +15,21 @@
 
 .navbar-form {
   width: 100% !important;
+}
+
+.btn-primary {
+  background-color: white !important;
+}
+
+.btn-primary:hover {
+  background-color: rgb(132,164,200) !important;
+  color: white !important; 
+}
+
+.btn-primary:focus {
+  color: rgb(132,164,200) !important;
+  font-weight: bold !important;
+  background-color: white !important;
 }
 
 .pg-buttons {
