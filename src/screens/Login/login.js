@@ -1,7 +1,7 @@
 import "./login.scss";
 import React from "react";
 import { connect } from "react-redux";
-import { loginUser } from "../../redux/actions/authentication";
+import { loginUser, signupUser } from "../../redux/actions/authentication";
 // email: "dannd@example.com",
 // password: "238523a",
 
@@ -10,6 +10,7 @@ class Login extends React.Component {
     super(props);
     this.state = {};
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitSignUp = this.handleSubmitSignUp.bind(this);
   }
 
   handleSubmit(event) {
@@ -21,6 +22,20 @@ class Login extends React.Component {
     this.props.loginUser(payload);
   }
 
+  handleSubmitSignUp(event) {
+    event.preventDefault();
+    const payload = {
+      user: {
+        username: event.target.username.value,
+        email: event.target.email.value,
+        password: event.target.password.value,
+      },
+    };
+
+    if (this.props.signupUser(payload)) console.log("sign up success");
+    else console.log("sign up failed");
+  }
+
   render() {
     return (
       <div id="login">
@@ -30,9 +45,7 @@ class Login extends React.Component {
             {/* ---------------Email------------- */}
             <div className="form_div">
               <input type="text" className="form__input" placeholder=" " name="email" />
-              <label htmlFor className="form__label">
-                Email
-              </label>
+              <label className="form__label">Email</label>
             </div>
             {/* ---------------Password--------------- */}
             <div className="form_div">
@@ -42,9 +55,7 @@ class Login extends React.Component {
                 placeholder=" "
                 name="password"
               />
-              <label htmlFor className="form__label">
-                Password
-              </label>
+              <label className="form__label">Password</label>
             </div>
             {/* ---------------SUBMIT--------------- */}
             <input type="submit" className="form__button mb-3" value="Login" />
@@ -63,15 +74,23 @@ class Login extends React.Component {
             </div>
           </form>
 
-          <form className="form" onSubmit={this.handleSubmit}>
+          <form className="form" onSubmit={this.handleSubmitSignUp}>
             <h4 className="form__title">Sign Up</h4>
-            {/* ---------------Full Name------------- */}
+            {/* ---------------username--------------- */}
+            <div className="form_div">
+              <input
+                type="text"
+                className="form__input"
+                placeholder=" "
+                name="username"
+              />
+              <label className="form__label">Username</label>
+            </div>
+            {/* ---------------Email------------- */}
             <div className="form_div">
               <input type="text" className="form__input" placeholder=" " name="email" />
-              <label htmlFor className="form__label">
-                Full Name
-              </label>
-            </div>         
+              <label className="form__label">Email</label>
+            </div>
             {/* ---------------Password--------------- */}
             <div className="form_div">
               <input
@@ -80,10 +99,9 @@ class Login extends React.Component {
                 placeholder=" "
                 name="password"
               />
-              <label htmlFor className="form__label">
-                Password
-              </label>
+              <label className="form__label">Password</label>
             </div>
+
             {/* ---------------SUBMIT--------------- */}
             <input type="submit" className="form__button mb-3" value="Sign Up" />
 
@@ -100,12 +118,12 @@ class Login extends React.Component {
               </a>
             </div>
           </form>
-        </div>        
+        </div>
       </div>
     );
   }
 }
 
-const Container = connect(null, { loginUser })(Login);
+const Container = connect(null, { loginUser, signupUser })(Login);
 
 export default Container;

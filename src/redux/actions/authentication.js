@@ -1,5 +1,6 @@
 import { LOGIN, LOGOUT } from "./type";
 import api from "../../API";
+
 export const loginUser = (formVlaues) => async (dispatch) => {
   const response = await api.post("/login", formVlaues);
 
@@ -15,4 +16,11 @@ export const logoutUser = () => async (dispatch) => {
   localStorage.setItem("token", null);
   localStorage.setItem("isSignedIn", false);
   dispatch({ type: LOGOUT, payload: null });
+};
+
+export const signupUser = (formVlaues) => async (dispatch) => {
+  await api.post("/users", formVlaues).then((response) => {
+    return true;
+  });
+  return false;
 };

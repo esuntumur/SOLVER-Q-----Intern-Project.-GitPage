@@ -10,8 +10,6 @@ class UpdateQuestion extends Component {
   submitHandler(event) {
     event.preventDefault();
     const { selectedQuestion, createQuestionToggle } = this.props;
-    console.log(`Logged Output ~ createQuestionToggle`, createQuestionToggle);
-    console.log(`Logged Output ~ selectedQuestion`, selectedQuestion);
     const payload = {
       id: selectedQuestion.id,
       params: {

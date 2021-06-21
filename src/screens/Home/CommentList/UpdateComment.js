@@ -6,13 +6,11 @@ export class UpdateComment extends Component {
   async submitHandler(event) {
     event.preventDefault();
     const payload = {
-      comments: {
-        // question_id: event.target.comment.value,
-        comment: event.target.comment.value,
-      },
+      answer: event.target.comment.value,
+      commentId: this.props.selectedCommentId,
     };
     await this.props.updateComment(payload);
-    await this.props.updateCommentToggle();
+    await this.props.updateCommentToggle(this.props.selectedCommentId);
   }
   render() {
     return (

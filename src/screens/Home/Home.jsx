@@ -11,6 +11,7 @@ import {
   updateQuestionToggle,
   voteSelectedQuestion,
   searchQuestion,
+  setSelectedQuestionForVote,
 } from "../../redux/actions/question";
 import CreateQuestion from "./CreateQuestion/index";
 import UpdateQuestion from "./UpdateQuestion/index";
@@ -28,12 +29,14 @@ class Home extends Component {
   }
   componentDidMount() {
     this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
-    console.log("questions", this.props.questions);
   }
   async searchSubmitHandler(event) {
     event.preventDefault();
     await this.props.searchQuestion(event.target.search.value);
     // await this.props.setSelectedQuestion(i);
+  }
+  async asyncSetSelectedQuestionForVote(i, user_id) {
+    await this.props.voteSelectedQuestion(i, user_id);
   }
 
   render() {
@@ -48,18 +51,16 @@ class Home extends Component {
       voteSelectedQuestion,
       getQuestionsByPageNumber,
     } = this.props;
-    let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
+    let {
+      selectedQuestion,
+      maxPageQuestion,
+      currentPageQuestion,
+      selectedQuestionForVote,
+    } = this.props;
+    console.log(`Logged Output ~ selectedQuestionForVote`, selectedQuestionForVote);
+
     const user_id = localStorage.getItem("user_id");
     // selectedQuestion.votes.includes(user_id);
-    console.log(
-      `Logged Output ~ selectedQuestion`
-      // selectedQuestion.votes.includes(user_id)
-    );
-
-    console.log("questions ", questions);
-    console.log(" selectedQuestion.user ", selectedQuestion.user);
-    console.log("questions ", questions.length > 0);
-
     return (
       <div>
         <div className="container-fluid">
@@ -130,12 +131,14 @@ class Home extends Component {
                     {/* CREATE QUESTION -> BUTTON*/}
                     <li className="nav-item">
                       <a
-                          className="nav-link"
-                          onClick={() => {
-                            createQuestionToggle();
-                          }}
-                        >
-                          Create question
+                        href="/"
+                        className="nav-link"
+                        // style={{ display: "inline" }}
+                        onClick={() => {
+                          createQuestionToggle();
+                        }}
+                      >
+                        Create question
                       </a>
                       {/* CREATE QUESTION -> FORM */}
                       {this.props.renderCreateQuestion && (
@@ -144,7 +147,11 @@ class Home extends Component {
                     </li>
                     {/*//*-----Search BAR------ */}
                     <li className="nav-item">
-                      <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type='text/css'/>
+                      <link
+                        rel="stylesheet"
+                        href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
+                        type="text/css"
+                      />
                       <form
                         className="form-inline from-control d-flex w-75 justify-content-center navbar-form"
                         onSubmit={this.searchSubmitHandler.bind(this)}
@@ -168,37 +175,47 @@ class Home extends Component {
 
             {/*//*------------------BODY------------------- */}
             <div>
-              <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type='text/css'/>
+              <link
+                rel="stylesheet"
+                href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
+                type="text/css"
+              />
               {/* ---------------АСУУЛТЫН ДЭЛГЭРЭНГҮЙ ХЭСЭГ--------------- */}
               {selectedQuestion.user ? (
                 <div>
                   <div className="d-flex align-items-center">
-                    <h3 className="q-header"><b>{selectedQuestion.title}</b></h3>
+                    <h3 className="q-header">
+                      <b>{selectedQuestion.title}</b>
+                    </h3>
                     {/*  ----------BACK BUTTON---------------- */}
-                    <button 
+                    <button
                       className="btn btn-info btn-sm back-button"
-                      onClick={backFromSelectedQuestion}>{"Back"}</button>
+                      onClick={backFromSelectedQuestion}
+                    >
+                      {"Back"}
+                    </button>
                   </div>
                   <div className="flex align-items-start flex-column">
-                  {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
+                    {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
                     <div className="d-flex align-items-start">
                       <div className="d-flex align-items-center flex-column mb-3 q-button">
                         {/*  ----------VOTE Question BUTTON---------------- */}
+                        selectedQuestion.user.id: {selectedQuestion.user.id}
+                        user_id: {user_id}
                         {user_id != selectedQuestion.user.id ? (
                           !selectedQuestion.votes.includes(user_id) ? (
                             <button
-                              className="btn btn-lg"
+                              className="btn icon-brd"
                               onClick={(e) => {
                                 voteSelectedQuestion(selectedQuestion, user_id);
                               }}
                             >
-                              <i className="fa fa-chevron-up"></i>
+                              {" "}
+                              <i className="fa fa-heart-o heart-icon">vote</i>
                             </button>
                           ) : (
-                            <button 
-                              className="btn btn-lg" 
-                              disabled>
-                              <i className="fa fa-chevron-up"></i>
+                            <button className="btn icon-brd" disabled>
+                              <i className="fa fa-heart heart-icon">voted</i>
                             </button>
                           )
                         ) : null}
@@ -209,13 +226,16 @@ class Home extends Component {
                           <i className="fa fa-chevron-down"></i>
                         </button>
                       </div>
-                      <div className="q-content">
-                        {selectedQuestion.question}
-                      </div>
+                      <div className="q-content">{selectedQuestion.question}</div>
                     </div>
                     <div className="q-comments">
                       {/*  ----------COMMENT LIST SECTION,  SUBMIT EDITOR---------------- */}
-                      {<CommentList selectedQuestion={selectedQuestion} user_id={user_id} />}
+                      {
+                        <CommentList
+                          selectedQuestion={selectedQuestion}
+                          user_id={user_id}
+                        />
+                      }
                     </div>
                   </div>
                   {/*  ----------DELETE Question BUTTON---------------- */}
@@ -248,23 +268,29 @@ class Home extends Component {
                 // questions &&
                 //   questions.length > 0 &&
                 questions.map((i, idx) => (
-                  <div className="questions-container">
-                      <div className="card-group">
+                  <div className="questions-container" key={idx}>
+                    <div className="card-group">
                       <div className="col-sm-2">
                         <div className="card text-white bg-dark">
                           <div className="card-body">
                             {i.votes.length} votes
-                            <br/>
-                            <br/>
+                            <br />
+                            <br />
+                            {/* // TODO -> Style change */}
                             {!i.votes.includes(user_id) ? (
                               <button
                                 className="btn icon-brd"
+                                onClick={(e) => {
+                                  // console.log("question ", i);
+                                  this.props.voteSelectedQuestion(i, user_id);
+                                  // this.asyncSetSelectedQuestionForVote(i, user_id);
+                                }}
                               >
                                 <i className="fa fa-heart-o heart-icon"></i>
                               </button>
                             ) : (
                               <button className="btn icon-brd" disabled>
-                                <i className="fa fa-heart heart-icon"> Voted</i>
+                                <i className="fa fa-heart heart-icon"></i>
                               </button>
                             )}
                           </div>
@@ -325,8 +351,6 @@ class Home extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(`Logged Output ~ state`, state);
-
   return {
     questions: state.question.questions,
     selectedQuestion: state.question.selectedQuestion,
@@ -335,6 +359,7 @@ const mapStateToProps = (state) => {
     renderUpdateQuestion: state.question.renderUpdateQuestion,
     maxPageQuestion: state.question.maxPageQuestion,
     currentPageQuestion: state.question.currentPageQuestion,
+    selectedQuestionForVote: state.question.selectedQuestionForVote,
   };
 };
 
@@ -348,6 +373,7 @@ const Container = connect(mapStateToProps, {
   updateQuestionToggle,
   voteSelectedQuestion,
   searchQuestion,
+  setSelectedQuestionForVote,
 })(Home);
 
 export default Container;

@@ -14,15 +14,17 @@ import {
   DELETE_COMMENT,
   UPDATE_COMMENT,
   UPDATE_COMMENT_TOGGLE,
+  SET_SELECTED_QUESTION_FOR_VOTE,
 } from "../actions/type";
 
 const initialState = {
   questions: [],
   comments: [],
   selectedQuestion: false,
+  selectedQuestionForVote: false,
   renderCreateQuestion: false,
   renderUpdateQuestion: false,
-  renderUpdateCommentForm: false,
+  selectedCommentId: null,
   maxPageQuestion: 1,
   currentPageQuestion: 1,
   maxPageComment: 1,
@@ -33,8 +35,17 @@ export const questionReducer = (
   action
 ) => {
   switch (action.type) {
+    case SET_SELECTED_QUESTION_FOR_VOTE: {
+      console.log("SET_SELECTED_QUESTION_FOR_VOTE", action.payload);
+      return {
+        ...state,
+        selectedQuestionForVote: action.payload,
+      };
+    }
     case UPDATE_COMMENT_TOGGLE: {
-      return { ...state, renderUpdateCommentForm: !state.renderUpdateCommentForm };
+      if (state.selectedCommentId !== null) {
+        return { ...state, selectedCommentId: null };
+      } else return { ...state, selectedCommentId: action.payload };
     }
     // TODO
     case DELETE_COMMENT: {
@@ -50,13 +61,11 @@ export const questionReducer = (
     // TODO
     case UPDATE_COMMENT: {
       let idx;
-      const c = state.comments.filter((item) => {
-        idx = item.id;
+      let c = state.comments.filter((item, index) => {
+        if (action.payload.id === item.id) idx = index;
         return action.payload.id !== item.id;
       });
-      c.splice(--idx, 1, action.payload);
-      console.log(`Logged Output ~ state.questions`, state.questions);
-      console.log(`Logged Output ~  q`, c);
+      c.splice(idx, 0, action.payload);
 
       return {
         ...state,
@@ -64,8 +73,6 @@ export const questionReducer = (
       };
     }
     case GET_COMMENTS_BY_PAGE_NUMBER: {
-      console.log("action.payoad", action.payload);
-
       return {
         ...state,
         comments: action.payload.comments,
@@ -76,35 +83,19 @@ export const questionReducer = (
     case VOTE_COMMENT: {
       // * action.payload: { selectedComment, user_id },
       // TODO payload:   selectedComment.votes.push(user_id)
-      console.log(`Logged Output ~ state`, state);
-      console.log(`Logged Output ~ payload`, action.payload);
 
       state.comments.forEach((comment) => {
-        console.log(
-          `Logged Output ~ every comment-id and selec com id`,
-          comment.id,
-          " ",
-          action.payload.selectedComment.id
-        );
         if (comment.id === action.payload.selectedComment.id) {
-          console.log(`Logged Output ~ condition comment`, comment);
           comment.votes.push(action.payload.user_id);
         }
       });
-      console.log(`Logged Output ~ state`, state);
       return { ...state };
     }
     case SEND_COMMENT: {
-      console.log("in send comment reducer");
-
       state.comments.unshift(action.payload);
-      console.log(`Logged Output ~ state`, state);
-
       return { ...state };
     }
     case GET_QUESTION_BY_PAGE_NUMBER: {
-      console.log("action.payload", action.payload);
-
       return {
         ...state,
         questions: action.payload.questions,
@@ -169,16 +160,12 @@ export const questionReducer = (
         return action.payload.id !== item.id;
       });
       q.splice(--idx, 1, action.payload);
-      console.log(`Logged Output ~ state.questions`, state.questions);
-      console.log(`Logged Output ~  q`, q);
-
       return {
         ...state,
         questions: q,
       };
     }
     case DELETE_SELECTED_QUESTION: {
-      console.log("action.payload in REDUCER: ", action.payload);
       const q = state.questions.filter((item) => {
         return action.payload.id !== item.id;
       });

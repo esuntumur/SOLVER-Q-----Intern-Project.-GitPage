@@ -18,10 +18,6 @@ export class CommentList extends Component {
     this.state = {};
   }
   async componentWillMount() {
-    console.log(
-      `Logged Output ~ this.props.selectedQuestion`,
-      this.props.selectedQuestion
-    );
     await this.props.getCommentsByPageNumber(
       this.props.selectedQuestion,
       this.props.currentPageComment
@@ -54,18 +50,20 @@ export class CommentList extends Component {
     );
   }
   async deleteCommentAsync(comment) {
+    console.log(`Logged Output ~ deleteCommentAsync`);
+
     await this.props.deleteComment(comment);
     await this.props.getCommentsByPageNumber(
       this.props.selectedQuestion,
       this.props.currentPageComment
     );
   }
-  async updateCommentAsync(comment) {
-    await this.props.updateComment(comment);
-    await this.props.getCommentsByPageNumber(
-      this.props.selectedQuestion,
-      this.props.currentPageComment
-    );
+  async updateCommentAsync(event) {
+    // await this.props.updateComment(comment);
+    // await this.props.getCommentsByPageNumber(
+    //   this.props.selectedQuestion,
+    //   this.props.currentPageComment
+    // );
   }
   render() {
     const { getCommentsByPageNumber, comments, updateCommentToggle } = this.props;
@@ -74,12 +72,18 @@ export class CommentList extends Component {
       maxPageComment,
       selectedQuestion,
       user_id,
-      renderUpdateCommentForm,
+      selectedCommentId,
     } = this.props;
+
     user_id *= 1;
+
     return (
       <div>
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type='text/css'/>
+        <link
+          rel="stylesheet"
+          href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
+          type="text/css"
+        />
         {/* //* Create COMMENT */}
         <form onSubmit={this.sendCommentAsync.bind(this)} className="flex-column">
           <h4>Comment: </h4>
@@ -98,76 +102,78 @@ export class CommentList extends Component {
         {/* //* Comment LIST */}
         <div className="comments">
           {comments.map((comment, idx) => (
-          <div className="card mb-4" key={idx}>
-            <div className="card-group">
-              {/* //* Comment -> VOTE, count && user name, profile */}
-
-              <div className="card-1 text-white rounded">
-                <div className="card-body">
-                  {/* <img src="..." alt="..." /> */}
-                  <div>{comment.votes.length} votes</div>
-                  <div>
-                    {/* //* VOTE Comment */}
-                    {!comment.votes.includes(user_id) ? (
-                      <button
-                        className="btn btn-info vote-btn"
-                        onClick={() => {
-                          this.voteCommentAsync.bind(this)(comment);
-                        }}
-                      >
-                        Vote
-                      </button>
-                    ) : (
-                      <button className="btn btn-info vote-btn" disabled>
-                        Voted
-                      </button>
-                    )}
+            <div className="card mb-4" key={idx}>
+              <div className="card-group">
+                {/* //* Comment -> VOTE, count && user name, profile */}
+                <div className="card-1 text-white rounded">
+                  <div className="card-body">
+                    {/* <img src="..." alt="..." /> */}
+                    <div>{comment.votes.length}votes</div>
+                    <div>
+                      {/* //* VOTE Comment */}
+                      {!comment.votes.includes(user_id) ? (
+                        <button
+                          className="btn btn-info vote-btn"
+                          onClick={() => {
+                            this.voteCommentAsync.bind(this)(comment);
+                          }}
+                        >
+                          Vote
+                        </button>
+                      ) : (
+                        <button className="btn btn-info vote-btn" disabled>
+                          Voted
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* //* Comment -> Answer TEXT */}
-              <div className="card rounded card-2">
-                <div className="card-body">
-                  <h5 className="card-title">{comment.answer}</h5>
+                {/* //* Comment -> Answer TEXT */}
+                <div className="card rounded card-2">
+                  <div className="card-body">
+                    <h5 className="card-title">{comment.answer}</h5>
+                  </div>
                 </div>
-              </div>
 
-              <div className="card align-items-center">
-                {/* //* Comment -> Delete, Update -> buttons */}
-                {comment.user.id === user_id && (
-                  <div className="col-1.5">
-                    <div className="row">
-                      <button
-                        className="comment-del-up rounded btn btn-info shadow"
-                        type="button"
-                        onClick={() => {
-                          this.deleteCommentAsync.bind(this)(comment);
-                        }}
-                      >
-                        Delete
-                      </button>{" "}
-                    </div>
-                    <div className="row ">
-                      {" "}
-                      <button
-                        className="comment-del-up rounded btn btn-info shadow"
-                        type="button"
-                        onClick={() => {
-                          updateCommentToggle();
-                        }}
-                      >
-                        Update
-                      </button>{" "}
-                      <div className="d-flex">
-                        {renderUpdateCommentForm ? <UpdateComment /> : null}
+                <div className="card align-items-center">
+                  {/* //* Comment -> Delete, Update -> buttons */}
+                  {comment.user.id === user_id && (
+                    <div className="col-1.5">
+                      <div className="row">
+                        <button
+                          className="comment-del-up rounded btn btn-info shadow"
+                          type="button"
+                          onClick={() => {
+                            this.deleteCommentAsync.bind(this)(comment);
+                          }}
+                        >
+                          Delete
+                        </button>{" "}
+                      </div>
+                      <div className="row ">
+                        {" "}
+                        <button
+                          className="comment-del-up rounded btn btn-info shadow"
+                          type="button"
+                          onClick={() => {
+                            updateCommentToggle(comment.id);
+                          }}
+                        >
+                          Update
+                        </button>{" "}
+                        <div className="d-flex">
+                          {selectedCommentId === comment.id ? (
+                            <UpdateComment selectedCommentId={selectedCommentId} />
+                          ) : null}
+                          {comment.id}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
-          </div>
           ))}
         </div>
         {/* //* comment PAGINATION - prev, next buttons  */}
@@ -178,7 +184,6 @@ export class CommentList extends Component {
                 className="btn btn-dark pg-btn-prev"
                 onClick={() => {
                   getCommentsByPageNumber(selectedQuestion, --currentPageComment);
-                  console.log("previous clicked comment");
                 }}
               >
                 <span aria-hidden="true">&laquo;</span>
@@ -187,7 +192,8 @@ export class CommentList extends Component {
                
             <button type="button" className="btn btn-secondary" disabled>
               {currentPageComment} 
-            </button> 
+            </button>
+             
             {currentPageComment >= maxPageComment ? null : (
               <button
                 className="btn btn-dark pg-btn-next"
@@ -196,7 +202,6 @@ export class CommentList extends Component {
                     this.props.selectedQuestion,
                     ++currentPageComment
                   );
-                  console.log("next clicked comment");
                 }}
               >
                 <span aria-hidden="true">&raquo;</span>
@@ -210,13 +215,11 @@ export class CommentList extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(`Logged Output ~ state`, state);
-
   return {
     comments: state.question.comments,
     maxPageComment: state.question.maxPageComment,
     currentPageComment: state.question.currentPageComment,
-    renderUpdateCommentForm: state.question.renderUpdateCommentForm,
+    selectedCommentId: state.question.selectedCommentId,
   };
 };
 
