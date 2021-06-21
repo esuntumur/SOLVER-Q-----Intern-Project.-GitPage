@@ -8,16 +8,11 @@ import {
   UPDATE_SELECTED_QUESTION,
   DELETE_SELECTED_QUESTION,
   VOTE_SELECTED_QUESTION,
-  SET_SELECTED_QUESTION_FOR_VOTE,
 } from "./type";
 import API from "../../API";
 
 const token = localStorage.getItem("token");
 // todo VOTE QUESTION: questions/1/vote      json => {vote: { question_id: selectedQuestion.id }}
-export const setSelectedQuestionForVote = (question) => async (dispatch) => {
-  console.log("setSelectedQuestionForVote", question);
-  dispatch({ type: SET_SELECTED_QUESTION_FOR_VOTE, payload: question });
-};
 
 export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
   await API.post("/questions/page", { questionPage: pageNum }).then((response) => {
@@ -77,8 +72,6 @@ export const deleteSelectedQuestion = (selectedQuestion) => async (dispatch) => 
 };
 
 export const voteSelectedQuestion = (selectedQuestion, user_id) => async (dispatch) => {
-  console.log(`Logged Output ~ selectedQuestion`, selectedQuestion);
-
   await API.post(
     `/questions/${selectedQuestion.id}/vote`,
     {
