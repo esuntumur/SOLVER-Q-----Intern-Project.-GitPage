@@ -14,14 +14,12 @@ import {
   DELETE_COMMENT,
   UPDATE_COMMENT,
   UPDATE_COMMENT_TOGGLE,
-  SET_SELECTED_QUESTION_FOR_VOTE,
 } from "../actions/type";
 
 const initialState = {
   questions: [],
   comments: [],
   selectedQuestion: false,
-  selectedQuestionForVote: false,
   renderCreateQuestion: false,
   renderUpdateQuestion: false,
   selectedCommentId: null,
@@ -35,13 +33,6 @@ export const questionReducer = (
   action
 ) => {
   switch (action.type) {
-    case SET_SELECTED_QUESTION_FOR_VOTE: {
-      console.log("SET_SELECTED_QUESTION_FOR_VOTE", action.payload);
-      return {
-        ...state,
-        selectedQuestionForVote: action.payload,
-      };
-    }
     case UPDATE_COMMENT_TOGGLE: {
       if (state.selectedCommentId !== null) {
         return { ...state, selectedCommentId: null };
@@ -113,16 +104,24 @@ export const questionReducer = (
         renderUpdateQuestion: false,
       };
     case VOTE_SELECTED_QUESTION: {
-      // let q = state.questions.filter((e) => e.id !== action.payload.id);
-      // q.push(action.payload);
-      // TODO => VOTES-ruu user_id-g pushlah
-      state.questions.forEach((e, i, arr) => {
-        if (e.id === action.payload.selectedQuestion.id) {
-          // e.votes.push(action.payload.user_id);
-          ++e.votes;
-        }
+      let selectedQuestion = action.payload.selectedQuestion,
+        idx,
+        user_id = action.payload.user_id;
+      let q = state.questions.filter((question, index) => {
+        if (selectedQuestion.id === question.id) idx = index;
+        return selectedQuestion.id !== question.id;
       });
-      return { ...state };
+      selectedQuestion.votes.includes(user_id)
+        ? (selectedQuestion.votes = selectedQuestion.votes.filter((vote, idx) => {
+            return vote !== user_id;
+          }))
+        : selectedQuestion.votes.push(user_id);
+
+      q.splice(idx, 0, selectedQuestion);
+
+      // TODO => VOTES-ruu user_id-g pushlah
+
+      return { ...state, questions: q };
     }
     case CREATE_QUESTION:
       return {

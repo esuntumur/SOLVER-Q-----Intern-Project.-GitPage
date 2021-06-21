@@ -11,7 +11,6 @@ import {
   updateQuestionToggle,
   voteSelectedQuestion,
   searchQuestion,
-  setSelectedQuestionForVote,
 } from "../../redux/actions/question";
 import CreateQuestion from "./CreateQuestion/index";
 import UpdateQuestion from "./UpdateQuestion/index";
@@ -23,6 +22,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.asyncVoteSelectedQuestion = this.asyncVoteSelectedQuestion.bind(this);
   }
   componentWillMount() {
     this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
@@ -35,8 +35,9 @@ class Home extends Component {
     await this.props.searchQuestion(event.target.search.value);
     // await this.props.setSelectedQuestion(i);
   }
-  async asyncSetSelectedQuestionForVote(i, user_id) {
+  async asyncVoteSelectedQuestion(i, user_id) {
     await this.props.voteSelectedQuestion(i, user_id);
+    // await this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
   }
 
   render() {
@@ -48,16 +49,10 @@ class Home extends Component {
       deleteSelectedQuestion,
       updateQuestionToggle,
       renderUpdateQuestion,
-      voteSelectedQuestion,
       getQuestionsByPageNumber,
+      voteSelectedQuestion,
     } = this.props;
-    let {
-      selectedQuestion,
-      maxPageQuestion,
-      currentPageQuestion,
-      selectedQuestionForVote,
-    } = this.props;
-    console.log(`Logged Output ~ selectedQuestionForVote`, selectedQuestionForVote);
+    let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
 
     const user_id = localStorage.getItem("user_id");
     // selectedQuestion.votes.includes(user_id);
@@ -67,18 +62,23 @@ class Home extends Component {
           <div className="row d-flex">
             {/*//*------------------NAVIGATION BAR------------------- */}
             <nav className="navbar navbar-expand-lg shadow py-4 rounded">
-              {/* LOGO NAME -> HOME */}
-              <div>
-                <img
-                      className="navbar-logo"
-                      src="./logo192.png"
-                      alt=""
-                      width="30"
-                      height="30"
-                    />
-                <a className="navbar-brand link-dark" href="/">
+              <div className="container-fluid">
+                {/* LOGO NAME -> HOME */}
+
+                <span
+                  className="navbar-brand navbar-name"
+                  href="/"
+                  onClick={backFromSelectedQuestion}
+                >
+                  <img
+                    className="navbar-logo"
+                    src="./logo192.png"
+                    alt=""
+                    width="30"
+                    height="30"
+                  />
                   SOLVER
-                </a>
+                </span>
                 {/* NAV TOGGLER in Mobile -> BUTTON */}
                 <button
                   className="navbar-toggler"
@@ -173,50 +173,59 @@ class Home extends Component {
                 href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
                 type="text/css"
               />
-              {/* ---------------АСУУЛТЫН ДЭЛГЭРЭНГҮЙ ХЭСЭГ--------------- */}
+              {/* //! ---------------QUESTION Detail ХЭСЭГ--------------- */}
               {selectedQuestion.user ? (
                 <div>
                   <div className="d-flex align-items-center">
                     <h3 className="q-header">
                       <b>{selectedQuestion.title}</b>
                     </h3>
-                    {/*  ----------BACK BUTTON---------------- */}
-                    <button
-                      className="btn btn-info btn-sm back-button"
-                      onClick={backFromSelectedQuestion}
-                    >
-                      {"Back"}
-                    </button>
                   </div>
                   <div className="flex align-items-start flex-column">
                     {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
                     <div className="d-flex align-items-start">
                       <div className="d-flex align-items-center flex-column mb-3 q-button">
                         {/*  ----------VOTE Question BUTTON---------------- */}
-                        selectedQuestion.user.id: {selectedQuestion.user.id}
-                        user_id: {user_id}
                         {user_id != selectedQuestion.user.id ? (
                           !selectedQuestion.votes.includes(user_id) ? (
                             <button
                               className="btn icon-brd"
-                              onClick={(e) => {
+                              onClick={() => {
                                 voteSelectedQuestion(selectedQuestion, user_id);
                               }}
                             >
                               {" "}
-                              <i className="fa fa-heart-o heart-icon">vote</i>
+                              <i className="fa fa-heart-o heart-icon"></i>
                             </button>
                           ) : (
-                            <button className="btn icon-brd" disabled>
-                              <i className="fa fa-heart heart-icon">voted</i>
+                            <button
+                              className="btn icon-brd"
+                              onClick={() => {
+                                voteSelectedQuestion(selectedQuestion, user_id);
+                              }}
+                            >
+                              <i className="fa fa-heart heart-icon"></i>
                             </button>
                           )
                         ) : null}
+                        {/* //! style changing */}
+                        {/* {i && i.votes && !i.votes.includes(user_id) ? (
+                          <button
+                            className="btn icon-brd"
+                            onClick={(e) => {
+                              // this.props.voteSelectedQuestion(i, user_id);
+                              this.asyncVoteSelectedQuestion(i, user_id);
+                            }}
+                          >
+                            <i className="fa fa-heart-o heart-icon"></i>
+                          </button>
+                        ) : (
+                          <button className="btn icon-brd" disabled>
+                            <i className="fa fa-heart heart-icon"></i>
+                          </button>
+                        )} */}
                         <button className="btn btn-lg">
                           <b>{selectedQuestion.votes.length}</b>
-                        </button>
-                        <button className="btn btn-lg">
-                          <i className="fa fa-chevron-down"></i>
                         </button>
                       </div>
                       <div className="q-content">{selectedQuestion.question}</div>
@@ -257,7 +266,7 @@ class Home extends Component {
                   ) : null}
                 </div>
               ) : (
-                // * ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
+                // ! ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
                 // questions &&
                 //   questions.length > 0 &&
                 questions.map((i, idx) => (
@@ -270,19 +279,22 @@ class Home extends Component {
                             <br />
                             <br />
                             {/* // TODO -> Style change */}
-                            {!i.votes.includes(user_id) ? (
+                            {i && i.votes && !i.votes.includes(user_id) ? (
                               <button
                                 className="btn icon-brd"
                                 onClick={(e) => {
-                                  // console.log("question ", i);
-                                  this.props.voteSelectedQuestion(i, user_id);
-                                  // this.asyncSetSelectedQuestionForVote(i, user_id);
+                                  this.asyncVoteSelectedQuestion(i, user_id);
                                 }}
                               >
                                 <i className="fa fa-heart-o heart-icon"></i>
                               </button>
                             ) : (
-                              <button className="btn icon-brd" disabled>
+                              <button
+                                className="btn icon-brd"
+                                onClick={(e) => {
+                                  this.asyncVoteSelectedQuestion(i, user_id);
+                                }}
+                              >
                                 <i className="fa fa-heart heart-icon"></i>
                               </button>
                             )}
@@ -352,7 +364,6 @@ const mapStateToProps = (state) => {
     renderUpdateQuestion: state.question.renderUpdateQuestion,
     maxPageQuestion: state.question.maxPageQuestion,
     currentPageQuestion: state.question.currentPageQuestion,
-    selectedQuestionForVote: state.question.selectedQuestionForVote,
   };
 };
 
@@ -366,7 +377,6 @@ const Container = connect(mapStateToProps, {
   updateQuestionToggle,
   voteSelectedQuestion,
   searchQuestion,
-  setSelectedQuestionForVote,
 })(Home);
 
 export default Container;

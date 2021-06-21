@@ -50,8 +50,6 @@ export class CommentList extends Component {
     );
   }
   async deleteCommentAsync(comment) {
-    console.log(`Logged Output ~ deleteCommentAsync`);
-
     await this.props.deleteComment(comment);
     await this.props.getCommentsByPageNumber(
       this.props.selectedQuestion,
