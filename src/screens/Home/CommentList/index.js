@@ -9,7 +9,7 @@ import {
   updateComment,
   updateCommentToggle,
 } from "../../../redux/actions/commentAction";
-
+import CommentEditor from "./CommentEditor";
 import "./commentList.scss";
 
 export class CommentList extends Component {
@@ -32,11 +32,14 @@ export class CommentList extends Component {
 
   async sendCommentAsync(event) {
     event.preventDefault();
-    await this.props.sendComment(this.props.selectedQuestion, event.target.answer.value);
-    await this.props.getCommentsByPageNumber(
-      this.props.selectedQuestion,
-      this.props.currentPageComment
-    );
+    // event.target.myFile.value
+    console.log(`Logged Output ~ event`, event);
+    console.log(`Logged Output ~ event.target.myFile.value`, event.target.myFile.value);
+    // await this.props.sendComment(this.props.selectedQuestion, event.target.answer.value);
+    // await this.props.getCommentsByPageNumber(
+    //   this.props.selectedQuestion,
+    //   this.props.currentPageComment
+    // );
   }
   async voteCommentAsync(comment) {
     await this.props.voteComment(
@@ -77,6 +80,7 @@ export class CommentList extends Component {
 
     return (
       <div>
+        <CommentEditor />;
         <link
           rel="stylesheet"
           href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
@@ -84,19 +88,30 @@ export class CommentList extends Component {
         />
         {/* //* Create COMMENT */}
         <form onSubmit={this.sendCommentAsync.bind(this)} className="flex-column">
-          <h4>Comment: </h4>
-          <div className="d-flex align-items-center">
-            <div className="q-comment">
+          <div className="row align-items-center">
+            <div className="col-2">
+              <h4>Comment: </h4>
+            </div>
+            <div className="col-7">
               <input type="text" name="answer" className="w-100 " />
             </div>
-            <div className="q-submit-btn">
+            <div className="col-3">
               <button className="btn comment-btn" type="submit">
                 <i className="fa fa-paper-plane comment-plane"></i>
               </button>
+              <input
+                type="file"
+                id="avatar"
+                name="myFile"
+                accept="image/png, image/jpeg"
+                multiple
+                onChange={(e) => {
+                  this.sendCommentAsync.bind(this)(e);
+                }}
+              />
             </div>
           </div>
         </form>
-
         {/* //* Comment LIST */}
         <div className="comments">
           {comments.map((comment, idx) => (
