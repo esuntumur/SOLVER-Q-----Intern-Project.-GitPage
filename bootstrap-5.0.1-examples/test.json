@@ -1,0 +1,19 @@
+{
+  "result": [
+    {
+      "id": 125,
+      "title": "hbabaabbaba",
+      "state": false,
+      "question": "<p>hbabaabbaba\ngfdgsfdhfsdhsdfdfddddddddgfdgsfdhfsdhsdfdfdddddddd\ngfdgsfdhfsdhsdfdfdddddddd\ngfdgsfdhfsdhsdfdfdddddddd\n<img src=\"http://res.cloudinary.com/djjq226km/image/upload/v1624352673/kkij4ygcmtrtqcwaz1yp.jpg\" alt=\"1703162.jpg\"></p>\n<ol>\n<li>dog</li>\n<li>cat</li>\n</ol>\n",
+      "user": {
+        "id": 9,
+        "username": "esoo",
+        "profile": "default.jpg"
+      },
+      "votes": [],
+      "comments": 0
+    }
+  ],
+  "maxPage": 1,
+  "currentPage": 1
+}

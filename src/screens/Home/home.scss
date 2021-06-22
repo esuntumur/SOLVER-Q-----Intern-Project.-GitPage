@@ -1,63 +1,72 @@
 .search-btn {
-    background-color: #618ab8;
-    color: #FFFFFF;
-    outline: none !important;
-    box-shadow: none !important;
+  background-color: #618ab8;
+  color: #ffffff;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .search-btn:hover {
-    background-color: #063970;
-    color: #FFFFFF;
+  background-color: #063970;
+  color: #ffffff;
 }
 
 .toggler-btn {
-    box-shadow: none !important;    
+  box-shadow: none !important;
+}
+.questionStyle img {
+  display: none;
+}
+.comment img {
+  display: flex;
+  justify-content: center;
+  max-width: 70%;
+  transform: translateX(27%);
+  text-align: center;
+}
+.profile {
+  background-color: #f8f9fa !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-.profile{
-    background-color:#f8f9fa !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-  
-  .profile:hover {
-    background-color: #618ab8 !important;
-    color: #FFFFFF !important;
-  }
+.profile:hover {
+  background-color: #618ab8 !important;
+  color: #ffffff !important;
+}
 
-.plus-btn{
-    background-color: #618ab8 !important;
-    color: #FFFFFF;
-    position: fixed;
-    right: 5%;
-    bottom: 10%;
-    z-index: 100;
-    height: 3em;
-    width: 3em;
-  }
-  
-  .plus-btn:hover {
-    background-color: #063970 !important;
-    color: #FFFFFF !important;
-  }
+.plus-btn {
+  background-color: #618ab8 !important;
+  color: #ffffff;
+  position: fixed;
+  right: 5%;
+  bottom: 10%;
+  z-index: 100;
+  height: 3em;
+  width: 3em;
+}
+
+.plus-btn:hover {
+  background-color: #063970 !important;
+  color: #ffffff !important;
+}
 
 .pg-btn {
-    color: #000000;
-    border: none !important;
+  color: #000000;
+  border: none !important;
 }
 
-  .pg-btn:focus {
-    background-color: #618ab8 !important;
-    color: #FFFFFF !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
+.pg-btn:focus {
+  background-color: #618ab8 !important;
+  color: #ffffff !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
 
-  .pg-btn:hover {
-    background-color: #618ab8 !important;
-    color: #FFFFFF !important;
-  }
+.pg-btn:hover {
+  background-color: #618ab8 !important;
+  color: #ffffff !important;
+}
 
 .q-vote-btn {
   color: #618ab8;
@@ -69,81 +78,80 @@
   box-shadow: none !important;
   outline: none !important;
 }
-  .form-btn:hover {
-    color: #618ab8 !important;
-  }
+.form-btn:hover {
+  color: #618ab8 !important;
+}
 
-  .card {
-    border: none;
-  }
-
+.card {
+  border: none;
+}
 
 // .profile:hover{
 //     background-color: rgb(132,164,200) !important;
 //     color: white !important;
 //   }
-  
+
 //   .profile {
 //     background-color: white !important;
 //     border: none !important;
 //   }
-  
+
 //   .navbar-logo {
 //     margin-right: 5px;
 //   }
-  
+
 //   .navbar-form {
 //     width: 200% !important;
 //   }
-  
+
 //   .pg-buttons {
 //     margin-bottom: 10px;
 //   }
-  
+
 //   .pg-btn {
 //     margin-right: -12px;
 //   }
-  
+
 //   .questions-container {
 //     margin: 2em;
 //   }
-  
+
 //   .q-header {
 //     margin: 1em;
 //   }
-  
+
 //   .q-button {
 //     margin: 0 1em 1em 3em;
 //   }
-  
+
 //   .q-content {
 //     margin: 1em;
 //   }
-  
+
 //   .q-comments {
 //     margin-left: 4em;
 //   }
-  
+
 //   .form-button {
 //     background-color: rgb(132,164,200) !important;
 //   }
-  
+
 //   .heart-icon {
 //     color: rgba(0, 221, 255, 255) !important;
 //   }
-  
+
 //   .icon-brd {
 //     border-color: rgba(0, 221, 255, 255) !important;
 //   }
-  
+
 //   .back-button {
 //     height: 40px !important;
 //   }
-  
+
 //   .plus-icon {
 //     color: white !important;
 //   }
-  
+
 //   .plus-btn {
 //     background-color: rgb(132,164,200) !important;
 //     position: fixed;
@@ -153,12 +161,11 @@
 //     height: 3em;
 //     width: 3em;
 //   }
-  
+
 //   .plus-btn:hover {
 //     background-color: rgb(32,60,100) !important;
 //   }
-  
+
 //   .questions-container {
 //     position: relative;
 //   }
-  

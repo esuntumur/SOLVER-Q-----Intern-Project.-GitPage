@@ -52,7 +52,7 @@ export class CommentEditor extends React.Component {
   render() {
     console.log(this.props);
     return (
-      <div style={{ height: "400px" }}>
+      <div style={{ height: "400px" }} key={Math.random(500)}>
         <MdEditor
           onImageUpload={this.onImageUpload}
           renderHTML={(text) => this.mdParser.render(text)}
@@ -62,8 +62,10 @@ export class CommentEditor extends React.Component {
           }}
           ref={this.mdEditor}
         />
-        <button className="btn btn-lg mt-3 comment-post-btn"
-          onClick={this.postComment.bind(this)}>
+        <button
+          className="btn btn-lg mt-3 comment-post-btn"
+          onClick={this.postComment.bind(this)}
+        >
           Post
         </button>
         <hr />

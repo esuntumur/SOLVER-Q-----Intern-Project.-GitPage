@@ -17,13 +17,14 @@ import QuestionEditor from "./CreateQuestion/QuestionEditor";
 import UpdateQuestion from "./UpdateQuestion/index";
 import CommentList from "./CommentList";
 import "./home.scss";
-import "./logo192.png";
+// import "./logo192.png";
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {};
     this.asyncVoteSelectedQuestion = this.asyncVoteSelectedQuestion.bind(this);
+    this.searchSubmitHandler = this.searchSubmitHandler.bind(this);
   }
   componentWillMount() {
     this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
@@ -33,12 +34,11 @@ class Home extends Component {
   }
   async searchSubmitHandler(event) {
     event.preventDefault();
-    await this.props.searchQuestion(event.target.search.value);
+    await this.props.searchQuestion(event.target.searchValue.value);
     // await this.props.setSelectedQuestion(i);
   }
   async asyncVoteSelectedQuestion(i, user_id) {
     await this.props.voteSelectedQuestion(i, user_id);
-    // await this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
   }
 
   render() {
@@ -69,7 +69,6 @@ class Home extends Component {
           href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
           type="text/css"
         />
-
         {/* CREATE QUESTION -> BUTTON*/}
         <div>
           <ReactTooltip id="createQtip" place="top" effect="solid">
@@ -87,24 +86,20 @@ class Home extends Component {
             <i className="fa fa-plus plus-icon"></i>
           </button>
           {/* CREATE QUESTION -> FORM */}
-          {this.props.renderCreateQuestion && (
-            <QuestionEditor createQuestionToggle={createQuestionToggle} />
-          )}
+          {this.props.renderCreateQuestion && <QuestionEditor />}
         </div>
-
         <div className="container-fluid">
           <div className="row d-flex">
             {/*//*------------------NAVIGATION BAR------------------- */}
             <nav className="navbar navbar-expand-lg py-4 shadow rounded navbar-light bg-light">
               <div className="container-fluid">
                 {/* LOGO */}
-                <a
+                <span
                   className="navbar-brand link-dark"
-                  href="/"
                   onClick={backFromSelectedQuestion}
                 >
                   <img src="./logo192.png" alt="Logo" width="50" height="50" />
-                </a>
+                </span>
                 {/* NAVBAR TOGGLER IN MOBILE -> BUTTON */}
                 <button
                   className="navbar-toggler toggler-btn"
@@ -122,12 +117,16 @@ class Home extends Component {
                   {/*//*-----Search BAR------ */}
                   <ul className="navbar-nav">
                     <li className="nav-item">
-                      <form className="d-flex form-horizontal">
+                      <form
+                        className="d-flex form-horizontal"
+                        onSubmit={this.searchSubmitHandler}
+                      >
                         <input
                           className="form-control"
                           type="search"
                           placeholder="Search..."
                           aria-label="Search"
+                          name="searchValue"
                         />
                         <button className="btn btn-sm search-btn" type="submit">
                           <i className="fa fa-search"></i>
@@ -193,12 +192,16 @@ class Home extends Component {
                           selectedQuestion.votes &&
                           !selectedQuestion.votes.includes(user_id) ? (
                             <div>
-                              <ReactTooltip id="heart-o-tip" place="right" effect="solid">
+                              <ReactTooltip
+                                id="heart-o-tip2"
+                                place="right"
+                                effect="solid"
+                              >
                                 Vote
                               </ReactTooltip>
                               <button
                                 data-tip
-                                data-for="heart-o-tip"
+                                data-for="heart-o-tip2"
                                 className="btn q-vote-btn"
                                 onClick={(e) => {
                                   this.asyncVoteSelectedQuestion(
@@ -212,9 +215,12 @@ class Home extends Component {
                             </div>
                           ) : (
                             <div>
+                              <ReactTooltip id="heart-tip2" place="right" effect="solid">
+                                Unvote
+                              </ReactTooltip>
                               <button
                                 data-tip
-                                data-for="heart-tip"
+                                data-for="heart-tip2"
                                 className="btn q-vote-btn"
                                 onClick={(e) => {
                                   this.asyncVoteSelectedQuestion(
@@ -252,6 +258,8 @@ class Home extends Component {
                 </div>
               ) : (
                 // ! ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
+                questions &&
+                questions.length > 0 &&
                 questions.map((i, idx) => (
                   <div key={idx}>
                     <div className="card-group shadow p-5 m-5 border rounded">
@@ -260,7 +268,6 @@ class Home extends Component {
                           <div className="card-body">
                             <div className="card-text">
                               <span>{i.votes.length} </span>
-                              {i.votes.length >= 2 ? "votes" : "vote"}
                               {i && i.votes && !i.votes.includes(user_id) ? (
                                 <div>
                                   <ReactTooltip
@@ -283,6 +290,13 @@ class Home extends Component {
                                 </div>
                               ) : (
                                 <div>
+                                  <ReactTooltip
+                                    id="heart-tip"
+                                    place="bottom"
+                                    effect="solid"
+                                  >
+                                    Unvote
+                                  </ReactTooltip>
                                   <button
                                     data-tip
                                     data-for="heart-tip"
@@ -313,8 +327,14 @@ class Home extends Component {
                             >
                               <b>{i.title}</b>
                             </h5>
+                            <div
+                              className="questionStyle card-body"
+                              dangerouslySetInnerHTML={{
+                                __html: i.question,
+                              }}
+                            ></div>
                             <p className="card-text">
-                              {i.question.substring(0, 300)}
+                              {/* {i.question.substring(0, 300)} */}
                               {i.question.length >= 300 ? " ..." : ""}
                             </p>
                             <p className="card-text text-end">
@@ -371,11 +391,13 @@ class Home extends Component {
                         <span aria-hidden="true">&laquo;</span>
                       </button>
                     </li>
-                    {pageNum.map((number, idx) => (
-                      <li key={idx} className="page-item">
-                        <button className="page-link pg-btn">{number}</button>
-                      </li>
-                    ))}
+                    {pageNum &&
+                      pageNum.length > 0 &&
+                      pageNum.map((number, idx) => (
+                        <li key={idx} className="page-item">
+                          <button className="page-link pg-btn">{number}</button>
+                        </li>
+                      ))}
                     <li>
                       <button
                         type="button"

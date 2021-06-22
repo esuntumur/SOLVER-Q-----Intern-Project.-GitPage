@@ -8,7 +8,10 @@ import HandleFullScreen from "./plugins/HandleFullScreen";
 import { connect } from "react-redux";
 
 import "./style.scss";
-import { createQuestion, createQuestionToggle } from "../../../redux/actions/question";
+import {
+  createQuestion,
+  getQuestionsByPageNumber,
+} from "../../../redux/actions/question";
 import { setHtmlString, reqImageUrl } from "../../../redux/actions/commentAction";
 MdEditor.use(HandleFullScreen);
 
@@ -39,7 +42,9 @@ export class QuestionEditor extends React.Component {
       },
     };
     await this.props.createQuestion(payload);
-    await this.props.createQuestionToggle();
+    this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
+
+    console.log(`Logged Output ~ this.props`, this.props);
   }
 
   render() {
@@ -60,13 +65,13 @@ export class QuestionEditor extends React.Component {
             </div>
             <div className="form-group">
               <label className="sr-only">Question details</label>
-              <div style={{ height: "500px", width: "720px" }}>
+              <div style={{ height: "22.5rem", width: "58.5rem" }} className="mdEditor">
                 <MdEditor
                   onImageUpload={this.onImageUpload}
                   renderHTML={(text) => this.mdParser.render(text)}
                   onChange={this.handleEditorChange}
                   style={{
-                    height: "500px",
+                    height: "22.5rem",
                   }}
                   ref={this.mdEditor}
                 />
@@ -88,13 +93,15 @@ const mapStateToProps = (state) => {
     imageUrl: state.question.imageUrl,
     htmlString: state.question.htmlString,
     selectedQuestion: state.question.selectedQuestion,
+    currentPageQuestion: state.question.currentPageQuestion,
   };
 };
+
 const mapDispatchToProps = {
   setHtmlString,
   reqImageUrl,
   createQuestion,
-  createQuestionToggle,
+  getQuestionsByPageNumber,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionEditor);

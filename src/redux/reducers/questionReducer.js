@@ -106,6 +106,7 @@ export const questionReducer = (
         questions: action.payload.questions,
         maxPageQuestion: action.payload.maxPage,
         currentPageQuestion: action.payload.currentPage,
+        selectedQuestion: false,
       };
     }
     case SET_SELECTED_QUESTION:
