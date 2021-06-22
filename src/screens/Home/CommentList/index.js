@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
 import UpdateComment from "./UpdateComment";
 import {
@@ -87,80 +88,102 @@ export class CommentList extends Component {
           type="text/css"
         />
         {/* //* Create COMMENT */}
-        <CommentEditor />;{/* //* Comment LIST */}
-        <div className="comments">
+        <CommentEditor />{/* //* Comment LIST */}
+        <div className="mt-5">
           {comments.map((comment, idx) => (
             <div className="card mb-4" key={idx}>
-              <div className="card-group">
+              <div className="card-group shadow p-5 m-3 border rounded">
                 {/* //* Comment -> VOTE, count && user name, profile */}
-                <div className="card-1 text-white rounded">
-                  <div className="card-body">
-                    {/* <img src="..." alt="..." /> */}
-                    <div>{comment.votes.length}votes</div>
-                    <div>
-                      {/* //* VOTE Comment */}
-                      {!comment.votes.includes(user_id) ? (
-                        <button
-                          className="btn btn-info vote-btn"
-                          onClick={() => {
-                            this.voteCommentAsync.bind(this)(comment);
-                          }}
-                        >
-                          Vote
-                        </button>
-                      ) : (
-                        <button className="btn btn-info vote-btn" disabled>
-                          Voted
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* //* Comment -> Answer TEXT */}
-                <div className="card rounded card-2">
-                  <div className="card-body">
-                    <div
-                      className="comment"
-                      dangerouslySetInnerHTML={{ __html: comment.answer }}
-                    ></div>
-                  </div>
-                </div>
-
-                <div className="card align-items-center">
-                  {/* //* Comment -> Delete, Update -> buttons */}
-                  {comment.user.id === user_id && (
-                    <div className="col-1.5">
-                      <div className="row">
-                        <button
-                          className="comment-del-up rounded btn btn-info shadow"
-                          type="button"
-                          onClick={() => {
-                            this.deleteCommentAsync.bind(this)(comment);
-                          }}
-                        >
-                          Delete
-                        </button>{" "}
-                      </div>
-                      <div className="row ">
-                        {" "}
-                        <button
-                          className="comment-del-up rounded btn btn-info shadow"
-                          type="button"
-                          onClick={() => {
-                            updateCommentToggle(comment.id);
-                          }}
-                        >
-                          Update
-                        </button>{" "}
-                        <div className="d-flex">
-                          {selectedCommentId === comment.id ? (
-                            <UpdateComment selectedCommentId={selectedCommentId} />
-                          ) : null}
+                <div className="col-1">
+                  <div className="card text-center">
+                    <div className="card-body">
+                      <div className="card-text">
+                        <span>{comment.votes.length} </span>
+                        {comment.votes.length >= 2 ? (
+                          "votes"
+                        ):(
+                          "vote"
+                        )}                    
+                        <div>
+                          {/* //* VOTE Comment */}
+                          {!comment.votes.includes(user_id) ? (
+                            <div>
+                              <ReactTooltip id="heart-o-tip" place="bottom" effect="solid">
+                                Vote this comment
+                              </ReactTooltip>
+                              <button
+                                data-tip
+                                data-for="heart-o-tip"
+                                className="btn c-vote-btn"
+                                onClick={() => {
+                                  this.voteCommentAsync.bind(this)(comment);
+                                }}
+                              >
+                                <i className="fa fa-heart-o"></i>
+                              </button>
+                            </div>
+                          ) : (
+                            <button className="btn c-vote-btn"
+                                    onClick={() => {
+                                      this.voteCommentAsync.bind(this)(comment);
+                            }}>
+                              <i className="fa fa-heart"></i>
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
-                  )}
+                  </div>
+                </div>
+                
+                <div className="col-9">
+                  {/* //* Comment -> Answer TEXT */}
+                  <div className="card">
+                    <div className="card-body">
+                      <div
+                        className="comment"
+                        dangerouslySetInnerHTML={{ __html: comment.answer }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-2">
+                  <div className="card align-items-end">
+                    {/* //* Comment -> Delete, Update -> buttons */}
+                    {comment.user.id === user_id && (
+                      <div>
+                        <div className="row">
+                          <button
+                            className="rounded btn shadow"
+                            type="button"
+                            onClick={() => {
+                              this.deleteCommentAsync.bind(this)(comment);
+                            }}
+                          >
+                            Delete
+                          </button>{" "}
+                        </div>
+                        <br/>
+                        <div className="row">
+                          {" "}
+                          <button
+                            className="rounded btn shadow"
+                            type="button"
+                            onClick={() => {
+                              updateCommentToggle(comment.id);
+                            }}
+                          >
+                            Update
+                          </button>{" "}
+                          <div className="d-flex">
+                            {selectedCommentId === comment.id ? (
+                              <UpdateComment selectedCommentId={selectedCommentId} />
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

@@ -69,7 +69,30 @@ class Home extends Component {
           rel="stylesheet"
           href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
           type="text/css"
-        />        
+        />   
+
+        {/* CREATE QUESTION -> BUTTON*/}    
+        <div>
+          <ReactTooltip id="createQtip" place="top" effect="solid">
+            Create Question
+          </ReactTooltip>
+          <button
+            data-tip
+            data-for="createQtip"
+            type="button"
+            className="btn btn-lg btn-floating plus-btn rounded-circle shadow"
+            onClick={() => {
+              createQuestionToggle();
+            }}
+          >
+            <i className="fa fa-plus plus-icon"></i>
+          </button>
+          {/* CREATE QUESTION -> FORM */}
+          {this.props.renderCreateQuestion && (
+            <CreateQuestion createQuestionToggle={createQuestionToggle} />
+          )}
+        </div>  
+
         <div className="container-fluid">
           <div className="row d-flex">            
             {/*//*------------------NAVIGATION BAR------------------- */}
@@ -137,28 +160,7 @@ class Home extends Component {
                   </ul>
                 </div>
               </div>
-            </nav>    
-            {/* CREATE QUESTION -> BUTTON*/}    
-            <div>
-              <ReactTooltip id="createQtip" place="top" effect="solid">
-                Create Question
-              </ReactTooltip>
-              <button
-                data-tip
-                data-for="createQtip"
-                type="button"
-                className="btn btn-lg btn-floating plus-btn rounded-circle shadow"
-                onClick={() => {
-                  createQuestionToggle();
-                }}
-              >
-                <i className="fa fa-plus plus-icon"></i>
-              </button>
-              {/* CREATE QUESTION -> FORM */}
-              {this.props.renderCreateQuestion && (
-                <CreateQuestion createQuestionToggle={createQuestionToggle} />
-              )}
-            </div>            
+            </nav>              
 
             {/*//*------------------BODY------------------- */}
             <div>
@@ -167,7 +169,7 @@ class Home extends Component {
                 <div className="container-fluid">
                   <div className="card mt-5 ms-5 me-5">
                     <div className="card-body">
-                      <h4 className="card-title">{selectedQuestion.title}</h4>
+                      <h3 className="card-title"><b>{selectedQuestion.title}</b></h3>
                       <div className="card-text row align-items-center">
                         <div className="col-auto">
                           <span className="text-secondary">{selectedQuestion.votes.length} </span>
@@ -219,129 +221,21 @@ class Home extends Component {
                     <div className="card-body">
                       {selectedQuestion.question}
                     </div>
-                  </div>
-                  <div className="card ms-5 me-5 mb-3">
-                    <img className="card-img-top" src="" alt="Question image" />
                     <hr />
-                  </div> 
-                  {/* <div className="card-group ms-5 mt-3">
-                    <h5 className="ms-5"><b>Add a comment:</b></h5>
-                    <div className="col-sm-2">
-                      <div className="card text-center">
-                        <div className="card-body">
-                          <div className="card-text">
-                            <button className="btn"></button>
-                            <button></button>
-                          </div>
-                        </div>
-                      </div>
+                  </div>
+                  <div className="ms-5 me-5">
+                    <h5 className="ms-3 mt-3">Add a comment:</h5>
+                    <div className="ms-3 mt-3">
+                      <CommentList selectedQuestion={selectedQuestion}
+                                  user_id ={user_id}/>
                     </div>
-                    <div className="card"></div>
-                  </div>                                               */}
-                  <div className="card-group shadow p-5 m-5 border"></div>
+                  </div>
                 </div>
               ):(
-                ""
-              )}
-
-
-
-              {selectedQuestion.user ? (
-                <div className="container-fluid m-5">
-                  <div className="d-flex align-items-center">
-                    <h3 className="q-header">
-                      <b>{selectedQuestion.title}</b>
-                    </h3>
-                  </div>
-                  <div className="flex align-items-start flex-column">
-                    {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
-                    <div className="d-flex align-items-start">
-                      <div className="d-flex align-items-center flex-column mb-3 q-button">
-                        {/*  ----------VOTE Question BUTTON---------------- */}
-                        {user_id != selectedQuestion.user.id ? (
-                          !selectedQuestion.votes.includes(user_id) ? (
-                            <button
-                              className="btn icon-brd"
-                              onClick={() => {
-                                voteSelectedQuestion(selectedQuestion, user_id);
-                              }}
-                            >
-                              {" "}
-                              <i className="fa fa-heart-o heart-icon"></i>
-                            </button>
-                          ) : (
-                            <button
-                              className="btn icon-brd"
-                              onClick={() => {
-                                voteSelectedQuestion(selectedQuestion, user_id);
-                              }}
-                            >
-                              <i className="fa fa-heart heart-icon"></i>
-                            </button>
-                          )
-                        ) : null}
-                        {/* //! style changing */}
-                        {/* {i && i.votes && !i.votes.includes(user_id) ? (
-                          <button
-                            className="btn icon-brd"
-                            onClick={(e) => {
-                              // this.props.voteSelectedQuestion(i, user_id);
-                              this.asyncVoteSelectedQuestion(i, user_id);
-                            }}
-                          >
-                            <i className="fa fa-heart-o heart-icon"></i>
-                          </button>
-                        ) : (
-                          <button className="btn icon-brd" disabled>
-                            <i className="fa fa-heart heart-icon"></i>
-                          </button>
-                        )} */}
-                        <button className="btn btn-lg">
-                          <b>{selectedQuestion.votes.length}</b>
-                        </button>
-                      </div>
-                      <div className="q-content">{selectedQuestion.question}</div>
-                    </div>
-                    <div className="q-comments">
-                      {/*  ----------COMMENT LIST SECTION,  SUBMIT EDITOR---------------- */}
-                      {
-                        <CommentList
-                          selectedQuestion={selectedQuestion}
-                          user_id={user_id}
-                        />
-                      }
-                    </div>
-                  </div>
-                  {/*  ----------DELETE Question BUTTON---------------- */}
-                  {user_id == selectedQuestion.user.id && (
-                    <button
-                      onClick={() => {
-                        deleteSelectedQuestion(selectedQuestion);
-                        backFromSelectedQuestion();
-                      }}
-                    >
-                      {"Delete this question "}
-                    </button>
-                  )}
-                  {/*  ----------update Question BUTTON---------------- */}
-                  {user_id == selectedQuestion.user.id && (
-                    <button onClick={updateQuestionToggle}>
-                      {"Update this question "}
-                    </button>
-                  )}
-                  {/*  ----------update Question FORM---------------- */}
-                  {renderUpdateQuestion ? (
-                    <UpdateQuestion
-                      selectedQuestion={selectedQuestion}
-                      backFromSelectedQuestion={backFromSelectedQuestion}
-                    />
-                  ) : null}
-                </div>
-              ) : (
                 // ! ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
                 questions.map((i, idx) => (
                   <div key={idx}>
-                    <div className="card-group shadow p-5 m-5 border">
+                    <div className="card-group shadow p-5 m-5 border rounded">
                       <div className="col-sm-2">
                         <div className="card text-center">
                           <div className="card-body">

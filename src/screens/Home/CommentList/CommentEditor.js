@@ -13,6 +13,7 @@ import {
   setHtmlString,
 } from "../../../redux/actions/commentAction";
 import { connect } from "react-redux";
+import "./commentList.scss";
 MdEditor.use(MyCounterA, {
   start: 2,
 });
@@ -51,17 +52,20 @@ export class CommentEditor extends React.Component {
   render() {
     console.log(this.props);
     return (
-      <div style={{ height: "500px" }}>
+      <div style={{ height: "350px" }}>
         <MdEditor
           onImageUpload={this.onImageUpload}
           renderHTML={(text) => this.mdParser.render(text)}
           onChange={this.handleEditorChange}
           style={{
-            height: "500px",
+            height: "300px",
           }}
           ref={this.mdEditor}
         />
-        <button onClick={this.postComment.bind(this)}>post comment</button>
+        <button className="btn btn-lg mt-3 comment-post-btn"
+          onClick={this.postComment.bind(this)}>
+          Post
+        </button>
       </div>
     );
   }
