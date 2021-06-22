@@ -13,12 +13,11 @@ import {
   voteSelectedQuestion,
   searchQuestion,
 } from "../../redux/actions/question";
-import CreateQuestion from "./CreateQuestion/index";
+import QuestionEditor from "./CreateQuestion/QuestionEditor";
 import UpdateQuestion from "./UpdateQuestion/index";
 import CommentList from "./CommentList";
 import "./home.scss";
 import "./logo192.png";
-
 
 class Home extends Component {
   constructor(props) {
@@ -59,7 +58,7 @@ class Home extends Component {
     const user_id = localStorage.getItem("user_id");
     const pageNum = [];
 
-    for (let i=1; i <= maxPageQuestion; i++) {
+    for (let i = 1; i <= maxPageQuestion; i++) {
       pageNum.push(i);
     }
     // selectedQuestion.votes.includes(user_id);
@@ -69,44 +68,45 @@ class Home extends Component {
           rel="stylesheet"
           href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
           type="text/css"
-        />        
+        />
         <div className="container-fluid">
-          <div className="row d-flex">            
+          <div className="row d-flex">
             {/*//*------------------NAVIGATION BAR------------------- */}
             <nav className="navbar navbar-expand-lg py-4 shadow rounded navbar-light bg-light">
               <div className="container-fluid">
                 {/* LOGO */}
-                <a className="navbar-brand link-dark"
+                <a
+                  className="navbar-brand link-dark"
                   href="/"
-                  onClick={backFromSelectedQuestion}>
-                  <img src="./logo192.png"
-                      alt="Logo"
-                      width="50"
-                      height="50"/>
+                  onClick={backFromSelectedQuestion}
+                >
+                  <img src="./logo192.png" alt="Logo" width="50" height="50" />
                 </a>
                 {/* NAVBAR TOGGLER IN MOBILE -> BUTTON */}
-                <button className="navbar-toggler toggler-btn"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
+                <button
+                  className="navbar-toggler toggler-btn"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                >
                   <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse" 
-                     id="navbarSupportedContent">
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
                   <br />
                   {/*//*-----Search BAR------ */}
                   <ul className="navbar-nav">
                     <li className="nav-item">
                       <form className="d-flex form-horizontal">
-                        <input className="form-control" 
-                               type="search"
-                               placeholder="Search..."
-                               aria-label="Search" />
-                        <button className="btn btn-sm search-btn"
-                                type="submit">
+                        <input
+                          className="form-control"
+                          type="search"
+                          placeholder="Search..."
+                          aria-label="Search"
+                        />
+                        <button className="btn btn-sm search-btn" type="submit">
                           <i className="fa fa-search"></i>
                         </button>
                       </form>
@@ -116,20 +116,27 @@ class Home extends Component {
                   {/* PROFILE -> DROPDOWN BUTTON */}
                   <ul className="navbar-nav ms-auto">
                     <li className="nav-item dropdown">
-                      <button className="navbar-brand btn dropdown-toggle profile rounded"
-                         id="navbarDropdownMenu"
-                         data-bs-toggle="dropdown"
-                         aria-haspopup="true"
-                         aria-expanded="false">
+                      <button
+                        className="navbar-brand btn dropdown-toggle profile rounded"
+                        id="navbarDropdownMenu"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
                         Profile
                       </button>
-                      <div className="dropdown-menu dropdown-menu-lg-end" 
-                           aria-labelledby="navbarDropdownMenu">
+                      <div
+                        className="dropdown-menu dropdown-menu-lg-end"
+                        aria-labelledby="navbarDropdownMenu"
+                      >
                         <p className="dropdown-item">User ID: {user_id}</p>
                         <div className="dropdown-divider"></div>
-                        <button className="btn dropdown-item"
-                           onClick={() => {
-                           logoutUser();}}>
+                        <button
+                          className="btn dropdown-item"
+                          onClick={() => {
+                            logoutUser();
+                          }}
+                        >
                           Log Out
                         </button>
                       </div>
@@ -137,8 +144,8 @@ class Home extends Component {
                   </ul>
                 </div>
               </div>
-            </nav>    
-            {/* CREATE QUESTION -> BUTTON*/}    
+            </nav>
+            {/* CREATE QUESTION -> BUTTON*/}
             <div>
               <ReactTooltip id="createQtip" place="top" effect="solid">
                 Create Question
@@ -156,9 +163,9 @@ class Home extends Component {
               </button>
               {/* CREATE QUESTION -> FORM */}
               {this.props.renderCreateQuestion && (
-                <CreateQuestion createQuestionToggle={createQuestionToggle} />
+                <QuestionEditor createQuestionToggle={createQuestionToggle} />
               )}
-            </div>            
+            </div>
 
             {/*//*------------------BODY------------------- */}
             <div>
@@ -170,17 +177,17 @@ class Home extends Component {
                       <h4 className="card-title">{selectedQuestion.title}</h4>
                       <div className="card-text row align-items-center">
                         <div className="col-auto">
-                          <span className="text-secondary">{selectedQuestion.votes.length} </span>
                           <span className="text-secondary">
-                            {selectedQuestion.votes.length >= 2 ? (
-                              "votes"
-                            ):(
-                              "vote"
-                            )}
+                            {selectedQuestion.votes.length}{" "}
+                          </span>
+                          <span className="text-secondary">
+                            {selectedQuestion.votes.length >= 2 ? "votes" : "vote"}
                           </span>
                         </div>
                         <span className="col-auto">
-                          {selectedQuestion && selectedQuestion.votes && !selectedQuestion.votes.includes(user_id) ? (
+                          {selectedQuestion &&
+                          selectedQuestion.votes &&
+                          !selectedQuestion.votes.includes(user_id) ? (
                             <div>
                               <ReactTooltip id="heart-o-tip" place="right" effect="solid">
                                 Vote
@@ -190,11 +197,14 @@ class Home extends Component {
                                 data-for="heart-o-tip"
                                 className="btn q-vote-btn"
                                 onClick={(e) => {
-                                  this.asyncVoteSelectedQuestion(selectedQuestion, user_id);
+                                  this.asyncVoteSelectedQuestion(
+                                    selectedQuestion,
+                                    user_id
+                                  );
                                 }}
                               >
                                 <i className="fa fa-heart-o"></i>
-                              </button>                                  
+                              </button>
                             </div>
                           ) : (
                             <div>
@@ -203,48 +213,33 @@ class Home extends Component {
                                 data-for="heart-tip"
                                 className="btn q-vote-btn"
                                 onClick={(e) => {
-                                  this.asyncVoteSelectedQuestion(selectedQuestion, user_id);
+                                  this.asyncVoteSelectedQuestion(
+                                    selectedQuestion,
+                                    user_id
+                                  );
                                 }}
                               >
                                 <i className="fa fa-heart"></i>
                               </button>
                             </div>
-                          )}   
-                        </span>                       
+                          )}
+                        </span>
                       </div>
                       <hr />
                     </div>
                   </div>
                   <div className="card ms-5 me-5">
-                    <div className="card-body">
-                      {selectedQuestion.question}
-                    </div>
+                    <div
+                      className="comment"
+                      dangerouslySetInnerHTML={{ __html: selectedQuestion.question }}
+                    ></div>
                   </div>
-                  <div className="card ms-5 me-5 mb-3">
-                    <img className="card-img-top" src="" alt="Question image" />
-                    <hr />
-                  </div> 
-                  {/* <div className="card-group ms-5 mt-3">
-                    <h5 className="ms-5"><b>Add a comment:</b></h5>
-                    <div className="col-sm-2">
-                      <div className="card text-center">
-                        <div className="card-body">
-                          <div className="card-text">
-                            <button className="btn"></button>
-                            <button></button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card"></div>
-                  </div>                                               */}
+                  {/*  aa */}
                   <div className="card-group shadow p-5 m-5 border"></div>
                 </div>
-              ):(
+              ) : (
                 ""
               )}
-
-
 
               {selectedQuestion.user ? (
                 <div className="container-fluid m-5">
@@ -347,14 +342,14 @@ class Home extends Component {
                           <div className="card-body">
                             <div className="card-text">
                               <span>{i.votes.length} </span>
-                              {i.votes.length >= 2 ? (
-                                "votes"
-                              ):(
-                                "vote"
-                              )}
+                              {i.votes.length >= 2 ? "votes" : "vote"}
                               {i && i.votes && !i.votes.includes(user_id) ? (
                                 <div>
-                                  <ReactTooltip id="heart-o-tip" place="bottom" effect="solid">
+                                  <ReactTooltip
+                                    id="heart-o-tip"
+                                    place="bottom"
+                                    effect="solid"
+                                  >
                                     Vote
                                   </ReactTooltip>
                                   <button
@@ -366,7 +361,7 @@ class Home extends Component {
                                     }}
                                   >
                                     <i className="fa fa-heart-o"></i>
-                                  </button>                                  
+                                  </button>
                                 </div>
                               ) : (
                                 <div>
@@ -381,16 +376,12 @@ class Home extends Component {
                                     <i className="fa fa-heart"></i>
                                   </button>
                                 </div>
-                              )}                              
+                              )}
                             </div>
                             <hr />
                             <p className="card-text">
                               <span>{i.comments} </span>
-                              {i.comments >= 2 ? (
-                                "answers"
-                              ):(
-                                "answer"
-                              )}
+                              {i.comments >= 2 ? "answers" : "answer"}
                             </p>
                           </div>
                         </div>
@@ -398,25 +389,23 @@ class Home extends Component {
                       <div className="col-sm-10">
                         <div className="card">
                           <div className="card-body">
-                            <h5 className="card-title"
-                                onClick={() => this.props.setSelectedQuestion(i)}>
+                            <h5
+                              className="card-title"
+                              onClick={() => this.props.setSelectedQuestion(i)}
+                            >
                               <b>{i.title}</b>
                             </h5>
                             <p className="card-text">
                               {i.question.substring(0, 300)}
-                              {i.question.length >= 300 ? (
-                                " ..."
-                              ):(
-                                ""
-                              )}
+                              {i.question.length >= 300 ? " ..." : ""}
                             </p>
                             <p className="card-text text-end">
                               <i>by </i>
                               <b> {i.user.username}</b>
                             </p>
                           </div>
-                        </div> 
-                      </div>                     
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))
@@ -456,23 +445,25 @@ class Home extends Component {
                 <div>
                   <ul className="pagination justify-content-center">
                     <li>
-                      <button type="button"
-                              className="btn pg-btn"
-                              onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}>
+                      <button
+                        type="button"
+                        className="btn pg-btn"
+                        onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
+                      >
                         <span aria-hidden="true">&laquo;</span>
                       </button>
                     </li>
-                    {pageNum.map(number => (
+                    {pageNum.map((number) => (
                       <li key={number} className="page-item">
-                        <button className="page-link pg-btn">
-                          {number}
-                        </button>
+                        <button className="page-link pg-btn">{number}</button>
                       </li>
                     ))}
                     <li>
-                      <button type="button"
-                              className="btn pg-btn"
-                              onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}>
+                      <button
+                        type="button"
+                        className="btn pg-btn"
+                        onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
+                      >
                         <span aria-hidden="true">&raquo;</span>
                       </button>
                     </li>
