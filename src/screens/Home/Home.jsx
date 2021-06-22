@@ -88,7 +88,7 @@ class Home extends Component {
           </button>
           {/* CREATE QUESTION -> FORM */}
           {this.props.renderCreateQuestion && (
-            <CreateQuestion createQuestionToggle={createQuestionToggle} />
+            <QuestionEditor createQuestionToggle={createQuestionToggle} />
           )}
         </div>  
 
@@ -235,22 +235,10 @@ class Home extends Component {
                       className="comment card-body"
                       dangerouslySetInnerHTML={{ __html: selectedQuestion.question }}
                     ></div>
+                    <hr />
                   </div>
                   {/*  aa */}
-                  <div className="card-group shadow p-5 m-5 border"></div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {selectedQuestion.user ? (
-                <div className="container-fluid m-5">
-                  <div className="d-flex align-items-center">
-                    <h3 className="q-header">
-                      <b>{selectedQuestion.title}</b>
-                    </h3>
-                  </div>
-                  <div className="ms-5 me-5">
+                  <div className="ms-5 me-5 mt-5">
                     <h5 className="ms-3 mt-3">Add a comment:</h5>
                     <div className="ms-3 mt-3">
                       <CommentList selectedQuestion={selectedQuestion}
