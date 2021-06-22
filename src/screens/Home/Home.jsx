@@ -233,78 +233,20 @@ class Home extends Component {
                     </div>
                   </div>
                   <div className="card ms-5 me-5">
-                    <div className="card-body">{selectedQuestion.question}</div>
-                    <hr />
                     <div
-                      className="comment"
+                      className="comment card-body"
                       dangerouslySetInnerHTML={{ __html: selectedQuestion.question }}
                     ></div>
+                    <hr />
                   </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {selectedQuestion.user ? (
-                <div className="container-fluid m-5">
-                  <div className="d-flex align-items-center"></div>
-                  <div className="flex align-items-start flex-column">
-                    {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
-                    <div className="d-flex align-items-start">
-                      <div className="d-flex align-items-center flex-column mb-3 q-button">
-                        {/*  ----------VOTE Question BUTTON---------------- */}
-                        {user_id != selectedQuestion.user.id ? (
-                          !selectedQuestion.votes.includes(user_id) ? (
-                            <button
-                              className="btn icon-brd"
-                              onClick={() => {
-                                voteSelectedQuestion(selectedQuestion, user_id);
-                              }}
-                            >
-                              {" "}
-                              <i className="fa fa-heart-o heart-icon"></i>
-                            </button>
-                          ) : (
-                            <button
-                              className="btn icon-brd"
-                              onClick={() => {
-                                voteSelectedQuestion(selectedQuestion, user_id);
-                              }}
-                            >
-                              <i className="fa fa-heart heart-icon"></i>
-                            </button>
-                          )
-                        ) : null}
-                        {/* //! style changing */}
-                        {/* {i && i.votes && !i.votes.includes(user_id) ? (
-                          <button
-                            className="btn icon-brd"
-                            onClick={(e) => {
-                              // this.props.voteSelectedQuestion(i, user_id);
-                              this.asyncVoteSelectedQuestion(i, user_id);
-                            }}
-                          >
-                            <i className="fa fa-heart-o heart-icon"></i>
-                          </button>
-                        ) : (
-                          <button className="btn icon-brd" disabled>
-                            <i className="fa fa-heart heart-icon"></i>
-                          </button>
-                        )} */}
-                        <button className="btn btn-lg">
-                          <b>{selectedQuestion.votes.length}</b>
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="q-comments">
-                      {/*  ----------COMMENT LIST SECTION,  SUBMIT EDITOR---------------- */}
-                      {
-                        <CommentList
-                          selectedQuestion={selectedQuestion}
-                          user_id={user_id}
-                        />
-                      }
+                  {/*  aa */}
+                  <div className="ms-5 me-5 mt-5">
+                    <h5 className="ms-3 mt-3">Add a comment:</h5>
+                    <div className="ms-3 mt-3">
+                      <CommentList
+                        selectedQuestion={selectedQuestion}
+                        user_id={user_id}
+                      />
                     </div>
                   </div>
                 </div>
