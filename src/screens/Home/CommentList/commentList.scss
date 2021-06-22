@@ -1,65 +1,69 @@
 .q-comment {
-    margin-left: 10%;
-    min-width: 80%;
+  margin-left: 10%;
+  min-width: 80%;
 }
 
 .q-submit-btn {
-    margin-left: 1%;
+  margin-left: 1%;
 }
 
 .comments {
-    margin-top: 2em;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90% !important;
+  margin-top: 2em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90% !important;
+}
+
+.comment img {
+  max-width: 300px;
 }
 
 .pg-buttons {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .pg-btn-prev {
-    margin-right: -12px;
+  margin-right: -12px;
 }
 
 .pg-btn-next {
-    margin-left: -5px !important;
+  margin-left: -5px !important;
 }
 
 .comment-btn {
-    background-color: black;
+  background-color: black;
 }
 
 .comment-plane {
-    color: rgba(0,221,255,255) !important;
+  color: rgba(0, 221, 255, 255) !important;
 }
 
 .comment-del-up {
-    color: black;
-    // border-color: rgba(0,221,255,255) !important;
-    width: 120px !important;
-    margin: 5px;
-    // border-width: 3px;
+  color: black;
+  // border-color: rgba(0,221,255,255) !important;
+  width: 120px !important;
+  margin: 5px;
+  // border-width: 3px;
 }
 
 .vote-btn {
-    width: 50% !important;
+  width: 50% !important;
 }
 
 .card-1 {
-    background-color: black;
-    text-align: center !important;
-    min-width: 180px;
+  background-color: black;
+  text-align: center !important;
+  min-width: 180px;
 }
 
 .card {
-    border: none !important;
+  border: none !important;
 }
 
 .buttons {
-    align-items: flex-end;
+  align-items: flex-end;
 }
 
 .card-2 {
-    min-width: 70%;
+  min-width: 70%;
 }

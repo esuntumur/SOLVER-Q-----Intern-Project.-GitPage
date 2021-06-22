@@ -4,7 +4,7 @@ import UpdateComment from "./UpdateComment";
 import {
   getCommentsByPageNumber,
   voteComment,
-  sendComment,
+  createComment,
   deleteComment,
   updateComment,
   updateCommentToggle,
@@ -30,12 +30,12 @@ export class CommentList extends Component {
     );
   }
 
-  async sendCommentAsync(event) {
+  async createCommentAsync(event) {
     event.preventDefault();
     // event.target.myFile.value
     console.log(`Logged Output ~ event`, event);
     console.log(`Logged Output ~ event.target.myFile.value`, event.target.myFile.value);
-    // await this.props.sendComment(this.props.selectedQuestion, event.target.answer.value);
+    // await this.props.createComment(this.props.selectedQuestion, event.target.answer.value);
     // await this.props.getCommentsByPageNumber(
     //   this.props.selectedQuestion,
     //   this.props.currentPageComment
@@ -80,39 +80,14 @@ export class CommentList extends Component {
 
     return (
       <div>
-        <CommentEditor />;
+        {/* //* Create COMMENT */}
         <link
           rel="stylesheet"
           href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
           type="text/css"
         />
         {/* //* Create COMMENT */}
-        <form onSubmit={this.sendCommentAsync.bind(this)} className="flex-column">
-          <div className="row align-items-center">
-            <div className="col-2">
-              <h4>Comment: </h4>
-            </div>
-            <div className="col-7">
-              <input type="text" name="answer" className="w-100 " />
-            </div>
-            <div className="col-3">
-              <button className="btn comment-btn" type="submit">
-                <i className="fa fa-paper-plane comment-plane"></i>
-              </button>
-              <input
-                type="file"
-                id="avatar"
-                name="myFile"
-                accept="image/png, image/jpeg"
-                multiple
-                onChange={(e) => {
-                  this.sendCommentAsync.bind(this)(e);
-                }}
-              />
-            </div>
-          </div>
-        </form>
-        {/* //* Comment LIST */}
+        <CommentEditor />;{/* //* Comment LIST */}
         <div className="comments">
           {comments.map((comment, idx) => (
             <div className="card mb-4" key={idx}>
@@ -145,7 +120,10 @@ export class CommentList extends Component {
                 {/* //* Comment -> Answer TEXT */}
                 <div className="card rounded card-2">
                   <div className="card-body">
-                    <h5 className="card-title">{comment.answer}</h5>
+                    <div
+                      className="comment"
+                      dangerouslySetInnerHTML={{ __html: comment.answer }}
+                    ></div>
                   </div>
                 </div>
 
@@ -179,7 +157,6 @@ export class CommentList extends Component {
                           {selectedCommentId === comment.id ? (
                             <UpdateComment selectedCommentId={selectedCommentId} />
                           ) : null}
-                          {comment.id}
                         </div>
                       </div>
                     </div>
@@ -239,7 +216,7 @@ const mapStateToProps = (state) => {
 let mapDispatchToProps = {
   getCommentsByPageNumber,
   voteComment,
-  sendComment,
+  createComment,
   deleteComment,
   updateComment,
   updateCommentToggle,
