@@ -90,6 +90,7 @@ export class CommentList extends Component {
         {/* //* Create COMMENT */}
         <CommentEditor />{/* //* Comment LIST */}
         <div className="mt-5">
+          <h4><b>Comments:</b></h4>
           {comments.map((comment, idx) => (
             <div className="card mb-4" key={idx}>
               <div className="card-group shadow p-5 m-3 border rounded">
@@ -108,12 +109,12 @@ export class CommentList extends Component {
                           {/* //* VOTE Comment */}
                           {!comment.votes.includes(user_id) ? (
                             <div>
-                              <ReactTooltip id="heart-o-tip" place="bottom" effect="solid">
+                              <ReactTooltip id="heart-o-tip-comment" place="bottom" effect="solid">
                                 Vote this comment
                               </ReactTooltip>
                               <button
                                 data-tip
-                                data-for="heart-o-tip"
+                                data-for="heart-o-tip-comment"
                                 className="btn c-vote-btn"
                                 onClick={() => {
                                   this.voteCommentAsync.bind(this)(comment);

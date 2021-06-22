@@ -52,7 +52,7 @@ export class CommentEditor extends React.Component {
   render() {
     console.log(this.props);
     return (
-      <div style={{ height: "350px" }}>
+      <div style={{ height: "400px" }}>
         <MdEditor
           onImageUpload={this.onImageUpload}
           renderHTML={(text) => this.mdParser.render(text)}
@@ -66,6 +66,7 @@ export class CommentEditor extends React.Component {
           onClick={this.postComment.bind(this)}>
           Post
         </button>
+        <hr />
       </div>
     );
   }
