@@ -2,6 +2,7 @@ import "./login.scss";
 import React from "react";
 import { connect } from "react-redux";
 import { loginUser, signupUser } from "../../redux/actions/authentication";
+import LoginForm from "./LoginForm";
 // email: "dannd@example.com",
 // password: "238523a",
 
@@ -119,6 +120,7 @@ class Login extends React.Component {
             </div>
           </form>
         </div>
+        <LoginForm message="hello world!" />
       </div>
     );
   }

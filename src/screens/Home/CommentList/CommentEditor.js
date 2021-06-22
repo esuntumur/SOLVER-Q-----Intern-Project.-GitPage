@@ -75,6 +75,7 @@ const mapStateToProps = (state) => {
     selectedQuestion: state.question.selectedQuestion,
   };
 };
+
 const mapDispatchToProps = {
   reqImageUrl,
   setHtmlString,
