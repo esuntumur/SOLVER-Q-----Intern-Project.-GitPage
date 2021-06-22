@@ -69,6 +69,29 @@ class Home extends Component {
           href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
           type="text/css"
         />
+
+        {/* CREATE QUESTION -> BUTTON*/}
+        <div>
+          <ReactTooltip id="createQtip" place="top" effect="solid">
+            Create Question
+          </ReactTooltip>
+          <button
+            data-tip
+            data-for="createQtip"
+            type="button"
+            className="btn btn-lg btn-floating plus-btn rounded-circle shadow"
+            onClick={() => {
+              createQuestionToggle();
+            }}
+          >
+            <i className="fa fa-plus plus-icon"></i>
+          </button>
+          {/* CREATE QUESTION -> FORM */}
+          {this.props.renderCreateQuestion && (
+            <QuestionEditor createQuestionToggle={createQuestionToggle} />
+          )}
+        </div>
+
         <div className="container-fluid">
           <div className="row d-flex">
             {/*//*------------------NAVIGATION BAR------------------- */}
@@ -145,27 +168,6 @@ class Home extends Component {
                 </div>
               </div>
             </nav>
-            {/* CREATE QUESTION -> BUTTON*/}
-            <div>
-              <ReactTooltip id="createQtip" place="top" effect="solid">
-                Create Question
-              </ReactTooltip>
-              <button
-                data-tip
-                data-for="createQtip"
-                type="button"
-                className="btn btn-lg btn-floating plus-btn rounded-circle shadow"
-                onClick={() => {
-                  createQuestionToggle();
-                }}
-              >
-                <i className="fa fa-plus plus-icon"></i>
-              </button>
-              {/* CREATE QUESTION -> FORM */}
-              {this.props.renderCreateQuestion && (
-                <QuestionEditor createQuestionToggle={createQuestionToggle} />
-              )}
-            </div>
 
             {/*//*------------------BODY------------------- */}
             <div>
@@ -174,7 +176,9 @@ class Home extends Component {
                 <div className="container-fluid">
                   <div className="card mt-5 ms-5 me-5">
                     <div className="card-body">
-                      <h4 className="card-title">{selectedQuestion.title}</h4>
+                      <h3 className="card-title">
+                        <b>{selectedQuestion.title}</b>
+                      </h3>
                       <div className="card-text row align-items-center">
                         <div className="col-auto">
                           <span className="text-secondary">
@@ -229,6 +233,8 @@ class Home extends Component {
                     </div>
                   </div>
                   <div className="card ms-5 me-5">
+                    <div className="card-body">{selectedQuestion.question}</div>
+                    <hr />
                     <div
                       className="comment"
                       dangerouslySetInnerHTML={{ __html: selectedQuestion.question }}
@@ -290,7 +296,7 @@ class Home extends Component {
                         </button>
                       </div>
                     </div>
-                   
+
                     <div className="q-comments">
                       {/*  ----------COMMENT LIST SECTION,  SUBMIT EDITOR---------------- */}
                       {
@@ -301,36 +307,12 @@ class Home extends Component {
                       }
                     </div>
                   </div>
-                  {/*  ----------DELETE Question BUTTON---------------- */}
-                  {user_id == selectedQuestion.user.id && (
-                    <button
-                      onClick={() => {
-                        deleteSelectedQuestion(selectedQuestion);
-                        backFromSelectedQuestion();
-                      }}
-                    >
-                      {"Delete this question "}
-                    </button>
-                  )}
-                  {/*  ----------update Question BUTTON---------------- */}
-                  {user_id == selectedQuestion.user.id && (
-                    <button onClick={updateQuestionToggle}>
-                      {"Update this question "}
-                    </button>
-                  )}
-                  {/*  ----------update Question FORM---------------- */}
-                  {renderUpdateQuestion ? (
-                    <UpdateQuestion
-                      selectedQuestion={selectedQuestion}
-                      backFromSelectedQuestion={backFromSelectedQuestion}
-                    />
-                  ) : null}
                 </div>
               ) : (
                 // ! ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
                 questions.map((i, idx) => (
                   <div key={idx}>
-                    <div className="card-group shadow p-5 m-5 border">
+                    <div className="card-group shadow p-5 m-5 border rounded">
                       <div className="col-sm-2">
                         <div className="card text-center">
                           <div className="card-body">

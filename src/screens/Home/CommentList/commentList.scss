@@ -1,69 +1,86 @@
-.q-comment {
-  margin-left: 10%;
-  min-width: 80%;
+.comment-post-btn {
+  background-color: #618ab8;
+  color: #FFFFFF;
+  outline: none !important;
+  box-shadow: none !important;
+}
+  .comment-post-btn:hover {
+    background-color: #063970;
+    color: #FFFFFF;
+  }
+
+.c-vote-btn {
+  color: #618ab8;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
-.q-submit-btn {
-  margin-left: 1%;
-}
+// .q-comment {
+//   margin-left: 10%;
+//   min-width: 80%;
+// }
 
-.comments {
-  margin-top: 2em;
-  margin-left: auto;
-  margin-right: auto;
-  width: 90% !important;
-}
+// .q-submit-btn {
+//   margin-left: 1%;
+// }
 
-.comment img {
-  max-width: 300px;
-}
+// .comments {
+//   margin-top: 2em;
+//   margin-left: auto;
+//   margin-right: auto;
+//   width: 90% !important;
+// }
 
-.pg-buttons {
-  margin-bottom: 20px;
-}
+// .comment img {
+//   max-width: 300px;
+// }
 
-.pg-btn-prev {
-  margin-right: -12px;
-}
+// .pg-buttons {
+//   margin-bottom: 20px;
+// }
 
-.pg-btn-next {
-  margin-left: -5px !important;
-}
+// .pg-btn-prev {
+//   margin-right: -12px;
+// }
 
-.comment-btn {
-  background-color: black;
-}
+// .pg-btn-next {
+//   margin-left: -5px !important;
+// }
 
-.comment-plane {
-  color: rgba(0, 221, 255, 255) !important;
-}
+// .comment-btn {
+//   background-color: black;
+// }
 
-.comment-del-up {
-  color: black;
-  // border-color: rgba(0,221,255,255) !important;
-  width: 120px !important;
-  margin: 5px;
-  // border-width: 3px;
-}
+// .comment-plane {
+//   color: rgba(0, 221, 255, 255) !important;
+// }
 
-.vote-btn {
-  width: 50% !important;
-}
+// .comment-del-up {
+//   color: black;
+//   // border-color: rgba(0,221,255,255) !important;
+//   width: 120px !important;
+//   margin: 5px;
+//   // border-width: 3px;
+// }
 
-.card-1 {
-  background-color: black;
-  text-align: center !important;
-  min-width: 180px;
-}
+// .vote-btn {
+//   width: 50% !important;
+// }
 
-.card {
-  border: none !important;
-}
+// .card-1 {
+//   background-color: black;
+//   text-align: center !important;
+//   min-width: 180px;
+// }
 
-.buttons {
-  align-items: flex-end;
-}
+// .card {
+//   border: none !important;
+// }
 
-.card-2 {
-  min-width: 70%;
-}
+// .buttons {
+//   align-items: flex-end;
+// }
+
+// .card-2 {
+//   min-width: 70%;
+// }
