@@ -6,8 +6,49 @@ import {
   DELETE_COMMENT,
   UPDATE_COMMENT_TOGGLE,
   UPDATE_COMMENT,
+  SET_IMAGE_URL,
+  SET_HTML_STRING,
 } from "./type";
 const token = localStorage.getItem("token");
+
+export const setHtmlString = (html) => async (dispatch) => {
+  dispatch({ type: SET_HTML_STRING, payload: html });
+};
+export const reqImageUrl = (e) => async (dispatch) => {
+  let form = new FormData();
+  try {
+    form.append("image", e, e.name);
+    await API.post(`/upload`, form).then((res) => {
+      console.log(`Logged Output ~ res.data`, res.data);
+      console.log(`Logged Output ~ res.data.url`, typeof res.data.url);
+      dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
+      return res.data.url;
+    });
+  } catch (error) {
+    console.log("reqImageUrl error: ", error);
+  }
+};
+
+export const createComment = (htmlString, selectedQuestion) => async (dispatch) => {
+  // this.props.createComment(this.props.htmlString);
+
+  await API.post(
+    "comments",
+    {
+      comment: {
+        question_id: selectedQuestion.id,
+        answer: htmlString,
+      },
+    },
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  ).then((response) => {
+    dispatch({ type: SEND_COMMENT, payload: response.data.object });
+  });
+};
 
 export const getCommentsByPageNumber =
   (selectedQuestion, currentPageComment) => async (dispatch) => {
@@ -41,25 +82,6 @@ export const updateComment = (payload) => async (dispatch) => {
 };
 export const updateCommentToggle = (payload) => async (dispatch) => {
   dispatch({ type: UPDATE_COMMENT_TOGGLE, payload: payload });
-};
-
-export const sendComment = (selectedQuestion, commentText) => async (dispatch) => {
-  await API.post(
-    "comments",
-    {
-      comment: {
-        question_id: selectedQuestion.id,
-        answer: commentText,
-      },
-    },
-    {
-      headers: {
-        Authorization: token,
-      },
-    }
-  ).then((response) => {
-    dispatch({ type: SEND_COMMENT, payload: response.data.object });
-  });
 };
 
 export const voteComment = (selectedComment, user_id) => async (dispatch) => {

@@ -14,6 +14,8 @@ import {
   DELETE_COMMENT,
   UPDATE_COMMENT,
   UPDATE_COMMENT_TOGGLE,
+  SET_IMAGE_URL,
+  SET_HTML_STRING,
 } from "../actions/type";
 
 const initialState = {
@@ -27,12 +29,24 @@ const initialState = {
   currentPageQuestion: 1,
   maxPageComment: 1,
   currentPageComment: 1,
+  imageUrl: "",
+  htmlString: "",
 };
 export const questionReducer = (
   state = JSON.parse(JSON.stringify(initialState)),
   action
 ) => {
   switch (action.type) {
+    // dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
+    case SET_HTML_STRING: {
+      return {
+        ...state,
+        htmlString: action.payload,
+      };
+    }
+    case SET_IMAGE_URL: {
+      return { ...state, imageUrl: action.payload };
+    }
     case UPDATE_COMMENT_TOGGLE: {
       if (state.selectedCommentId !== null) {
         return { ...state, selectedCommentId: null };
