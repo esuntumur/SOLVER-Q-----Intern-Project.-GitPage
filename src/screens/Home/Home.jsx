@@ -244,6 +244,53 @@ class Home extends Component {
                   <div className="d-flex align-items-center"></div>
                   <div className="flex align-items-start flex-column">
                     {/*  ----------QUESTION DESCRIPTION SECTION---------------- */}
+                    <div className="d-flex align-items-start">
+                      <div className="d-flex align-items-center flex-column mb-3 q-button">
+                        {/*  ----------VOTE Question BUTTON---------------- */}
+                        {user_id != selectedQuestion.user.id ? (
+                          !selectedQuestion.votes.includes(user_id) ? (
+                            <button
+                              className="btn icon-brd"
+                              onClick={() => {
+                                voteSelectedQuestion(selectedQuestion, user_id);
+                              }}
+                            >
+                              {" "}
+                              <i className="fa fa-heart-o heart-icon"></i>
+                            </button>
+                          ) : (
+                            <button
+                              className="btn icon-brd"
+                              onClick={() => {
+                                voteSelectedQuestion(selectedQuestion, user_id);
+                              }}
+                            >
+                              <i className="fa fa-heart heart-icon"></i>
+                            </button>
+                          )
+                        ) : null}
+                        {/* //! style changing */}
+                        {/* {i && i.votes && !i.votes.includes(user_id) ? (
+                          <button
+                            className="btn icon-brd"
+                            onClick={(e) => {
+                              // this.props.voteSelectedQuestion(i, user_id);
+                              this.asyncVoteSelectedQuestion(i, user_id);
+                            }}
+                          >
+                            <i className="fa fa-heart-o heart-icon"></i>
+                          </button>
+                        ) : (
+                          <button className="btn icon-brd" disabled>
+                            <i className="fa fa-heart heart-icon"></i>
+                          </button>
+                        )} */}
+                        <button className="btn btn-lg">
+                          <b>{selectedQuestion.votes.length}</b>
+                        </button>
+                      </div>
+                    </div>
+                   
                     <div className="q-comments">
                       {/*  ----------COMMENT LIST SECTION,  SUBMIT EDITOR---------------- */}
                       {
