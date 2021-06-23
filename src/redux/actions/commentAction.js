@@ -20,7 +20,9 @@ export const setRenderAudioRecorder = (html) => async (dispatch) => {
 export const setHtmlString = (html) => async (dispatch) => {
   dispatch({ type: SET_HTML_STRING, payload: html });
 };
-
+export const setAudioFile = (e) => async (dispatch) => {
+  console.log(`Logged Output ~ setAudioFile`);
+};
 export const reqAudioUrl = (e) => async (dispatch) => {
   let form = new FormData();
   try {

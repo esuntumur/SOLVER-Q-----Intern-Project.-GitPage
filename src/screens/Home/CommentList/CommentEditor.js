@@ -12,6 +12,7 @@ import {
   createComment,
   setHtmlString,
   getCommentsByPageNumber,
+  setAudioFile,
 } from "../../../redux/actions/commentAction";
 import { connect } from "react-redux";
 import "./commentList.scss";
@@ -48,9 +49,11 @@ export class CommentEditor extends React.Component {
     console.log(data);
     this.setState({ audioDetails: data });
   }
+
   handleAudioUpload(file) {
-    console.log(file);
+    this.props.setAudioFile(file);
   }
+
   handleRest() {
     const reset = {
       url: null,
@@ -99,20 +102,22 @@ export class CommentEditor extends React.Component {
                   }}
                   ref={this.mdEditor}
                 />
-
                 <hr />
               </div>
             </div>
-            <Recorder
-              record={true}
-              title={"New recording"}
-              audioURL={this.state.audioDetails.url}
-              showUIAudio
-              handleAudioStop={(data) => this.handleAudioStop(data)}
-              handleOnChange={(value) => this.handleOnChange(value, "firstname")}
-              handleAudioUpload={(data) => this.handleAudioUpload(data)}
-              handleRest={() => this.handleRest()}
-            />
+            {this.props.renderAudioRecorder && (
+              <Recorder
+                record={true}
+                title={"New recording"}
+                audioURL={this.state.audioDetails.url}
+                showUIAudio
+                handleAudioStop={(data) => this.handleAudioStop(data)}
+                handleOnChange={(value) => this.handleOnChange(value, "firstname")}
+                handleAudioUpload={(data) => this.handleAudioUpload(data)}
+                handleRest={() => this.handleRest()}
+              />
+            )}
+
             <button className="btn btn-lg mt-3 comment-post-btn" type="submit">
               Post
             </button>
@@ -139,6 +144,7 @@ const mapDispatchToProps = {
   setHtmlString,
   createComment,
   getCommentsByPageNumber,
+  setAudioFile,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentEditor);
