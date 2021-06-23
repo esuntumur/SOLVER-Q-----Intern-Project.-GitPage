@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
-import UpdateComment from "./UpdateComment";
+import UpdateComment from "./UpdateComment/index";
 import {
   getCommentsByPageNumber,
   voteComment,
@@ -88,36 +88,33 @@ export class CommentList extends Component {
           type="text/css"
         />
         {/* //* Create COMMENT */}
-        <CommentEditor />{/* //* Comment LIST */}
-        <div>
-          <div className="mt-5">
-            {comments.length > 0 ? (
-              <div>
-                <hr />
-                <h4><b>Comments:</b></h4>
-              </div>
-            ):(
-              ""
-            )}
-            {comments.map((comment, idx) => (
+        <CommentEditor />
+        {/* //* Comment LIST */}
+        <div className="mt-5">
+          <h4>
+            <b>Comments:</b>
+          </h4>
+          {comments &&
+            comments.length > 0 &&
+            comments.map((comment, idx) => (
               <div className="card mb-4" key={idx}>
                 <div className="card-group shadow p-5 m-3 border rounded">
                   {/* //* Comment -> VOTE, count && user name, profile */}
-                  <div className="col-xs-1">
+                  <div className="col-1">
                     <div className="card text-center">
                       <div className="card-body">
                         <div className="card-text">
                           <span>{comment.votes.length} </span>
-                          {comment.votes.length >= 2 ? (
-                            "votes"
-                          ):(
-                            "vote"
-                          )}                    
+                          {comment.votes.length >= 2 ? "votes" : "vote"}
                           <div>
                             {/* //* VOTE Comment */}
                             {!comment.votes.includes(user_id) ? (
                               <div>
-                                <ReactTooltip id="heart-o-tip-comment" place="bottom" effect="solid">
+                                <ReactTooltip
+                                  id="heart-o-tip-comment"
+                                  place="bottom"
+                                  effect="solid"
+                                >
                                   Vote this comment
                                 </ReactTooltip>
                                 <button
@@ -132,10 +129,12 @@ export class CommentList extends Component {
                                 </button>
                               </div>
                             ) : (
-                              <button className="btn c-vote-btn"
-                                      onClick={() => {
-                                        this.voteCommentAsync.bind(this)(comment);
-                              }}>
+                              <button
+                                className="btn c-vote-btn"
+                                onClick={() => {
+                                  this.voteCommentAsync.bind(this)(comment);
+                                }}
+                              >
                                 <i className="fa fa-heart"></i>
                               </button>
                             )}
@@ -144,7 +143,6 @@ export class CommentList extends Component {
                       </div>
                     </div>
                   </div>
-                  
                   <div className="col-9">
                     {/* //* Comment -> Answer TEXT */}
                     <div className="card">
@@ -172,7 +170,7 @@ export class CommentList extends Component {
                               Delete
                             </button>{" "}
                           </div>
-                          <br/>
+                          <br />
                           <div className="row">
                             {" "}
                             <button
@@ -197,7 +195,6 @@ export class CommentList extends Component {
                 </div>
               </div>
             ))}
-          </div>
         </div>
         {/* //* comment PAGINATION - prev, next buttons  */}
         <div className="text-center">

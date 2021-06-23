@@ -19,9 +19,9 @@ export default class HandleFullScreen extends PluginComponent {
     this.editor.on("fullscreen", this.handleFullScreen);
   }
 
-  componentWillUnmount() {
-    this.editor.off("fullscreen", this.handleFullScreen);
-  }
+  // componentWillUnmount() {
+  //   this.editor.off("fullscreen", this.handleFullScreen);
+  // }
 
   render() {
     return null;

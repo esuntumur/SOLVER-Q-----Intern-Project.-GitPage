@@ -4,10 +4,10 @@ import {
   CREATE_QUESTION,
   SET_SELECTED_QUESTION,
   BACK_FROM_SELECTED_QUESTION,
-  UPDATE_QUESTION_TOGGLE,
   UPDATE_SELECTED_QUESTION,
   DELETE_SELECTED_QUESTION,
   VOTE_SELECTED_QUESTION,
+  UPDATE_QUESTION_TOGGLE,
 } from "./type";
 import API from "../../API";
 
@@ -21,8 +21,21 @@ export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
 };
 // TODO => searchQuestion
 export const searchQuestion = (searchValue) => async (dispatch) => {
-  await API.post("/questions/search", { searchValue: searchValue }).then((response) => {
-    dispatch({ type: SET_SELECTED_QUESTION, payload: response.data.object });
+  await API.post("/questions/search", {
+    searchValue: {
+      keyWord: searchValue, //хайх утга
+      order: "1", //эрэмблэлт
+      currentPage: "1", //Одоогийн page
+    },
+  }).then((response) => {
+    console.log(`Logged Output ~ response.data `, response.data);
+    const questions = response.data.result;
+    const maxPage = response.data.maxPage;
+    const currentPage = response.data.currentPage;
+    dispatch({
+      type: GET_QUESTION_BY_PAGE_NUMBER,
+      payload: { questions, maxPage, currentPage },
+    });
   });
 };
 
@@ -48,8 +61,10 @@ export const backFromSelectedQuestion = () => async (dispatch) => {
   dispatch({ type: BACK_FROM_SELECTED_QUESTION });
 };
 
-export const updateQuestionToggle = (updateQuestionData) => async (dispatch) => {
+export const updateQuestionToggle = () => async (dispatch) => {
+  console.log(`Logged Output ~ updateQuestionToggle`);
   dispatch({ type: UPDATE_QUESTION_TOGGLE });
+  console.log(`Logged Output ~ updateQuestionToggle`);
 };
 
 // TODO => update question
@@ -64,11 +79,13 @@ export const updateQuestion = (payload) => async (dispatch) => {
 };
 
 export const deleteSelectedQuestion = (selectedQuestion) => async (dispatch) => {
+  console.log(`Logged Output ~ selectedQuestion`, selectedQuestion);
   const response = await API.delete(`/questions/${selectedQuestion.id}`, {
     headers: { Authorization: token },
   });
 
-  dispatch({ type: DELETE_SELECTED_QUESTION, payload: response.data });
+  console.log(`Logged Output ~ response.data`, response.data);
+  dispatch({ type: DELETE_SELECTED_QUESTION, payload: response.data.object });
 };
 
 export const voteSelectedQuestion = (selectedQuestion, user_id) => async (dispatch) => {

@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./screens/Login/login";
 import Home from "./screens/Home/Home";
 import { connect } from "react-redux";
-
+import NotFoundPage from "../src/screens/NotFoundPage";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -22,6 +22,7 @@ class App extends React.Component {
             ) : (
               <Route path="/" component={Login} />
             )}
+            <Route component={NotFoundPage} />
           </Switch>
         </div>
       </BrowserRouter>
