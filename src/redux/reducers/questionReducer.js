@@ -16,6 +16,7 @@ import {
   UPDATE_COMMENT_TOGGLE,
   SET_IMAGE_URL,
   SET_HTML_STRING,
+  TOGGLE_RENDER_AUDIO_RECORDER,
 } from "../actions/type";
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
   htmlString: "",
   searchValue: "",
   renderOrderButton: false,
+  renderAudioRecorder: false,
 };
 export const questionReducer = (
   state = JSON.parse(JSON.stringify(initialState)),
@@ -40,6 +42,12 @@ export const questionReducer = (
 ) => {
   switch (action.type) {
     // dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
+    case TOGGLE_RENDER_AUDIO_RECORDER: {
+      return {
+        ...state,
+        renderAudioRecorder: !state.renderAudioRecorder,
+      };
+    }
     case UPDATE_QUESTION_TOGGLE: {
       console.log(`Logged Output ~ updateQuestionToggle`);
       return {

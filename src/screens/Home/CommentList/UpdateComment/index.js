@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import HandleFullScreen from "./plugins/HandleFullScreen";
 import MdEditor from "react-markdown-editor-lite";
 import MarkdownIt from "markdown-it";
-import MyCounterA from "./plugins/MyCounterA";
-import MyCounterB from "./plugins/MyCounterB";
 import "react-markdown-editor-lite/lib/index.css";
+import HandleFullScreen from "./plugins/HandleFullScreen";
+// import AudioPlugin from "./plugins/AudioPlugin";
 import {
   updateCommentToggle,
   reqImageUrl,
@@ -13,13 +12,9 @@ import {
   updateComment,
 } from "../../../../redux/actions/commentAction";
 import "./updateComment.scss";
-// MdEditor.use(MyCounterA, {
-//   start: 2,
-// });
-// MdEditor.use(MyCounterB, {
-//   start: 3,
-// });
-// MdEditor.use(HandleFullScreen);
+
+// MdEditor.use(AudioPlugin);
+MdEditor.use(HandleFullScreen);
 
 export class UpdateComment extends Component {
   constructor(props) {
@@ -81,6 +76,7 @@ const mapStateToProps = (state) => {
     htmlString: state.question.htmlString,
     selectedQuestion: state.question.selectedQuestion,
     currentPageComment: state.question.currentPageComment,
+    renderAudioRecorder: state.question.renderAudioRecorder,
   };
 };
 const mapDispatchToProps = {

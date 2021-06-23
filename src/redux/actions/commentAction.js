@@ -8,8 +8,14 @@ import {
   UPDATE_COMMENT,
   SET_IMAGE_URL,
   SET_HTML_STRING,
+  TOGGLE_RENDER_AUDIO_RECORDER,
 } from "./type";
+
 const token = localStorage.getItem("token");
+export const setRenderAudioRecorder = (html) => async (dispatch) => {
+  console.log(`Logged Output ~ setRenderAudioRecorder`);
+  dispatch({ type: TOGGLE_RENDER_AUDIO_RECORDER });
+};
 
 export const setHtmlString = (html) => async (dispatch) => {
   dispatch({ type: SET_HTML_STRING, payload: html });
