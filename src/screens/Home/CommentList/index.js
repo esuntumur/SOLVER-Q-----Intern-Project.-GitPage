@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
 import UpdateComment from "./UpdateComment/index";
 import {
@@ -11,7 +10,6 @@ import {
   updateCommentToggle,
 } from "../../../redux/actions/commentAction";
 import CommentEditor from "./CommentEditor";
-import "./commentList.scss";
 
 export class CommentList extends Component {
   constructor(props) {
@@ -90,17 +88,22 @@ export class CommentList extends Component {
         {/* //* Create COMMENT */}
         <CommentEditor />
         {/* //* Comment LIST */}
-        <div className="mt-5">
-          <h4>
-            <b>Comments:</b>
-          </h4>
+        <div>
+          {comments.length > 0 ? (
+            <div className="ms-3 me-3">
+              <div><hr/></div>
+              <h4 className="mt-5">
+                <b>Comments:</b>
+              </h4>
+            </div>
+          ):("")}
           {comments &&
             comments.length > 0 &&
             comments.map((comment, idx) => (
-              <div className="card mb-4" key={idx}>
+              <div className="card mb-4 ms-3 me-3" key={idx}>
                 <div className="card-group shadow p-5 m-3 border rounded">
                   {/* //* Comment -> VOTE, count && user name, profile */}
-                  <div className="col-1">
+                  <div className="col-sm-1">
                     <div className="card text-center">
                       <div className="card-body">
                         <div className="card-text">
@@ -110,16 +113,7 @@ export class CommentList extends Component {
                             {/* //* VOTE Comment */}
                             {!comment.votes.includes(user_id) ? (
                               <div>
-                                <ReactTooltip
-                                  id="heart-o-tip-comment"
-                                  place="bottom"
-                                  effect="solid"
-                                >
-                                  Vote this comment
-                                </ReactTooltip>
                                 <button
-                                  data-tip
-                                  data-for="heart-o-tip-comment"
                                   className="btn c-vote-btn"
                                   onClick={() => {
                                     this.voteCommentAsync.bind(this)(comment);
@@ -143,6 +137,7 @@ export class CommentList extends Component {
                       </div>
                     </div>
                   </div>
+
                   <div className="col-9">
                     {/* //* Comment -> Answer TEXT */}
                     <div className="card">

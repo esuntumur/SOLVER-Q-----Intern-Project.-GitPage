@@ -5,8 +5,6 @@ import MarkdownIt from "markdown-it";
 // import ReactMarkdown from "react-markdown";
 import "react-markdown-editor-lite/lib/index.css";
 import HandleFullScreen from "./plugins/HandleFullScreen";
-import MyCounterA from "./plugins/MyCounterA";
-import MyCounterB from "./plugins/MyCounterB";
 import {
   reqImageUrl,
   createComment,
@@ -15,12 +13,6 @@ import {
 } from "../../../redux/actions/commentAction";
 import { connect } from "react-redux";
 import "./commentList.scss";
-// MdEditor.use(MyCounterA, {
-//   start: 2,
-// });
-// MdEditor.use(MyCounterB, {
-//   start: 3,
-// });
 // MdEditor.use(HandleFullScreen);
 
 // * ---------------- CLASS
@@ -57,19 +49,18 @@ export class CommentEditor extends React.Component {
         <div className="form-bg">
           <form className="form" onSubmit={this.postComment.bind(this)}>
             <div className="form-group">
-              <label className="sr-only">Question details</label>
+              {/* <label className="sr-only">Question details</label> */}
               <div style={{ height: "400px" }}>
                 <MdEditor
                   onImageUpload={this.onImageUpload}
                   renderHTML={(text) => this.mdParser.render(text)}
                   onChange={this.handleEditorChange}
                   style={{
-                    height: "300px",
+                    height: "400px",
                   }}
                   ref={this.mdEditor}
                 />
 
-                <hr />
               </div>
             </div>
             <button className="btn btn-lg mt-3 comment-post-btn" type="submit">

@@ -63,8 +63,14 @@
   }
 
   .btn-blue {
-    background-color: #4285f4;
+    background-color: #618ab8;
     color: #fff;
-    border: 1px solid #4285f4;
+    outline: none !important;
+    box-shadow: none !important;
+
+    &:hover {
+      background-color: #063970;
+      color: #fff;
+    }
   }
 }
