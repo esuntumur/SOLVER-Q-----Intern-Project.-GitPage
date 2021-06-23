@@ -42,7 +42,10 @@ export class QuestionEditor extends React.Component {
       },
     };
     await this.props.createQuestion(payload);
-    this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
+    await this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
+
+    const divTC = document.getElementById("blur")
+    divTC.classList.toggle("big-container") 
 
     console.log(`Logged Output ~ this.props`, this.props);
   }
@@ -65,19 +68,17 @@ export class QuestionEditor extends React.Component {
             </div>
             <div className="form-group">
               <label className="sr-only">Question details</label>
-              <div style={{ height: "22.5rem", width: "58.5rem" }} className="mdEditor">
+              <div style={{ height: "400px"}} className="mdEditor">
                 <MdEditor
                   onImageUpload={this.onImageUpload}
                   renderHTML={(text) => this.mdParser.render(text)}
                   onChange={this.handleEditorChange}
-                  style={{
-                    height: "22.5rem",
-                  }}
+                  style={{height: "400px"}}
                   ref={this.mdEditor}
                 />
               </div>
             </div>
-            <button type="submit" className="btn text-center btn-blue">
+            <button type="submit" className="btn btn-sm text-center btn-blue">
               Post Question
             </button>
           </form>

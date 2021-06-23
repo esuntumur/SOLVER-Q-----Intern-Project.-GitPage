@@ -91,14 +91,14 @@ export class CommentEditor extends React.Component {
         <div className="form-bg">
           <form className="form" onSubmit={this.postComment.bind(this)}>
             <div className="form-group">
-              <label className="sr-only">Comment Editor</label>
+              {/* <label className="sr-only">Question details</label> */}
               <div style={{ height: "400px" }}>
                 <MdEditor
                   onImageUpload={this.onImageUpload}
                   renderHTML={(text) => this.mdParser.render(text)}
                   onChange={this.handleEditorChange}
                   style={{
-                    height: "300px",
+                    height: "400px",
                   }}
                   ref={this.mdEditor}
                 />

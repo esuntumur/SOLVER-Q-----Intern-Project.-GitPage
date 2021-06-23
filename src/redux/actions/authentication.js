@@ -8,6 +8,7 @@ export const loginUser = (formVlaues) => async (dispatch) => {
     localStorage.setItem("token", response.data.token);
     localStorage.setItem("user_id", response.data.user.id);
     localStorage.setItem("isSignedIn", true);
+    localStorage.setItem("user_name", response.data.user.username);
     dispatch({ type: LOGIN, payload: response.data });
   }
 };
