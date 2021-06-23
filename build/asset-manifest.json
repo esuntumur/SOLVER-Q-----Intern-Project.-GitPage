@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0c8678f7.chunk.css",
+    "main.js": "/static/js/main.52c1fef1.chunk.js",
+    "main.js.map": "/static/js/main.52c1fef1.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.546add8e.js",
+    "runtime-main.js.map": "/static/js/runtime-main.546add8e.js.map",
+    "static/css/2.7795cc08.chunk.css": "/static/css/2.7795cc08.chunk.css",
+    "static/js/2.a390c6f3.chunk.js": "/static/js/2.a390c6f3.chunk.js",
+    "static/js/2.a390c6f3.chunk.js.map": "/static/js/2.a390c6f3.chunk.js.map",
+    "static/js/3.a87221fd.chunk.js": "/static/js/3.a87221fd.chunk.js",
+    "static/js/3.a87221fd.chunk.js.map": "/static/js/3.a87221fd.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.7795cc08.chunk.css.map": "/static/css/2.7795cc08.chunk.css.map",
+    "static/css/main.0c8678f7.chunk.css.map": "/static/css/main.0c8678f7.chunk.css.map",
+    "static/js/2.a390c6f3.chunk.js.LICENSE.txt": "/static/js/2.a390c6f3.chunk.js.LICENSE.txt",
+    "static/media/microphone~MMbrAzIj.svg": "/static/media/microphone~MMbrAzIj.52a4fd8a.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.546add8e.js",
+    "static/css/2.7795cc08.chunk.css",
+    "static/js/2.a390c6f3.chunk.js",
+    "static/css/main.0c8678f7.chunk.css",
+    "static/js/main.52c1fef1.chunk.js"
+  ]
+}
