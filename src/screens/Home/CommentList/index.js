@@ -66,6 +66,10 @@ export class CommentList extends Component {
     // );
   }
   render() {
+    let pageNum = [];
+    for (let i = 1; i <= this.props.maxPageComment; i++) {
+      pageNum.push(i);
+    }
     const { getCommentsByPageNumber, comments, updateCommentToggle } = this.props;
     let {
       currentPageComment,
@@ -191,39 +195,65 @@ export class CommentList extends Component {
               </div>
             ))}
         </div>
-        {/* //* comment PAGINATION - prev, next buttons  */}
-        <div className="text-center">
-          <div className="flex btn-group btn-group-toggle pg-buttons">
-            {currentPageComment >= 2 ? (
-              <button
-                className="btn btn-dark pg-btn-prev"
-                onClick={() => {
-                  getCommentsByPageNumber(selectedQuestion, --currentPageComment);
-                }}
-              >
-                <span aria-hidden="true">&laquo;</span>
-              </button>
-            ) : null}
-               
-            <button type="button" className="btn btn-secondary" disabled>
-              {currentPageComment} 
-            </button>
-             
-            {currentPageComment >= maxPageComment ? null : (
-              <button
-                className="btn btn-dark pg-btn-next"
-                onClick={() => {
-                  getCommentsByPageNumber(
-                    this.props.selectedQuestion,
-                    ++currentPageComment
-                  );
-                }}
-              >
-                <span aria-hidden="true">&raquo;</span>
-              </button>
-            )}
+        {/* //* comment PAGINATION - prev, next buttons  222222222222222 */}
+        <nav aria-label="Page navigation example">
+          <div>
+            <ul className="pagination justify-content-center">
+              {currentPageComment >= 2 ? (
+                <li className="page-item">
+                  <button
+                    type="button"
+                    className="btn pg-btn"
+                    onClick={() =>
+                      getCommentsByPageNumber(
+                        this.props.selectedQuestion,
+                        --currentPageComment
+                      )
+                    }
+                  >
+                    <span aria-hidden="true">&laquo;</span>
+                  </button>{" "}
+                </li>
+              ) : (
+                <button className="btn btn-dark pg-btn" disabled>
+                  <span aria-hidden="true">&laquo;</span>
+                </button>
+              )}
+
+              {pageNum &&
+                pageNum.length > 0 &&
+                pageNum.map((number, idx) => (
+                  <li key={idx} className="page-item">
+                    <button
+                      className="page-link pg-btn"
+                      onClick={() => {
+                        getCommentsByPageNumber(this.props.selectedQuestion, number);
+                      }}
+                    >
+                      {number}
+                    </button>
+                  </li>
+                ))}
+              {currentPageComment >= maxPageComment ? null : (
+                <li className="page-item">
+                  <button
+                    type="button"
+                    className="btn pg-btn"
+                    onClick={() =>
+                      getCommentsByPageNumber(
+                        this.props.selectedQuestion,
+                        ++currentPageComment
+                      )
+                    }
+                  >
+                    <span aria-hidden="true">&raquo;</span>
+                  </button>
+                </li>
+              )}
+            </ul>
           </div>
-        </div>
+        </nav>
+        )
       </div>
     );
   }

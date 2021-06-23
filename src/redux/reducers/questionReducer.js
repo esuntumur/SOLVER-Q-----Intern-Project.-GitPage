@@ -16,6 +16,7 @@ import {
   UPDATE_COMMENT_TOGGLE,
   SET_IMAGE_URL,
   SET_HTML_STRING,
+  TOGGLE_RENDER_AUDIO_RECORDER,
 } from "../actions/type";
 
 const initialState = {
@@ -31,6 +32,9 @@ const initialState = {
   currentPageComment: 1,
   imageUrl: "",
   htmlString: "",
+  searchValue: "",
+  renderOrderButton: false,
+  renderAudioRecorder: false,
 };
 export const questionReducer = (
   state = JSON.parse(JSON.stringify(initialState)),
@@ -38,6 +42,12 @@ export const questionReducer = (
 ) => {
   switch (action.type) {
     // dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
+    case TOGGLE_RENDER_AUDIO_RECORDER: {
+      return {
+        ...state,
+        renderAudioRecorder: !state.renderAudioRecorder,
+      };
+    }
     case UPDATE_QUESTION_TOGGLE: {
       console.log(`Logged Output ~ updateQuestionToggle`);
       return {
@@ -109,13 +119,24 @@ export const questionReducer = (
       return { ...state };
     }
     case GET_QUESTION_BY_PAGE_NUMBER: {
-      return {
-        ...state,
-        questions: action.payload.questions,
-        maxPageQuestion: action.payload.maxPage,
-        currentPageQuestion: action.payload.currentPage,
-        selectedQuestion: false,
-      };
+      return action.payload && action.payload.searchValue
+        ? {
+            ...state,
+            questions: action.payload.questions,
+            maxPageQuestion: action.payload.maxPage,
+            currentPageQuestion: action.payload.currentPage,
+            selectedQuestion: false,
+            searchValue: action.payload.searchValue,
+            renderOrderButton: true,
+          }
+        : {
+            ...state,
+            questions: action.payload.questions,
+            maxPageQuestion: action.payload.maxPage,
+            currentPageQuestion: action.payload.currentPage,
+            selectedQuestion: false,
+            renderOrderButton: false,
+          };
     }
     case SET_SELECTED_QUESTION: {
       return { ...state, selectedQuestion: action.payload };
@@ -126,6 +147,8 @@ export const questionReducer = (
         selectedQuestion: false,
         renderCreateQuestion: false,
         renderUpdateQuestion: false,
+        renderOrderButton: false,
+        searchValue: false,
       };
     }
     case VOTE_SELECTED_QUESTION: {

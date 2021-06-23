@@ -17,16 +17,15 @@ const token = localStorage.getItem("token");
 export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
   await API.post("/questions/page", { questionPage: pageNum }).then((response) => {
     dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER, payload: response.data });
+    console.log(`Logged Output ~ response.data`, response.data);
   });
 };
 // TODO => searchQuestion
-export const searchQuestion = (searchValue) => async (dispatch) => {
+export const searchQuestion = (searchValue, order) => async (dispatch) => {
   await API.post("/questions/search", {
-    searchValue: {
-      keyWord: searchValue, //хайх утга
-      order: "1", //эрэмблэлт
-      currentPage: "1", //Одоогийн page
-    },
+    keyWord: searchValue, //хайх утга
+    order: order, //эрэмблэлт
+    currentPage: "1", //Одоогийн page
   }).then((response) => {
     console.log(`Logged Output ~ response.data `, response.data);
     const questions = response.data.result;
@@ -34,7 +33,7 @@ export const searchQuestion = (searchValue) => async (dispatch) => {
     const currentPage = response.data.currentPage;
     dispatch({
       type: GET_QUESTION_BY_PAGE_NUMBER,
-      payload: { questions, maxPage, currentPage },
+      payload: { questions, maxPage, currentPage, searchValue },
     });
   });
 };

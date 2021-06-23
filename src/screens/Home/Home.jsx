@@ -14,6 +14,8 @@ import {
   searchQuestion,
   updateQuestion,
 } from "../../redux/actions/question";
+import ReactPaginate from "react-paginate";
+
 import QuestionEditor from "./CreateQuestion/QuestionEditor";
 import UpdateQuestion from "./UpdateQuestion/index";
 import CommentList from "./CommentList";
@@ -26,6 +28,7 @@ class Home extends Component {
     this.state = {};
     this.asyncVoteSelectedQuestion = this.asyncVoteSelectedQuestion.bind(this);
     this.searchSubmitHandler = this.searchSubmitHandler.bind(this);
+    this.searchOrderHandler = this.searchOrderHandler.bind(this);
   }
   componentWillMount() {
     this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
@@ -35,9 +38,17 @@ class Home extends Component {
   }
   async searchSubmitHandler(event) {
     event.preventDefault();
-    await this.props.searchQuestion(event.target.searchValue.value);
+    await this.props.searchQuestion(
+      event.target.searchValue.value,
+      event.target.order.value
+    );
     // await this.props.setSelectedQuestion(i);
   }
+
+  async searchOrderHandler(orderType) {
+    await this.props.searchQuestion(this.props.searchValue, orderType);
+  }
+
   async asyncVoteSelectedQuestion(i, user_id) {
     await this.props.voteSelectedQuestion(i, user_id);
   }
@@ -73,12 +84,11 @@ class Home extends Component {
 
     const user_id = localStorage.getItem("user_id");
     const user_name = localStorage.getItem("user_name");
-    const pageNum = [];
+    let pageNum = [];
 
     for (let i = 1; i <= maxPageQuestion; i++) {
       pageNum.push(i);
     }
-    // selectedQuestion.votes.includes(user_id);
     return (
       <div>
         <link
@@ -116,10 +126,10 @@ class Home extends Component {
                   className="navbar-brand btn"
                   onClick={() => {
                     backFromSelectedQuestion();
+                    getQuestionsByPageNumber(1);
                     this.blurLogo();
                   }}
-                  id="logo"
-                >
+                  id="logo">
                   <img src="./logo192.png" alt="Logo" width="50" height="50" />
                 </button>
                 {/* NAVBAR TOGGLER IN MOBILE -> BUTTON */}
@@ -145,11 +155,12 @@ class Home extends Component {
                       >
                         <input
                           className="form-control"
-                          type="search"
+                          type="text"
                           placeholder="Search..."
                           aria-label="Search"
                           name="searchValue"
                         />
+                        <input type="hidden" name="order" value={1} />
                         <button className="btn btn-sm search-btn" type="submit">
                           <i className="fa fa-search"></i>
                         </button>
@@ -277,6 +288,22 @@ class Home extends Component {
                       dangerouslySetInnerHTML={{ __html: selectedQuestion.question }}
                     ></div>
                   </div>
+                  {/* //* DELETE, UPDATE QUESTION BUTTON */}
+                  <button
+                    onClick={() => {
+                      deleteSelectedQuestion(selectedQuestion);
+                    }}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    onClick={() => {
+                      updateQuestionToggle();
+                    }}
+                  >
+                    Update
+                  </button>
+                  {renderUpdateQuestion ? <UpdateQuestion /> : null}
 
                   {/*  aa */}
                   <div className="ms-5 me-5 mt-5">
@@ -292,141 +319,186 @@ class Home extends Component {
                 </div>
               ) : (
                 // ! ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
-                questions &&
-                questions.length > 0 &&
-                questions.map((i, idx) => (
-                  <div key={idx}>
-                    <div className="card-group shadow p-5 m-5 border rounded">
-                      <div className="col-sm-2">
-                        <div className="card text-center">
-                          <div className="card-body">
-                            <div className="card-text">
-                              <span>{i.votes.length} </span>
-                              {i.votes.length >= 2 ? "votes" : "vote"}
-                              {i && i.votes && !i.votes.includes(user_id) ? (
-                                <div>
-                                  <button
-                                    className="btn btn-lg q-vote-btn"
-                                    onClick={(e) => {
-                                      this.asyncVoteSelectedQuestion(i, user_id);
-                                    }}
-                                  >
-                                    <i className="fa fa-heart-o"></i>
-                                  </button>
-                                </div>
-                              ) : (
-                                <div>
-                                  <button
-                                    className="btn btn-lg q-vote-btn"
-                                    onClick={(e) => {
-                                      this.asyncVoteSelectedQuestion(i, user_id);
-                                    }}
-                                  >
-                                    <i className="fa fa-heart"></i>
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                            <hr />
-                            <p className="card-text">
-                              <span>{i.comments} </span>
-                              {i.comments >= 2 ? "answers" : "answer"}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-10">
-                        <div className="card">
-                          <div className="card-body">
-                            <h5
-                              className="card-title"
-                              onClick={() => this.props.setSelectedQuestion(i)}
-                            >
-                              <b>{i.title}</b>
-                            </h5>
-                            <div
-                              className="questionStyle card-body"
-                              dangerouslySetInnerHTML={{
-                                __html: i.question,
-                              }}
-                            ></div>
-                            <p className="card-text">
-                              {/* {i.question.substring(0, 300)} */}
-                              {i.question.length >= 300 ? " ..." : ""}
-                            </p>
-                            <p className="card-text text-end">
-                              <i>by </i>
-                              <b> {i.user.username}</b>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
+                <div>
+                  {/* //* --------Question Order-------- */}
+                  {this.props.renderOrderButton && (
+                    <div
+                      className="btn-group"
+                      role="group"
+                      aria-label="Button group with nested dropdown"
+                    >
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          this.searchOrderHandler(1);
+                        }}
+                      >
+                        Votes
+                      </button>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          this.searchOrderHandler(3);
+                        }}
+                      >
+                        Answers
+                      </button>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          this.searchOrderHandler(4);
+                        }}
+                      >
+                        Dates
+                      </button>
                     </div>
-                  </div>
-                ))
+                  )}
+                  {/* //*----------questions list------ */}
+                  {questions &&
+                    questions.length > 0 &&
+                    questions.map((i, idx) => (
+                      <div key={idx}>
+                        <div className="card-group shadow p-5 m-5 border rounded">
+                          <div className="col-sm-2">
+                            <div className="card text-center">
+                              <div className="card-body">
+                                <div className="card-text">
+                                  <span>{i.votes.length} </span>
+                                  {i && i.votes && !i.votes.includes(user_id) ? (
+                                    <div>
+                                      <ReactTooltip
+                                        id="heart-o-tip"
+                                        place="bottom"
+                                        effect="solid"
+                                      >
+                                        Vote
+                                      </ReactTooltip>
+                                      <button
+                                        data-tip
+                                        data-for="heart-o-tip"
+                                        className="btn q-vote-btn"
+                                        onClick={(e) => {
+                                          this.asyncVoteSelectedQuestion(i, user_id);
+                                        }}
+                                      >
+                                        <i className="fa fa-heart-o"></i>
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div>
+                                      <ReactTooltip
+                                        id="heart-tip"
+                                        place="bottom"
+                                        effect="solid"
+                                      >
+                                        Unvote
+                                      </ReactTooltip>
+                                      <button
+                                        data-tip
+                                        data-for="heart-tip"
+                                        className="btn q-vote-btn"
+                                        onClick={(e) => {
+                                          this.asyncVoteSelectedQuestion(i, user_id);
+                                        }}
+                                      >
+                                        <i className="fa fa-heart"></i>
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                                <hr />
+                                <p className="card-text">
+                                  <span>{i.comments} </span>
+                                  {i.comments >= 2 ? "answers" : "answer"}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-sm-10">
+                            <div className="card">
+                              <div className="card-body">
+                                <h5
+                                  className="card-title"
+                                  onClick={() => this.props.setSelectedQuestion(i)}
+                                >
+                                  <b>{i.title}</b>
+                                </h5>
+                                <div
+                                  className="questionStyle card-body"
+                                  dangerouslySetInnerHTML={{
+                                    __html: i.question,
+                                  }}
+                                ></div>
+                                <p className="card-text">
+                                  {/* {i.question.substring(0, 300)} */}
+                                  {i.question.length >= 300 ? " ..." : ""}
+                                </p>
+                                <p className="card-text text-end">
+                                  <i>by </i>
+                                  <b> {i.user.username}</b>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
               )}
               {/*  ----------Pagination---------------- */}
-              {!selectedQuestion.user ? (
-                <div className="text-center">
-                  <div
-                    className="flex btn-group btn-group-toggle pg-buttons"
-                    data-toggle="buttons"
-                  >
-                    {currentPageQuestion >= 2 ? (
-                      <button
-                        className="btn btn-dark pg-btn"
-                        onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
-                      >
-                        <span aria-hidden="true">&laquo;</span>
-                      </button>
-                    ) : null}
-                       
-                    <button type="button" className="btn btn-secondary" disabled>
-                      {currentPageQuestion}
-                    </button>
-                    {currentPageQuestion >= maxPageQuestion ? null : (
-                      <button
-                        className="btn btn-dark"
-                        onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
-                      >
-                        <span aria-hidden="true">&raquo;</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ) : null}
-
-              <nav>
-                <div>
-                  <ul className="pagination justify-content-center">
-                    <li>
-                      <button
-                        type="button"
-                        className="btn pg-btn"
-                        onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
-                      >
-                        <span aria-hidden="true">&laquo;</span>
-                      </button>
-                    </li>
-                    {pageNum &&
-                      pageNum.length > 0 &&
-                      pageNum.map((number, idx) => (
-                        <li key={idx} className="page-item">
-                          <button className="page-link pg-btn">{number}</button>
+              {!selectedQuestion && (
+                <nav aria-label="Page navigation example">
+                  <div>
+                    <ul className="pagination justify-content-center">
+                      {currentPageQuestion >= 2 ? (
+                        <li className="page-item">
+                          <button
+                            type="button"
+                            className="btn pg-btn"
+                            onClick={() =>
+                              getQuestionsByPageNumber(--currentPageQuestion)
+                            }
+                          >
+                            <span aria-hidden="true">&laquo;</span>
+                          </button>{" "}
                         </li>
-                      ))}
-                    <li>
-                      <button
-                        type="button"
-                        className="btn pg-btn"
-                        onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
-                      >
-                        <span aria-hidden="true">&raquo;</span>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </nav>
+                      ) : (
+                        <button className="btn btn-dark pg-btn" disabled>
+                          <span aria-hidden="true">&laquo;</span>
+                        </button>
+                      )}
+
+                      {pageNum &&
+                        pageNum.length > 0 &&
+                        pageNum.map((number, idx) => (
+                          <li key={idx} className="page-item">
+                            <button
+                              className="page-link pg-btn"
+                              onClick={() => {
+                                getQuestionsByPageNumber(number);
+                              }}
+                            >
+                              {number}
+                            </button>
+                          </li>
+                        ))}
+                      {currentPageQuestion >= maxPageQuestion ? null : (
+                        <li className="page-item">
+                          <button
+                            type="button"
+                            className="btn pg-btn"
+                            onClick={() =>
+                              getQuestionsByPageNumber(++currentPageQuestion)
+                            }
+                          >
+                            <span aria-hidden="true">&raquo;</span>
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                </nav>
+              )}
             </div>
           </div>
         </div>
@@ -443,9 +515,10 @@ const mapStateToProps = (state) => {
     renderUpdateQuestion: state.question.renderUpdateQuestion,
     maxPageQuestion: state.question.maxPageQuestion,
     currentPageQuestion: state.question.currentPageQuestion,
+    searchValue: state.question.searchValue,
+    renderOrderButton: state.question.renderOrderButton,
   };
 };
-
 const Container = connect(mapStateToProps, {
   logoutUser,
   getQuestionsByPageNumber,
