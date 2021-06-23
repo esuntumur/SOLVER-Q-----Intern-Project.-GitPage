@@ -89,106 +89,115 @@ export class CommentList extends Component {
         />
         {/* //* Create COMMENT */}
         <CommentEditor />{/* //* Comment LIST */}
-        <div className="mt-5">
-          <h4><b>Comments:</b></h4>
-          {comments.map((comment, idx) => (
-            <div className="card mb-4" key={idx}>
-              <div className="card-group shadow p-5 m-3 border rounded">
-                {/* //* Comment -> VOTE, count && user name, profile */}
-                <div className="col-1">
-                  <div className="card text-center">
-                    <div className="card-body">
-                      <div className="card-text">
-                        <span>{comment.votes.length} </span>
-                        {comment.votes.length >= 2 ? (
-                          "votes"
-                        ):(
-                          "vote"
-                        )}                    
-                        <div>
-                          {/* //* VOTE Comment */}
-                          {!comment.votes.includes(user_id) ? (
-                            <div>
-                              <ReactTooltip id="heart-o-tip-comment" place="bottom" effect="solid">
-                                Vote this comment
-                              </ReactTooltip>
-                              <button
-                                data-tip
-                                data-for="heart-o-tip-comment"
-                                className="btn c-vote-btn"
-                                onClick={() => {
-                                  this.voteCommentAsync.bind(this)(comment);
-                                }}
-                              >
-                                <i className="fa fa-heart-o"></i>
+        <div>
+          <div className="mt-5">
+            {comments.length > 0 ? (
+              <div>
+                <hr />
+                <h4><b>Comments:</b></h4>
+              </div>
+            ):(
+              ""
+            )}
+            {comments.map((comment, idx) => (
+              <div className="card mb-4" key={idx}>
+                <div className="card-group shadow p-5 m-3 border rounded">
+                  {/* //* Comment -> VOTE, count && user name, profile */}
+                  <div className="col-xs-1">
+                    <div className="card text-center">
+                      <div className="card-body">
+                        <div className="card-text">
+                          <span>{comment.votes.length} </span>
+                          {comment.votes.length >= 2 ? (
+                            "votes"
+                          ):(
+                            "vote"
+                          )}                    
+                          <div>
+                            {/* //* VOTE Comment */}
+                            {!comment.votes.includes(user_id) ? (
+                              <div>
+                                <ReactTooltip id="heart-o-tip-comment" place="bottom" effect="solid">
+                                  Vote this comment
+                                </ReactTooltip>
+                                <button
+                                  data-tip
+                                  data-for="heart-o-tip-comment"
+                                  className="btn c-vote-btn"
+                                  onClick={() => {
+                                    this.voteCommentAsync.bind(this)(comment);
+                                  }}
+                                >
+                                  <i className="fa fa-heart-o"></i>
+                                </button>
+                              </div>
+                            ) : (
+                              <button className="btn c-vote-btn"
+                                      onClick={() => {
+                                        this.voteCommentAsync.bind(this)(comment);
+                              }}>
+                                <i className="fa fa-heart"></i>
                               </button>
-                            </div>
-                          ) : (
-                            <button className="btn c-vote-btn"
-                                    onClick={() => {
-                                      this.voteCommentAsync.bind(this)(comment);
-                            }}>
-                              <i className="fa fa-heart"></i>
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="col-9">
-                  {/* //* Comment -> Answer TEXT */}
-                  <div className="card">
-                    <div className="card-body">
-                      <div
-                        className="comment"
-                        dangerouslySetInnerHTML={{ __html: comment.answer }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-2">
-                  <div className="card align-items-end">
-                    {/* //* Comment -> Delete, Update -> buttons */}
-                    {comment.user.id === user_id && (
-                      <div>
-                        <div className="row">
-                          <button
-                            className="rounded btn shadow"
-                            type="button"
-                            onClick={() => {
-                              this.deleteCommentAsync.bind(this)(comment);
-                            }}
-                          >
-                            Delete
-                          </button>{" "}
-                        </div>
-                        <br/>
-                        <div className="row">
-                          {" "}
-                          <button
-                            className="rounded btn shadow"
-                            type="button"
-                            onClick={() => {
-                              updateCommentToggle(comment.id);
-                            }}
-                          >
-                            Update
-                          </button>{" "}
-                          <div className="d-flex">
-                            {selectedCommentId === comment.id ? (
-                              <UpdateComment selectedCommentId={selectedCommentId} />
-                            ) : null}
+                            )}
                           </div>
                         </div>
                       </div>
-                    )}
+                    </div>
+                  </div>
+                  
+                  <div className="col-9">
+                    {/* //* Comment -> Answer TEXT */}
+                    <div className="card">
+                      <div className="card-body">
+                        <div
+                          className="comment"
+                          dangerouslySetInnerHTML={{ __html: comment.answer }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-2">
+                    <div className="card align-items-end">
+                      {/* //* Comment -> Delete, Update -> buttons */}
+                      {comment.user.id === user_id && (
+                        <div>
+                          <div className="row">
+                            <button
+                              className="rounded btn shadow"
+                              type="button"
+                              onClick={() => {
+                                this.deleteCommentAsync.bind(this)(comment);
+                              }}
+                            >
+                              Delete
+                            </button>{" "}
+                          </div>
+                          <br/>
+                          <div className="row">
+                            {" "}
+                            <button
+                              className="rounded btn shadow"
+                              type="button"
+                              onClick={() => {
+                                updateCommentToggle(comment.id);
+                              }}
+                            >
+                              Update
+                            </button>{" "}
+                            <div className="d-flex">
+                              {selectedCommentId === comment.id ? (
+                                <UpdateComment selectedCommentId={selectedCommentId} />
+                              ) : null}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         {/* //* comment PAGINATION - prev, next buttons  */}
         <div className="text-center">

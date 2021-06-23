@@ -66,7 +66,6 @@ export class CommentEditor extends React.Component {
           onClick={this.postComment.bind(this)}>
           Post
         </button>
-        <hr />
       </div>
     );
   }

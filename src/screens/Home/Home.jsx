@@ -18,6 +18,7 @@ import UpdateQuestion from "./UpdateQuestion/index";
 import CommentList from "./CommentList";
 import "./home.scss";
 import "./logo192.png";
+import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from "react-dom";
 
 class Home extends Component {
   constructor(props) {
@@ -39,6 +40,19 @@ class Home extends Component {
   async asyncVoteSelectedQuestion(i, user_id) {
     await this.props.voteSelectedQuestion(i, user_id);
     // await this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
+  }
+  blurBackground() {
+    const background_div = document.getElementById("blur")
+    const background_attr = background_div.getAttribute("style")
+    console.log("background attribute", background_attr)
+
+    if (background_attr == "container-fluid") {
+      document.getElementById("blur").setAttribute("style", "filter: 5px")
+    } else {
+      document.getElementById("blur").setAttribute("style", "")
+    }
+    console.log(document.getElementById("blur").getAttribute("style"))
+
   }
 
   render() {
@@ -62,6 +76,7 @@ class Home extends Component {
       pageNum.push(i);
     }
     // selectedQuestion.votes.includes(user_id);
+
     return (
       <div>
         <link
@@ -82,17 +97,20 @@ class Home extends Component {
             className="btn btn-lg btn-floating plus-btn rounded-circle shadow"
             onClick={() => {
               createQuestionToggle();
+              this.blurBackground();
             }}
           >
             <i className="fa fa-plus plus-icon"></i>
           </button>
           {/* CREATE QUESTION -> FORM */}
-          {this.props.renderCreateQuestion && (
-            <QuestionEditor createQuestionToggle={createQuestionToggle} />
-          )}
+          <div>
+            {this.props.renderCreateQuestion && (
+              <QuestionEditor createQuestionToggle={createQuestionToggle} />
+            )}
+          </div>
         </div>  
 
-        <div className="container-fluid">
+        <div className="container-fluid" id="blur">
           <div className="row d-flex">
             {/*//*------------------NAVIGATION BAR------------------- */}
             <nav className="navbar navbar-expand-lg py-4 shadow rounded navbar-light bg-light">
@@ -326,64 +344,69 @@ class Home extends Component {
               )}
               {/*  ----------Pagination---------------- */}
               {!selectedQuestion.user ? (
-                <div className="text-center">
-                  <div
-                    className="flex btn-group btn-group-toggle pg-buttons"
-                    data-toggle="buttons"
-                  >
-                    {currentPageQuestion >= 2 ? (
-                      <button
-                        className="btn btn-dark pg-btn"
-                        onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
-                      >
-                        <span aria-hidden="true">&laquo;</span>
-                      </button>
-                    ) : null}
-                       
-                    <button type="button" className="btn btn-secondary" disabled>
-                      {currentPageQuestion}
-                    </button>
-                    {currentPageQuestion >= maxPageQuestion ? null : (
-                      <button
-                        className="btn btn-dark"
-                        onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
-                      >
-                        <span aria-hidden="true">&raquo;</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ) : null}
-
-              <nav>
-                <div>
-                  <ul className="pagination justify-content-center">
-                    <li>
-                      <button
-                        type="button"
-                        className="btn pg-btn"
-                        onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
-                      >
-                        <span aria-hidden="true">&laquo;</span>
-                      </button>
-                    </li>
-                    {pageNum.map((number) => (
-                      <li key={number} className="page-item">
-                        <button className="page-link pg-btn">{number}</button>
+                <nav className="mb-5">
+                  <div>
+                    <ul className="pagination justify-content-center">
+                      <li>
+                        {currentPageQuestion >= 2 ? (
+                          <button
+                            type="button"
+                            className="btn pg-btn page-item"
+                            onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
+                          >
+                            <span aria-hidden="true">
+                              &laquo;
+                            </span>
+                          </button>
+                        ):(
+                          <button
+                            type="button"
+                            className="btn pg-btn"
+                            onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
+                            disabled
+                          >
+                            <span aria-hidden="true">
+                              &laquo;
+                            </span>
+                          </button>
+                        )}
                       </li>
-                    ))}
-                    <li>
-                      <button
-                        type="button"
-                        className="btn pg-btn"
-                        onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
-                      >
-                        <span aria-hidden="true">&raquo;</span>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </nav>
+                      {pageNum.map((number) => (
+                        <li key={number} 
+                            className="page-item">
+                          <button className="page-link pg-btn">
+                            {number}
+                          </button>
+                        </li>
+                      ))}
+                      <li>
+                        {currentPageQuestion >= maxPageQuestion ? (
+                          <button
+                            type="button"
+                            className="btn pg-btn page-item"
+                            onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
+                            disabled
+                          >
+                            <span aria-hidden="true">
+                              &raquo;
+                            </span>
+                          </button>
+                        ):(
+                          <button
+                            type="button"
+                            className="btn pg-btn"
+                            onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
+                          >
+                            <span aria-hidden="true">
+                              &raquo;
+                            </span>
+                          </button>
+                        )}
+                      </li>
+                    </ul>
+                  </div>
+                </nav>
+              ) : null}
             </div>
           </div>
         </div>
