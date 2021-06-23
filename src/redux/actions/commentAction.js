@@ -14,6 +14,22 @@ const token = localStorage.getItem("token");
 export const setHtmlString = (html) => async (dispatch) => {
   dispatch({ type: SET_HTML_STRING, payload: html });
 };
+
+export const reqAudioUrl = (e) => async (dispatch) => {
+  let form = new FormData();
+  try {
+    form.append("image", e, e.name);
+    await API.post(`/upload`, form).then((res) => {
+      console.log(`Logged Output ~ res.data`, res.data);
+      console.log(`Logged Output ~ res.data.url`, typeof res.data.url);
+      dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
+      return res.data.url;
+    });
+  } catch (error) {
+    console.log("reqImageUrl error: ", error);
+  }
+};
+
 export const reqImageUrl = (e) => async (dispatch) => {
   let form = new FormData();
   try {

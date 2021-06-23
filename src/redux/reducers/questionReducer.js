@@ -31,6 +31,8 @@ const initialState = {
   currentPageComment: 1,
   imageUrl: "",
   htmlString: "",
+  searchValue: "",
+  renderOrderButton: false,
 };
 export const questionReducer = (
   state = JSON.parse(JSON.stringify(initialState)),
@@ -109,13 +111,24 @@ export const questionReducer = (
       return { ...state };
     }
     case GET_QUESTION_BY_PAGE_NUMBER: {
-      return {
-        ...state,
-        questions: action.payload.questions,
-        maxPageQuestion: action.payload.maxPage,
-        currentPageQuestion: action.payload.currentPage,
-        selectedQuestion: false,
-      };
+      return action.payload && action.payload.searchValue
+        ? {
+            ...state,
+            questions: action.payload.questions,
+            maxPageQuestion: action.payload.maxPage,
+            currentPageQuestion: action.payload.currentPage,
+            selectedQuestion: false,
+            searchValue: action.payload.searchValue,
+            renderOrderButton: true,
+          }
+        : {
+            ...state,
+            questions: action.payload.questions,
+            maxPageQuestion: action.payload.maxPage,
+            currentPageQuestion: action.payload.currentPage,
+            selectedQuestion: false,
+            renderOrderButton: false,
+          };
     }
     case SET_SELECTED_QUESTION: {
       return { ...state, selectedQuestion: action.payload };
@@ -126,6 +139,8 @@ export const questionReducer = (
         selectedQuestion: false,
         renderCreateQuestion: false,
         renderUpdateQuestion: false,
+        renderOrderButton: false,
+        searchValue: false,
       };
     }
     case VOTE_SELECTED_QUESTION: {
