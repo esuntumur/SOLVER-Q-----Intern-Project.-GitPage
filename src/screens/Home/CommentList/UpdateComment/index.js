@@ -1,20 +1,18 @@
-// 'use strict';
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import HandleFullScreen from "./plugins/HandleFullScreen";
 import MdEditor from "react-markdown-editor-lite";
 import MarkdownIt from "markdown-it";
-// import ReactMarkdown from "react-markdown";
-import "react-markdown-editor-lite/lib/index.css";
-import HandleFullScreen from "./plugins/HandleFullScreen";
 import MyCounterA from "./plugins/MyCounterA";
 import MyCounterB from "./plugins/MyCounterB";
+import "react-markdown-editor-lite/lib/index.css";
 import {
+  updateCommentToggle,
   reqImageUrl,
-  createComment,
   setHtmlString,
-  getCommentsByPageNumber,
-} from "../../../redux/actions/commentAction";
-import { connect } from "react-redux";
-import "./commentList.scss";
+  updateComment,
+} from "../../../../redux/actions/commentAction";
+import "./updateComment.scss";
 // MdEditor.use(MyCounterA, {
 //   start: 2,
 // });
@@ -23,10 +21,7 @@ import "./commentList.scss";
 // });
 // MdEditor.use(HandleFullScreen);
 
-// * ---------------- CLASS
-export class CommentEditor extends React.Component {
-  mdParser = null;
-
+export class UpdateComment extends Component {
   constructor(props) {
     super(props);
     this.mdParser = new MarkdownIt(/* Markdown-it options */);
@@ -41,21 +36,20 @@ export class CommentEditor extends React.Component {
   handleEditorChange({ html }) {
     this.props.setHtmlString(html);
   }
-  async postComment(e) {
-    e.preventDefault();
-
-    await this.props.createComment(this.props.htmlString, this.props.selectedQuestion);
-    await this.props.getCommentsByPageNumber(
-      this.props.selectedQuestion,
-      this.props.currentPageComment
-    );
+  async submitHandler(event) {
+    event.preventDefault();
+    const payload = {
+      answer: this.props.htmlString,
+      commentId: this.props.selectedCommentId,
+    };
+    await this.props.updateComment(payload);
+    await this.props.updateCommentToggle(this.props.selectedCommentId);
   }
-
   render() {
     return (
-      <div id="createComment">
+      <div id="updateComment">
         <div className="form-bg">
-          <form className="form" onSubmit={this.postComment.bind(this)}>
+          <form className="form" onSubmit={this.submitHandler.bind(this)}>
             <div className="form-group">
               <label className="sr-only">Question details</label>
               <div style={{ height: "400px" }}>
@@ -68,12 +62,11 @@ export class CommentEditor extends React.Component {
                   }}
                   ref={this.mdEditor}
                 />
-
                 <hr />
               </div>
             </div>
-            <button className="btn btn-lg mt-3 comment-post-btn" type="submit">
-              Post
+            <button type="submit" className="btn text-center btn-blue">
+              Update
             </button>
           </form>
         </div>
@@ -90,13 +83,11 @@ const mapStateToProps = (state) => {
     currentPageComment: state.question.currentPageComment,
   };
 };
-// selectedQuestion, ;
-
 const mapDispatchToProps = {
+  updateCommentToggle,
+  updateComment,
   reqImageUrl,
   setHtmlString,
-  createComment,
-  getCommentsByPageNumber,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateComment);

@@ -30,7 +30,9 @@ export const reqImageUrl = (e) => async (dispatch) => {
 };
 
 export const createComment = (htmlString, selectedQuestion) => async (dispatch) => {
-  // this.props.createComment(this.props.htmlString);
+  console.log(`Logged Output ~ selectedQuestion`, selectedQuestion);
+  console.log(`Logged Output ~ htmlString`, htmlString);
+  //  this.props.createComment(this.props.htmlString, this.props.selectedQuestion);
 
   await API.post(
     "comments",
@@ -46,6 +48,7 @@ export const createComment = (htmlString, selectedQuestion) => async (dispatch) 
       },
     }
   ).then((response) => {
+    console.log(`Logged Output ~ response.data.object`, response.data.object);
     dispatch({ type: SEND_COMMENT, payload: response.data.object });
   });
 };

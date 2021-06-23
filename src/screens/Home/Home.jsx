@@ -12,6 +12,7 @@ import {
   updateQuestionToggle,
   voteSelectedQuestion,
   searchQuestion,
+  updateQuestion,
 } from "../../redux/actions/question";
 import QuestionEditor from "./CreateQuestion/QuestionEditor";
 import UpdateQuestion from "./UpdateQuestion/index";
@@ -238,6 +239,7 @@ class Home extends Component {
                       <hr />
                     </div>
                   </div>
+                  {/* //* Question Detail Body */}
                   <div className="card ms-5 me-5">
                     <div
                       className="comment card-body"
@@ -245,6 +247,25 @@ class Home extends Component {
                     ></div>
                     <hr />
                   </div>
+                  {/* //* DELETE, UPDATE QUESTION BUTTON */}
+                  <button
+                    onClick={() => {
+                      console.log("deleteSelectedQuestion");
+                      deleteSelectedQuestion(selectedQuestion);
+                    }}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    onClick={() => {
+                      console.log("updateQuestionToggle");
+                      updateQuestionToggle();
+                    }}
+                  >
+                    Update
+                  </button>
+                  {renderUpdateQuestion ? <UpdateQuestion /> : null}
+
                   {/*  aa */}
                   <div className="ms-5 me-5 mt-5">
                     <h5 className="ms-3 mt-3">Add a comment:</h5>

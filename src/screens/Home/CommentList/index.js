@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
-import UpdateComment from "./UpdateComment";
+import UpdateComment from "./UpdateComment/index";
 import {
   getCommentsByPageNumber,
   voteComment,

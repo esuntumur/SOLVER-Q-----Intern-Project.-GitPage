@@ -38,6 +38,13 @@ export const questionReducer = (
 ) => {
   switch (action.type) {
     // dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
+    case UPDATE_QUESTION_TOGGLE: {
+      console.log(`Logged Output ~ updateQuestionToggle`);
+      return {
+        ...state,
+        renderUpdateQuestion: !state.renderUpdateQuestion,
+      };
+    }
     case SET_HTML_STRING: {
       return {
         ...state,
@@ -63,6 +70,7 @@ export const questionReducer = (
         comments: c,
       };
     }
+
     // TODO
     case UPDATE_COMMENT: {
       let idx;
@@ -109,15 +117,17 @@ export const questionReducer = (
         selectedQuestion: false,
       };
     }
-    case SET_SELECTED_QUESTION:
+    case SET_SELECTED_QUESTION: {
       return { ...state, selectedQuestion: action.payload };
-    case BACK_FROM_SELECTED_QUESTION:
+    }
+    case BACK_FROM_SELECTED_QUESTION: {
       return {
         ...state,
         selectedQuestion: false,
         renderCreateQuestion: false,
         renderUpdateQuestion: false,
       };
+    }
     case VOTE_SELECTED_QUESTION: {
       let selectedQuestion = action.payload.selectedQuestion,
         idx,
@@ -138,45 +148,34 @@ export const questionReducer = (
 
       return { ...state, questions: q };
     }
-    case CREATE_QUESTION:
+    case CREATE_QUESTION: {
       return {
         ...state,
         questions: [...state.questions, action.payload],
         renderCreateQuestion: false,
       };
-    case CREATE_QUESTION_TOGGLE:
+    }
+    case CREATE_QUESTION_TOGGLE: {
       return {
         ...state,
         renderCreateQuestion: !state.renderCreateQuestion,
       };
-    case UPDATE_QUESTION_TOGGLE:
-      return {
-        ...state,
-        renderUpdateQuestion: !state.renderUpdateQuestion,
-      };
+    }
+
     case UPDATE_SELECTED_QUESTION: {
-      // payload: { payload, selectedQuestion }
-      /**
-       * payload = {
-      id: selectedQuestion.id,
-      params: {
-        questions: {
-          title: event.target.title.value,
-          question: event.target.question.value,
-        },
-      },
-      backFromSelectedQuestion: this.props.backFromSelectedQuestion
-    };
-       */
-      let idx;
-      const q = state.questions.filter((item) => {
-        idx = item.id;
-        return action.payload.id !== item.id;
+      let selectedQuestion = action.payload,
+        idx;
+      let q = state.questions.filter((question, index) => {
+        if (selectedQuestion.id === question.id) idx = index;
+        return selectedQuestion.id !== question.id;
       });
-      q.splice(--idx, 1, action.payload);
+      //  Condition
+      q.splice(idx, 0, selectedQuestion);
+
       return {
         ...state,
         questions: q,
+        selectedQuestion: selectedQuestion,
       };
     }
     case DELETE_SELECTED_QUESTION: {
@@ -186,6 +185,7 @@ export const questionReducer = (
       return {
         ...state,
         questions: q,
+        selectedQuestion: false,
       };
     }
     default:
