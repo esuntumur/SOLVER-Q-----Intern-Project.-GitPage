@@ -11,6 +11,7 @@ function Navigation(props) {
     blurBackground,
     logoutUser,
     user_name,
+    user_photo
   } = props;
   return (
     <nav className="navbar navbar-expand-lg py-4 shadow rounded navbar-light bg-light">
@@ -70,7 +71,7 @@ function Navigation(props) {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                Profile
+                <img src={user_photo} width="50px" height="50px"/>
               </button>
               <div
                 className="dropdown-menu dropdown-menu-lg-end"
@@ -86,7 +87,7 @@ function Navigation(props) {
                     blurBackground();
                   }}
                 >
-                  Edit profile
+                  Profile
                 </button>
                 <button
                   className="btn dropdown-item"

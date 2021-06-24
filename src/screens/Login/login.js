@@ -2,7 +2,6 @@ import "./login.scss";
 import React from "react";
 import { connect } from "react-redux";
 import { loginUser, signupUser } from "../../redux/actions/authentication";
-import LoginForm from "./LoginForm";
 // email: "dannd@example.com",
 // password: "238523a",
 
@@ -40,88 +39,105 @@ class Login extends React.Component {
   render() {
     return (
       <div id="login">
-        <div className="l-form">
-          <form className="form" onSubmit={this.handleSubmit}>
-            <h4 className="form__title">Log In</h4>
-            {/* ---------------Email------------- */}
-            <div className="form_div">
-              <input type="text" className="form__input" placeholder=" " name="email" />
-              <label className="form__label">Email</label>
-            </div>
-            {/* ---------------Password--------------- */}
-            <div className="form_div">
-              <input
-                type="password"
-                className="form__input"
-                placeholder=" "
-                name="password"
-              />
-              <label className="form__label">Password</label>
-            </div>
-            {/* ---------------SUBMIT--------------- */}
-            <input type="submit" className="form__button mb-3" value="Login" />
+        
+        <div className="dropdown">
+          <nav className="navbar navbar-expand-lg py-4 shadow rounded navbar-light bg-light">
+            <div className="ms-auto">
+              {/* ---------------LOG-IN-------------- */}
+              <button
+                className="navbar-brand btn log-btn rounded"
+                id="logInDropdown"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Log In
+              </button>
+              <div
+                className="dropdown-menu dropdown-menu-lg-end"
+                aria-labelledby="logInDropdown"
+              >
+                <button
+                  className="btn dropdown-header"
+                >
+                  <form className="form" onSubmit={this.handleSubmit}>
+                    <h4 className="form__title">Log In</h4>
+                    {/* ---------------Email------------- */}
+                    <div className="form_div">
+                      <input type="text" className="form__input" placeholder=" " name="email" />
+                      <label className="form__label">Email</label>
+                    </div>
+                    {/* ---------------Password--------------- */}
+                    <div className="form_div">
+                      <input
+                        type="password"
+                        className="form__input"
+                        placeholder=" "
+                        name="password"
+                      />
+                      <label className="form__label">Password</label>
+                    </div>
+                    {/* ---------------SUBMIT--------------- */}
+                    <input type="submit" className="form__button mb-3" value="Login" />
+                  </form>
+                </button>              
+              </div>
 
-            {/* ---------------Social buttons--------------- */}
-            <div className="dropdown-divider"></div>
-            <p className="gray">or login with</p>
-            <div className="social_icon2">
-              <a href="/" className="fa fa-google form__button">
-                {" "}
-                  Continue with Google
-              </a>
-              <a href="/" className="fa fa-facebook form__button form__button">
-                   Continue with Facebook
-              </a>
-            </div>
-          </form>
+              {/* ---------------SIGN-UP-------------- */}
+              <button
+                className="navbar-brand btn log-btn rounded"
+                id="signUpDropdown"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Sign Up
+              </button>
+              <div
+                className="dropdown-menu dropdown-menu-lg-end"
+                aria-labelledby="signUpDropdown"
+              >
+                <button
+                  className="btn dropdown-header"
+                >
+                  <form className="form" onSubmit={this.handleSubmitSignUp}>
+                    <h4 className="form__title">Sign Up</h4>
+                    {/* ---------------username--------------- */}
+                    <div className="form_div">
+                      <input
+                        type="text"
+                        className="form__input"
+                        placeholder=" "
+                        name="username"
+                      />
+                      <label className="form__label">Username</label>
+                    </div>
+                    {/* ---------------Email------------- */}
+                    <div className="form_div">
+                      <input type="text" className="form__input" placeholder=" " name="email" />
+                      <label className="form__label">Email</label>
+                    </div>
+                    {/* ---------------Password--------------- */}
+                    <div className="form_div">
+                      <input
+                        type="password"
+                        className="form__input"
+                        placeholder=" "
+                        name="password"
+                      />
+                      <label className="form__label">Password</label>
+                    </div>
 
-          <form className="form" onSubmit={this.handleSubmitSignUp}>
-            <h4 className="form__title">Sign Up</h4>
-            {/* ---------------username--------------- */}
-            <div className="form_div">
-              <input
-                type="text"
-                className="form__input"
-                placeholder=" "
-                name="username"
-              />
-              <label className="form__label">Username</label>
-            </div>
-            {/* ---------------Email------------- */}
-            <div className="form_div">
-              <input type="text" className="form__input" placeholder=" " name="email" />
-              <label className="form__label">Email</label>
-            </div>
-            {/* ---------------Password--------------- */}
-            <div className="form_div">
-              <input
-                type="password"
-                className="form__input"
-                placeholder=" "
-                name="password"
-              />
-              <label className="form__label">Password</label>
-            </div>
+                    {/* ---------------SUBMIT--------------- */}
+                    <input type="submit" className="form__button mb-3" value="Sign Up" />
+                  </form>
 
-            {/* ---------------SUBMIT--------------- */}
-            <input type="submit" className="form__button mb-3" value="Sign Up" />
-
-            {/* ---------------Social buttons--------------- */}
-            <div className="dropdown-divider"></div>
-            <p className="gray">or sign up with</p>
-            <div className="social_icon2">
-              <a href="/" className="fa fa-google form__button">
-                {" "}
-                  Continue with Google
-              </a>
-              <a href="/" className="fa fa-facebook form__button form__button">
-                   Continue with Facebook
-              </a>
-            </div>
-          </form>
-        </div>
-        <LoginForm message="hello world!" />
+                </button>              
+              </div>  
+            </div>         
+          </nav>
       </div>
+    </div>
     );
   }
 }

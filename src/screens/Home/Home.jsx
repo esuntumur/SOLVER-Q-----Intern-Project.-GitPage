@@ -19,7 +19,7 @@ import ReactPlayer from "react-player";
 import ReactPaginate from "react-paginate";
 
 import QuestionEditor from "./CreateQuestion/QuestionEditor";
-import { Profile } from "./Profile";
+import Profile from "./Profile";
 import UpdateQuestion from "./UpdateQuestion/index";
 import Navigation from "./Navigation";
 import QuestionDetails from "./QuestionDetails";
@@ -88,14 +88,13 @@ class Home extends Component {
 
     const user_id = localStorage.getItem("user_id");
     const user_name = localStorage.getItem("user_name");
+    const user_email = localStorage.getItem("user_email");
+    const user_bio = localStorage.getItem("user_bio");
+    const user_photo = localStorage.getItem("user_photo");
 
     return (
       <div>
-        <link
-          rel="stylesheet"
-          href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
-          type="text/css"
-        />
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type="text/css" />
         {/* CREATE QUESTION -> BUTTON*/}
         <div>
           <ReactTooltip id="createQtip" place="top" effect="solid">
@@ -116,7 +115,9 @@ class Home extends Component {
           {/*//* -------------------CREATE QUESTION -> FORM */}
           {this.props.renderCreateQuestion && <QuestionEditor />}
         </div>
-        {this.props.renderProfile && <Profile />}
+
+        {this.props.renderProfile && <Profile user_name={user_name} user_bio={user_bio} user_email={user_email} user_photo={user_photo} />}
+
         <div className="container-fluid" id="blur">
           <div className="row d-flex">
             {/*//*------------------NAVIGATION BAR------------------- */}
@@ -129,6 +130,7 @@ class Home extends Component {
               blurBackground={this.blurBackground}
               logoutUser={logoutUser}
               user_name={user_name}
+              user_photo={user_photo}
             />
             {/*//*------------------HOME BODY------------------- */}
             <div>
@@ -145,9 +147,7 @@ class Home extends Component {
               ) : (
                 <div>
                   {/* //* ------QUESTION ORDER BUTTON-------- */}
-                  {this.props.renderOrderButton && (
-                    <QuestionOrderButtons searchOrderHandler={this.searchOrderHandler} />
-                  )}
+                  {this.props.renderOrderButton && <QuestionOrderButtons searchOrderHandler={this.searchOrderHandler} />}
                   {/* //* -------QUESTION LIST -------------- */}
                   {questions && questions.length > 0 && (
                     <QuestionList
