@@ -6,7 +6,8 @@ export default function Profile(props) {
     const {
         user_name, 
         user_bio,
-        user_email
+        user_email,
+        user_photo
     } = props;     
     return(
         <div id="createProfile" className="container-fluid rounded shadow-lg">
@@ -18,7 +19,7 @@ export default function Profile(props) {
             <div className="card-group mt-5">
                 <div className="profile-image">
                     <div className="card me-5 ms-5">
-                        <img src="./logo192.png"/>
+                        <img src={user_photo}/>
                     </div>
                 </div>
                 <div className="mt-4">
