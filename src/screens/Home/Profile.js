@@ -7,13 +7,21 @@ export default function Profile(props) {
         user_name, 
         user_bio,
         user_email,
-        user_photo
+        user_photo,
+        blurBackground,
+        getBackFromEditProfile,
     } = props;     
     return(
         <div id="createProfile" className="container-fluid rounded shadow-lg">
             <div>
                 <div className="card ms-4 align-items-end">
-                    <button className="btn btn-lg card-item"><i className="fa fa-times-circle"></i></button>
+                    <button className="btn btn-lg card-item x-btn"
+                            onClick={() => {
+                                blurBackground();
+                                getBackFromEditProfile()
+                            }}>
+                        <i className="fa fa-times-circle"></i>
+                    </button>
                 </div>
             </div>
             <div className="card-group mt-5">

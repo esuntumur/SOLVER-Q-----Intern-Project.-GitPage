@@ -208,7 +208,7 @@ export const questionReducer = (state = JSON.parse(JSON.stringify(initialState))
     case GET_BACK_FROM_EDIT_PROFILE: {
       return {
         ...state,
-        renderProfile: !state.renderProfile,
+        renderProfile: false,
       };
     }
 

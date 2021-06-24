@@ -14,6 +14,7 @@ import {
   voteSelectedQuestion,
   searchQuestion,
   updateQuestion,
+  getBackFromEditProfile
 } from "../../redux/actions/question";
 import ReactPlayer from "react-player";
 import ReactPaginate from "react-paginate";
@@ -83,6 +84,7 @@ class Home extends Component {
       updateQuestionToggle,
       renderUpdateQuestion,
       getQuestionsByPageNumber,
+      getBackFromEditProfile
     } = this.props;
     let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
 
@@ -116,7 +118,7 @@ class Home extends Component {
           {this.props.renderCreateQuestion && <QuestionEditor />}
         </div>
 
-        {this.props.renderProfile && <Profile user_name={user_name} user_bio={user_bio} user_email={user_email} user_photo={user_photo} />}
+        {this.props.renderProfile && <Profile user_name={user_name} user_bio={user_bio} user_email={user_email} user_photo={user_photo} blurBackground={this.blurBackground} getBackFromEditProfile={getBackFromEditProfile}/>}
 
         <div className="container-fluid" id="blur">
           <div className="row d-flex">
@@ -200,6 +202,7 @@ const Container = connect(mapStateToProps, {
   updateQuestionToggle,
   voteSelectedQuestion,
   searchQuestion,
+  getBackFromEditProfile
 })(Home);
 
 export default Container;
