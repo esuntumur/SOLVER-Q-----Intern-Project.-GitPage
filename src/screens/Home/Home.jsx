@@ -54,17 +54,17 @@ class Home extends Component {
   }
 
   blurBackground() {
-    const divTC = document.getElementById("blur")
-    divTC.classList.toggle("big-container")
+    const divTC = document.getElementById("blur");
+    divTC.classList.toggle("big-container");
   }
 
   blurLogo() {
-    const divATT = document.getElementById("blur").getAttribute("class")
+    const divATT = document.getElementById("blur").getAttribute("class");
     if (divATT == "container-fluid") {
-      document.getElementById("blur").setAttribute("class", "container-fluid")
+      document.getElementById("blur").setAttribute("class", "container-fluid");
     } else {
-      document.getElementById("blur").removeAttribute("class")
-      document.getElementById("blur").setAttribute("class", "container-fluid")
+      document.getElementById("blur").removeAttribute("class");
+      document.getElementById("blur").setAttribute("class", "container-fluid");
     }
   }
 
@@ -129,7 +129,8 @@ class Home extends Component {
                     getQuestionsByPageNumber(1);
                     this.blurLogo();
                   }}
-                  id="logo">
+                  id="logo"
+                >
                   <img src="./logo192.png" alt="Logo" width="50" height="50" />
                 </button>
                 {/* NAVBAR TOGGLER IN MOBILE -> BUTTON */}
@@ -184,7 +185,9 @@ class Home extends Component {
                         className="dropdown-menu dropdown-menu-lg-end"
                         aria-labelledby="navbarDropdownMenu"
                       >
-                        <p className="dropdown-header text-dark"><b>{user_name}</b></p>
+                        <p className="dropdown-header text-dark">
+                          <b>{user_name}</b>
+                        </p>
                         <button
                           className="btn dropdown-item"
                           onClick={() => {
@@ -220,7 +223,7 @@ class Home extends Component {
                           </span>
                         </div>
                         {selectedQuestion.user.id == user_id ? (
-                          <div className="col-auto">                  
+                          <div className="col-auto">
                             {/* //* DELETE, UPDATE QUESTION BUTTON */}
                             <button
                               className="btn q-del-up"
@@ -240,43 +243,43 @@ class Home extends Component {
                             >
                               Update
                             </button>
-                            {renderUpdateQuestion ? <UpdateQuestion /> : null}  
-                          </div>  
-                          ):(
-                            <span className="col-auto">
-                              {selectedQuestion &&
-                              selectedQuestion.votes &&
-                              !selectedQuestion.votes.includes(user_id) ? (
-                                <div>
-                                  <button
-                                    className="btn q-vote-btn"
-                                    onClick={(e) => {
-                                      this.asyncVoteSelectedQuestion(
-                                        selectedQuestion,
-                                        user_id
-                                      );
-                                    }}
-                                  >
-                                    <i className="fa fa-heart-o"></i>
-                                  </button>
-                                </div>
-                              ) : (
-                                <div>
-                                  <button
-                                    className="btn q-vote-btn"
-                                    onClick={(e) => {
-                                      this.asyncVoteSelectedQuestion(
-                                        selectedQuestion,
-                                        user_id
-                                      );
-                                    }}
-                                  >
-                                    <i className="fa fa-heart"></i>
-                                  </button>
-                                </div>
-                              )}
-                            </span>                            
-                          )}                         
+                            {renderUpdateQuestion ? <UpdateQuestion /> : null}
+                          </div>
+                        ) : (
+                          <span className="col-auto">
+                            {selectedQuestion &&
+                            selectedQuestion.votes &&
+                            !selectedQuestion.votes.includes(user_id) ? (
+                              <div>
+                                <button
+                                  className="btn q-vote-btn"
+                                  onClick={(e) => {
+                                    this.asyncVoteSelectedQuestion(
+                                      selectedQuestion,
+                                      user_id
+                                    );
+                                  }}
+                                >
+                                  <i className="fa fa-heart-o"></i>
+                                </button>
+                              </div>
+                            ) : (
+                              <div>
+                                <button
+                                  className="btn q-vote-btn"
+                                  onClick={(e) => {
+                                    this.asyncVoteSelectedQuestion(
+                                      selectedQuestion,
+                                      user_id
+                                    );
+                                  }}
+                                >
+                                  <i className="fa fa-heart"></i>
+                                </button>
+                              </div>
+                            )}
+                          </span>
+                        )}
                       </div>
                       <hr />
                     </div>
@@ -307,7 +310,9 @@ class Home extends Component {
 
                   {/*  aa */}
                   <div className="ms-5 me-5 mt-5">
-                    <div className="ms-3"><hr /></div>
+                    <div className="ms-3">
+                      <hr />
+                    </div>
                     <h5 className="mt-5 ms-3">Add a comment:</h5>
                     <div className="mt-3">
                       <CommentList
@@ -319,132 +324,80 @@ class Home extends Component {
                 </div>
               ) : (
                 // ! ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
-                <div>
-                  {/* //* --------Question Order-------- */}
-                  {this.props.renderOrderButton && (
-                    <div
-                      className="btn-group"
-                      role="group"
-                      aria-label="Button group with nested dropdown"
-                    >
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => {
-                          this.searchOrderHandler(1);
-                        }}
-                      >
-                        Votes
-                      </button>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => {
-                          this.searchOrderHandler(3);
-                        }}
-                      >
-                        Answers
-                      </button>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => {
-                          this.searchOrderHandler(4);
-                        }}
-                      >
-                        Dates
-                      </button>
-                    </div>
-                  )}
-                  {/* //*----------questions list------ */}
-                  {questions &&
-                    questions.length > 0 &&
-                    questions.map((i, idx) => (
-                      <div key={idx}>
-                        <div className="card-group shadow p-5 m-5 border rounded">
-                          <div className="col-sm-2">
-                            <div className="card text-center">
-                              <div className="card-body">
-                                <div className="card-text">
-                                  <span>{i.votes.length} </span>
-                                  {i && i.votes && !i.votes.includes(user_id) ? (
-                                    <div>
-                                      <ReactTooltip
-                                        id="heart-o-tip"
-                                        place="bottom"
-                                        effect="solid"
-                                      >
-                                        Vote
-                                      </ReactTooltip>
-                                      <button
-                                        data-tip
-                                        data-for="heart-o-tip"
-                                        className="btn q-vote-btn"
-                                        onClick={(e) => {
-                                          this.asyncVoteSelectedQuestion(i, user_id);
-                                        }}
-                                      >
-                                        <i className="fa fa-heart-o"></i>
-                                      </button>
-                                    </div>
-                                  ) : (
-                                    <div>
-                                      <ReactTooltip
-                                        id="heart-tip"
-                                        place="bottom"
-                                        effect="solid"
-                                      >
-                                        Unvote
-                                      </ReactTooltip>
-                                      <button
-                                        data-tip
-                                        data-for="heart-tip"
-                                        className="btn q-vote-btn"
-                                        onClick={(e) => {
-                                          this.asyncVoteSelectedQuestion(i, user_id);
-                                        }}
-                                      >
-                                        <i className="fa fa-heart"></i>
-                                      </button>
-                                    </div>
-                                  )}
+                questions &&
+                questions.length > 0 &&
+                questions.map((i, idx) => (
+                  <div key={idx}>
+                    <div className="card-group shadow p-5 m-5 border rounded">
+                      <div className="col-sm-2">
+                        <div className="card text-center">
+                          <div className="card-body">
+                            <div className="card-text">
+                              <span>{i.votes.length} </span>
+                              {i.votes.length >= 2 ? "votes" : "vote"}
+                              {i && i.votes && !i.votes.includes(user_id) ? (
+                                <div>
+                                  <button
+                                    className="btn btn-lg q-vote-btn"
+                                    onClick={(e) => {
+                                      this.asyncVoteSelectedQuestion(i, user_id);
+                                    }}
+                                  >
+                                    <i className="fa fa-heart-o"></i>
+                                  </button>
                                 </div>
-                                <hr />
-                                <p className="card-text">
-                                  <span>{i.comments} </span>
-                                  {i.comments >= 2 ? "answers" : "answer"}
-                                </p>
-                              </div>
+                              ) : (
+                                <div>
+                                  <button
+                                    className="btn btn-lg q-vote-btn"
+                                    onClick={(e) => {
+                                      this.asyncVoteSelectedQuestion(i, user_id);
+                                    }}
+                                  >
+                                    <i className="fa fa-heart"></i>
+                                  </button>
+                                </div>
+                              )}
                             </div>
-                          </div>
-                          <div className="col-sm-10">
-                            <div className="card">
-                              <div className="card-body">
-                                <h5
-                                  className="card-title"
-                                  onClick={() => this.props.setSelectedQuestion(i)}
-                                >
-                                  <b>{i.title}</b>
-                                </h5>
-                                <div
-                                  className="questionStyle card-body"
-                                  dangerouslySetInnerHTML={{
-                                    __html: i.question,
-                                  }}
-                                ></div>
-                                <p className="card-text">
-                                  {/* {i.question.substring(0, 300)} */}
-                                  {i.question.length >= 300 ? " ..." : ""}
-                                </p>
-                                <p className="card-text text-end">
-                                  <i>by </i>
-                                  <b> {i.user.username}</b>
-                                </p>
-                              </div>
-                            </div>
+                            <hr />
+                            <p className="card-text">
+                              <span>{i.comments} </span>
+                              {i.comments >= 2 ? "answers" : "answer"}
+                            </p>
                           </div>
                         </div>
                       </div>
-                    ))}
-                </div>
+                      <div className="col-sm-10">
+                        <div className="card">
+                          <div className="card-body">
+                            <h5
+                              className="card-title"
+                              onClick={() => this.props.setSelectedQuestion(i)}
+                            >
+                              <b>{i.title}</b>
+                            </h5>
+                            <div
+                              className="questionStyle card-body"
+                              dangerouslySetInnerHTML={{
+                                __html: i.question,
+                              }}
+                            ></div>
+                            <p className="card-text">
+                              {/* {i.question.substring(0, 300)} */}
+                              {i.question.length >= 300 ? " ..." : ""}
+                            </p>
+                            <p className="card-text text-end">
+                              <i>by </i>
+                              <b> {i.user.username}</b>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
               )}
+
               {/*  ----------Pagination---------------- */}
               {!selectedQuestion && (
                 <nav aria-label="Page navigation example">
