@@ -35,6 +35,7 @@ export const reqImageUrl = (e) => async (dispatch) => {
   try {
     form.append("image", e, e.name);
     await API.post(`/upload`, form).then((res) => {
+      console.log(`Console.log  =>  ~ awaitAPI.post ~ res.data.url`, res.data.url);
       dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
       return res.data.url;
     });
@@ -63,14 +64,13 @@ export const createComment = (htmlString, selectedQuestion, id) => async (dispat
   });
 };
 
-export const getCommentsByPageNumber =
-  (selectedQuestion, currentPageComment) => async (dispatch) => {
-    await API.post(`questions/${selectedQuestion.id}/comments`, {
-      commentPage: currentPageComment,
-    }).then((response) => {
-      dispatch({ type: GET_COMMENTS_BY_PAGE_NUMBER, payload: response.data });
-    });
-  };
+export const getCommentsByPageNumber = (selectedQuestion, currentPageComment) => async (dispatch) => {
+  await API.post(`questions/${selectedQuestion.id}/comments`, {
+    commentPage: currentPageComment,
+  }).then((response) => {
+    dispatch({ type: GET_COMMENTS_BY_PAGE_NUMBER, payload: response.data });
+  });
+};
 
 export const deleteComment = (comment) => async (dispatch) => {
   await API.delete(`/comments/${comment.id}`, {

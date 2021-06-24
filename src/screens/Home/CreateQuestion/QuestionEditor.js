@@ -22,11 +22,15 @@ export const QuestionEditor = (props) => {
   } = useForm();
 
   const onImageUpload = async (e, callback) => {
+    console.log(`Console.log  =>  ~ onImageUpload ~ props`, props);
     await props.reqImageUrl(e);
+    console.log(`Console.log  =>  ~ onImageUpload ~ props`, props);
     await callback(props.imageUrl);
+    console.log(`Console.log  =>  ~ onImageUpload ~ props`, props);
   };
 
   const handleEditorChange = ({ html }) => {
+    console.log(`Console.log  =>  ~ handleEditorChange ~ props`, props);
     props.setHtmlString(html);
   };
 
@@ -79,11 +83,13 @@ export const QuestionEditor = (props) => {
   );
 };
 const mapStateToProps = (state) => {
+  const { imageUrl, htmlString, selectedQuestion, currentPageQuestion, questions } = state.question;
   return {
-    imageUrl: state.question.imageUrl,
-    htmlString: state.question.htmlString,
-    selectedQuestion: state.question.selectedQuestion,
-    currentPageQuestion: state.question.currentPageQuestion,
+    imageUrl: imageUrl,
+    htmlString: htmlString,
+    selectedQuestion: selectedQuestion,
+    currentPageQuestion: currentPageQuestion,
+    questions: questions,
   };
 };
 const mapDispatchToProps = {

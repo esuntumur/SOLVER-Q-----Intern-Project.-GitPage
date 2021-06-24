@@ -39,7 +39,6 @@ export const searchQuestion = (searchValue, order) => async (dispatch) => {
 };
 
 export const createQuestionToggle = () => async (dispatch) => {
-  console.log(`Logged Output ~ createQuestionToggle`);
   dispatch({ type: CREATE_QUESTION_TOGGLE });
 };
 
