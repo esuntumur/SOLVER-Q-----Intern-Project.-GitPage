@@ -154,3 +154,15 @@
   margin-left: 2em;
   margin-right: 2em;
 }
+
+$primary-color: #618ab8;
+$secondary-color: #063970;
+$white-color: #ffffff;
+$black-color: #000000;
+
+.log-btn {
+    background-color: $primary-color;
+    color: $white-color !important;
+    outline: none !important;
+    box-shadow: none !important;
+}

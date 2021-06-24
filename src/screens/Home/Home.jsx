@@ -18,7 +18,7 @@ import {
 import ReactPaginate from "react-paginate";
 
 import QuestionEditor from "./CreateQuestion/QuestionEditor";
-import { Profile } from "./Profile";
+import Profile from "./Profile";
 import UpdateQuestion from "./UpdateQuestion/index";
 import Navigation from "./Navigation";
 import QuestionDetails from "./QuestionDetails";
@@ -88,6 +88,8 @@ class Home extends Component {
 
     const user_id = localStorage.getItem("user_id");
     const user_name = localStorage.getItem("user_name");
+    const user_email = localStorage.getItem("user_email");
+    const user_bio = localStorage.getItem("user_bio");
 
     return (
       <div>
@@ -117,7 +119,7 @@ class Home extends Component {
           {this.props.renderCreateQuestion && <QuestionEditor />}
         </div>
 
-        {this.props.renderProfile && <Profile />}
+        {this.props.renderProfile && <Profile user_name={user_name} user_bio={user_bio} user_email={user_email}/>}
 
         <div className="container-fluid" id="blur">
           <div className="row d-flex">
@@ -131,7 +133,7 @@ class Home extends Component {
               blurBackground={this.blurBackground}
               logoutUser={logoutUser}
               user_name={user_name}
-            />
+            />  
             {/*//*------------------HOME BODY------------------- */}
             <div>
               {/* //! ---------------QUESTION DETAILS--------------- */}

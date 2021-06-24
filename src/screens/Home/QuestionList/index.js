@@ -49,14 +49,25 @@ export default function QuestionList(props) {
               <h5 className="card-title" onClick={() => setSelectedQuestion(i)}>
                 <b>{i.title}</b>
               </h5>
-              <div>
-                <div
-                  className="questionStyle card-text"
-                  dangerouslySetInnerHTML={{
-                    __html: i.question.substring(0, 300) + "...",
-                  }}
-                ></div>
-              </div>
+              {i.question.length > 300 ? (
+                <div>
+                  <div
+                    className="questionStyle card-text"
+                    dangerouslySetInnerHTML={{
+                      __html: i.question.substring(0, 300) + "...",
+                    }}
+                  ></div>
+                </div>
+              ): (
+                <div>
+                  <div
+                    className="questionStyle card-text"
+                    dangerouslySetInnerHTML={{
+                      __html: i.question.substring(0, 300),
+                    }}
+                  ></div>
+                </div>
+              )}
               <p className="card-text text-end">
                 <i>by </i>
                 <b> {i.user.username}</b>
