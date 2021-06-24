@@ -9,6 +9,7 @@ import {
   SET_IMAGE_URL,
   SET_HTML_STRING,
   TOGGLE_RENDER_AUDIO_RECORDER,
+  SET_AUDIO_URL,
 } from "./type";
 
 const token = localStorage.getItem("token");
@@ -20,21 +21,18 @@ export const setRenderAudioRecorder = (html) => async (dispatch) => {
 export const setHtmlString = (html) => async (dispatch) => {
   dispatch({ type: SET_HTML_STRING, payload: html });
 };
-export const setAudioFile = (e) => async (dispatch) => {
-  console.log(`Logged Output ~ setAudioFile`);
-};
-export const reqAudioUrl = (e) => async (dispatch) => {
+export const setAudioFile = (audio) => async (dispatch) => {
+  console.log(`Logged Output ~ setAudioFile`, audio);
   let form = new FormData();
   try {
-    form.append("image", e, e.name);
-    await API.post(`/upload`, form).then((res) => {
-      console.log(`Logged Output ~ res.data`, res.data);
-      console.log(`Logged Output ~ res.data.url`, typeof res.data.url);
-      dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
-      return res.data.url;
+    form.append("audio", audio, audio.name);
+    console.log("formdata get: ", form.get("audio"));
+    await API.post("upload/audio", form).then((res) => {
+      console.log(`Logged Output ~ res`, res);
+      dispatch({ type: SET_AUDIO_URL, payload: res.data.url });
     });
-  } catch (error) {
-    console.log("reqImageUrl error: ", error);
+  } catch (err) {
+    console.log("setAudioFile error: ", err);
   }
 };
 
@@ -54,8 +52,6 @@ export const reqImageUrl = (e) => async (dispatch) => {
 };
 
 export const createComment = (htmlString, selectedQuestion) => async (dispatch) => {
-  console.log(`Logged Output ~ selectedQuestion`, selectedQuestion);
-  console.log(`Logged Output ~ htmlString`, htmlString);
   //  this.props.createComment(this.props.htmlString, this.props.selectedQuestion);
 
   await API.post(

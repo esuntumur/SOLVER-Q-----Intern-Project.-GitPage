@@ -95,12 +95,16 @@ export class CommentList extends Component {
         <div>
           {comments.length > 0 ? (
             <div className="ms-3 me-3">
-              <div><hr/></div>
+              <div>
+                <hr />
+              </div>
               <h4 className="mt-5">
                 <b>Comments:</b>
               </h4>
             </div>
-          ):("")}
+          ) : (
+            ""
+          )}
           {comments &&
             comments.length > 0 &&
             comments.map((comment, idx) => (
@@ -141,7 +145,6 @@ export class CommentList extends Component {
                       </div>
                     </div>
                   </div>
-
                   <div className="col-9">
                     {/* //* Comment -> Answer TEXT */}
                     <div className="card">

@@ -17,6 +17,7 @@ import {
   SET_IMAGE_URL,
   SET_HTML_STRING,
   TOGGLE_RENDER_AUDIO_RECORDER,
+  SET_AUDIO_URL,
 } from "../actions/type";
 
 const initialState = {
@@ -42,6 +43,11 @@ export const questionReducer = (
 ) => {
   switch (action.type) {
     // dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
+    case SET_AUDIO_URL: {
+      return {
+        ...state,
+      };
+    }
     case TOGGLE_RENDER_AUDIO_RECORDER: {
       return {
         ...state,

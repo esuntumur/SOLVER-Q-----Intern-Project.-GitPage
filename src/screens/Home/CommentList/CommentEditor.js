@@ -31,7 +31,7 @@ export class CommentEditor extends React.Component {
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleAudioStop = this.handleAudioStop.bind(this);
     this.handleAudioUpload = this.handleAudioUpload.bind(this);
-    this.handleRest = this.handleRest.bind(this);
+    this.handleReset = this.handleReset.bind(this);
     this.state = {
       audioDetails: {
         url: null,
@@ -46,15 +46,15 @@ export class CommentEditor extends React.Component {
     };
   }
   handleAudioStop(data) {
-    console.log(data);
     this.setState({ audioDetails: data });
   }
 
   handleAudioUpload(file) {
+    console.log("file: ", file);
     this.props.setAudioFile(file);
   }
 
-  handleRest() {
+  handleReset() {
     const reset = {
       url: null,
       blob: null,
@@ -115,6 +115,7 @@ export class CommentEditor extends React.Component {
                 handleOnChange={(value) => this.handleOnChange(value, "firstname")}
                 handleAudioUpload={(data) => this.handleAudioUpload(data)}
                 handleRest={() => this.handleRest()}
+                mimeTypeToUseWhenRecording={`audio/webm`}
               />
             )}
 

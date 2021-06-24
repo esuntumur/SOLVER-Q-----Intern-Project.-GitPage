@@ -6,6 +6,7 @@ import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import HandleFullScreen from "./plugins/HandleFullScreen";
 import { connect } from "react-redux";
+import CreateQuestionForm from "./CreateQuestionForm";
 
 import "./style.scss";
 import {
@@ -44,8 +45,8 @@ export class QuestionEditor extends React.Component {
     await this.props.createQuestion(payload);
     await this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
 
-    const divTC = document.getElementById("blur")
-    divTC.classList.toggle("big-container") 
+    const divTC = document.getElementById("blur");
+    divTC.classList.toggle("big-container");
 
     console.log(`Logged Output ~ this.props`, this.props);
   }
@@ -56,6 +57,7 @@ export class QuestionEditor extends React.Component {
       <div id="createQuestion">
         <div className="form-bg">
           <form className="form" onSubmit={this.submitHandler.bind(this)}>
+            <CreateQuestionForm />
             <div className="form-group">
               <label className="sr-only">Title</label>{" "}
               <input
@@ -68,12 +70,12 @@ export class QuestionEditor extends React.Component {
             </div>
             <div className="form-group">
               <label className="sr-only">Question details</label>
-              <div style={{ height: "400px"}} className="mdEditor">
+              <div style={{ height: "400px" }} className="mdEditor">
                 <MdEditor
                   onImageUpload={this.onImageUpload}
                   renderHTML={(text) => this.mdParser.render(text)}
                   onChange={this.handleEditorChange}
-                  style={{height: "400px"}}
+                  style={{ height: "400px" }}
                   ref={this.mdEditor}
                 />
               </div>

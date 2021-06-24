@@ -16,14 +16,14 @@ const LoginForm = (props) => {
         placeholder="First name"
       />
       {errors.firstName?.type === "required" && "First name is required"}
-      <input {...register("lastName")} placeholder="Last name" />
-      <select {...register("category")}>
+      <input {...register("lastName", { required: true })} placeholder="Last name" />
+      <select {...register("category", { required: true })}>
         <option value="">Select...</option>
         <option value="A">Category A</option>
         <option value="B">Category B</option>
       </select>
-
       <input type="submit" />
+      {errors.category?.type === "required" && "Category must be filled"}
     </form>
   );
 };

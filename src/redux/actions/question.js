@@ -22,13 +22,13 @@ export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
 };
 // TODO => searchQuestion
 export const searchQuestion = (searchValue, order) => async (dispatch) => {
-  await API.post("/questions/search", {
+  await API.post("/questions/page", {
     keyWord: searchValue, //хайх утга
     order: order, //эрэмблэлт
     currentPage: "1", //Одоогийн page
   }).then((response) => {
     console.log(`Logged Output ~ response.data `, response.data);
-    const questions = response.data.result;
+    const questions = response.data.questions;
     const maxPage = response.data.maxPage;
     const currentPage = response.data.currentPage;
     dispatch({

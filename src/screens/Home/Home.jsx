@@ -38,10 +38,7 @@ class Home extends Component {
   }
   async searchSubmitHandler(event) {
     event.preventDefault();
-    await this.props.searchQuestion(
-      event.target.searchValue.value,
-      event.target.order.value
-    );
+    await this.props.searchQuestion(event.target.searchValue.value, null);
     // await this.props.setSelectedQuestion(i);
   }
 
@@ -126,6 +123,7 @@ class Home extends Component {
                   className="navbar-brand btn"
                   onClick={() => {
                     backFromSelectedQuestion();
+                    getQuestionsByPageNumber(1);
                     this.blurLogo();
                   }}
                   id="logo"
@@ -290,23 +288,6 @@ class Home extends Component {
                       dangerouslySetInnerHTML={{ __html: selectedQuestion.question }}
                     ></div>
                   </div>
-                  {/* //* DELETE, UPDATE QUESTION BUTTON */}
-                  <button
-                    onClick={() => {
-                      deleteSelectedQuestion(selectedQuestion);
-                    }}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    onClick={() => {
-                      updateQuestionToggle();
-                    }}
-                  >
-                    Update
-                  </button>
-                  {renderUpdateQuestion ? <UpdateQuestion /> : null}
-
                   {/*  aa */}
                   <div className="ms-5 me-5 mt-5">
                     <div className="ms-3">
@@ -322,79 +303,115 @@ class Home extends Component {
                   </div>
                 </div>
               ) : (
-                // ! ----АСУУЛТУУДЫН ЖАГСААЛТ--------------
-                questions &&
-                questions.length > 0 &&
-                questions.map((i, idx) => (
-                  <div key={idx}>
-                    <div className="card-group shadow p-5 m-5 border rounded">
-                      <div className="col-sm-2">
-                        <div className="card text-center">
-                          <div className="card-body">
-                            <div className="card-text">
-                              <span>{i.votes.length} </span>
-                              {i.votes.length >= 2 ? "votes" : "vote"}
-                              {i && i.votes && !i.votes.includes(user_id) ? (
-                                <div>
-                                  <button
-                                    className="btn btn-lg q-vote-btn"
-                                    onClick={(e) => {
-                                      this.asyncVoteSelectedQuestion(i, user_id);
-                                    }}
-                                  >
-                                    <i className="fa fa-heart-o"></i>
-                                  </button>
-                                </div>
-                              ) : (
-                                <div>
-                                  <button
-                                    className="btn btn-lg q-vote-btn"
-                                    onClick={(e) => {
-                                      this.asyncVoteSelectedQuestion(i, user_id);
-                                    }}
-                                  >
-                                    <i className="fa fa-heart"></i>
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                            <hr />
-                            <p className="card-text">
-                              <span>{i.comments} </span>
-                              {i.comments >= 2 ? "answers" : "answer"}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-10">
-                        <div className="card">
-                          <div className="card-body">
-                            <h5
-                              className="card-title"
-                              onClick={() => this.props.setSelectedQuestion(i)}
-                            >
-                              <b>{i.title}</b>
-                            </h5>
-                            <div
-                              className="questionStyle card-body"
-                              dangerouslySetInnerHTML={{
-                                __html: i.question,
-                              }}
-                            ></div>
-                            <p className="card-text">
-                              {/* {i.question.substring(0, 300)} */}
-                              {i.question.length >= 300 ? " ..." : ""}
-                            </p>
-                            <p className="card-text text-end">
-                              <i>by </i>
-                              <b> {i.user.username}</b>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
+                <div>
+                  {/* // ! ----АСУУЛТУУДЫН ЖАГСААЛТ-------------- */}
+                  {/* //* --------Question Order-------- */}
+                  {this.props.renderOrderButton && (
+                    <div
+                      className="btn-group"
+                      role="group"
+                      aria-label="Button group with nested dropdown"
+                    >
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          this.searchOrderHandler(1);
+                        }}
+                      >
+                        Votes
+                      </button>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          this.searchOrderHandler(2);
+                        }}
+                      >
+                        Solved
+                      </button>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          this.searchOrderHandler(3);
+                        }}
+                      >
+                        Answers
+                      </button>
                     </div>
-                  </div>
-                ))
+                  )}
+
+                  {questions &&
+                    questions.length > 0 &&
+                    questions.map((i, idx) => (
+                      <div key={idx}>
+                        <div className="card-group shadow p-5 m-5 border rounded">
+                          <div className="col-sm-2">
+                            <div className="card text-center">
+                              <div className="card-body">
+                                <div className="card-text">
+                                  <span>{i.votes.length} </span>
+                                  {i.votes.length >= 2 ? "votes" : "vote"}
+                                  {i && i.votes && !i.votes.includes(user_id) ? (
+                                    <div>
+                                      <button
+                                        className="btn btn-lg q-vote-btn"
+                                        onClick={(e) => {
+                                          this.asyncVoteSelectedQuestion(i, user_id);
+                                        }}
+                                      >
+                                        <i className="fa fa-heart-o"></i>
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div>
+                                      <button
+                                        className="btn btn-lg q-vote-btn"
+                                        onClick={(e) => {
+                                          this.asyncVoteSelectedQuestion(i, user_id);
+                                        }}
+                                      >
+                                        <i className="fa fa-heart"></i>
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                                <hr />
+                                <p className="card-text">
+                                  <span>{i.comments} </span>
+                                  {i.comments >= 2 ? "answers" : "answer"}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-sm-10">
+                            <div className="card">
+                              <div className="card-body">
+                                <h5
+                                  className="card-title"
+                                  onClick={() => this.props.setSelectedQuestion(i)}
+                                >
+                                  <b>{i.title}</b>
+                                </h5>
+                                <div
+                                  className="questionStyle card-body"
+                                  dangerouslySetInnerHTML={{
+                                    __html: i.question,
+                                  }}
+                                ></div>
+                                <p className="card-text">
+                                  {/* {i.question.substring(0, 300)} */}
+                                  {i.question.length >= 300 ? " ..." : ""}
+                                </p>
+                                <p className="card-text text-end">
+                                  <i>by </i>
+                                  <b> {i.user.username}</b>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
               )}
 
               {/*  ----------Pagination---------------- */}
@@ -434,7 +451,11 @@ class Home extends Component {
                             </button>
                           </li>
                         ))}
-                      {currentPageQuestion >= maxPageQuestion ? null : (
+                      {currentPageQuestion >= maxPageQuestion ? (
+                        <button type="button" className="btn  btn-dark pg-btn" disabled>
+                          <span aria-hidden="true">&raquo;</span>
+                        </button>
+                      ) : (
                         <li className="page-item">
                           <button
                             type="button"
