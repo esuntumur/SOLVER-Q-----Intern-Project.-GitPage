@@ -102,7 +102,6 @@ export class CommentEditor extends React.Component {
                   }}
                   ref={this.mdEditor}
                 />
-                <hr />
               </div>
             </div>
             {this.props.renderAudioRecorder && (

@@ -8,6 +8,7 @@ import {
   setSelectedQuestion,
   backFromSelectedQuestion,
   createQuestionToggle,
+  createProfileToggle,
   deleteSelectedQuestion,
   updateQuestionToggle,
   voteSelectedQuestion,
@@ -17,6 +18,7 @@ import {
 import ReactPaginate from "react-paginate";
 
 import QuestionEditor from "./CreateQuestion/QuestionEditor";
+import { Profile } from "./Profile";
 import UpdateQuestion from "./UpdateQuestion/index";
 import CommentList from "./CommentList";
 import "./home.scss";
@@ -71,6 +73,7 @@ class Home extends Component {
       logoutUser,
       backFromSelectedQuestion,
       createQuestionToggle,
+      createProfileToggle,
       deleteSelectedQuestion,
       updateQuestionToggle,
       renderUpdateQuestion,
@@ -113,6 +116,9 @@ class Home extends Component {
           {/* CREATE QUESTION -> FORM */}
           {this.props.renderCreateQuestion && <QuestionEditor />}
         </div>
+
+        {this.props.renderProfile && <Profile />}
+
         <div className="container-fluid" id="blur">
           <div className="row d-flex">
             {/*//*------------------NAVIGATION BAR------------------- */}
@@ -185,6 +191,15 @@ class Home extends Component {
                         <p className="dropdown-header text-dark">
                           <b>{user_name}</b>
                         </p>
+                        <button
+                          className="btn dropdown-item"
+                          onClick={() => {
+                            createProfileToggle();
+                            this.blurBackground();
+                          }}
+                        >
+                          Edit profile
+                        </button>
                         <button
                           className="btn dropdown-item"
                           onClick={() => {
@@ -382,30 +397,28 @@ class Home extends Component {
                               </div>
                             </div>
                           </div>
-                          <div className="col-sm-10">
-                            <div className="card">
-                              <div className="card-body">
-                                <h5
-                                  className="card-title"
-                                  onClick={() => this.props.setSelectedQuestion(i)}
-                                >
-                                  <b>{i.title}</b>
-                                </h5>
+                        </div>
+                        <div className="col-sm-10">
+                          <div className="card">
+                            <div className="card-body">
+                              <h5
+                                className="card-title"
+                                onClick={() => this.props.setSelectedQuestion(i)}
+                              >
+                                <b>{i.title}</b>
+                              </h5>
+                              <div>
                                 <div
-                                  className="questionStyle card-body"
+                                  className="questionStyle card-text"
                                   dangerouslySetInnerHTML={{
-                                    __html: i.question,
+                                    __html: i.question.substring(0, 300) + "...",
                                   }}
                                 ></div>
-                                <p className="card-text">
-                                  {/* {i.question.substring(0, 300)} */}
-                                  {i.question.length >= 300 ? " ..." : ""}
-                                </p>
-                                <p className="card-text text-end">
-                                  <i>by </i>
-                                  <b> {i.user.username}</b>
-                                </p>
                               </div>
+                              <p className="card-text text-end">
+                                <i>by </i>
+                                <b> {i.user.username}</b>
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -423,7 +436,7 @@ class Home extends Component {
                         <li className="page-item">
                           <button
                             type="button"
-                            className="btn pg-btn"
+                            className="btn pg-button"
                             onClick={() =>
                               getQuestionsByPageNumber(--currentPageQuestion)
                             }
@@ -431,21 +444,18 @@ class Home extends Component {
                             <span aria-hidden="true">&laquo;</span>
                           </button>{" "}
                         </li>
-                      ) : (
-                        <button className="btn btn-dark pg-btn" disabled>
-                          <span aria-hidden="true">&laquo;</span>
-                        </button>
-                      )}
+                      ) : null}
 
                       {pageNum &&
                         pageNum.length > 0 &&
                         pageNum.map((number, idx) => (
                           <li key={idx} className="page-item">
                             <button
-                              className="page-link pg-btn"
+                              className="page-link pg-button"
                               onClick={() => {
                                 getQuestionsByPageNumber(number);
                               }}
+                              id={number}
                             >
                               {number}
                             </button>
@@ -459,7 +469,7 @@ class Home extends Component {
                         <li className="page-item">
                           <button
                             type="button"
-                            className="btn pg-btn"
+                            className="btn pg-button"
                             onClick={() =>
                               getQuestionsByPageNumber(++currentPageQuestion)
                             }
@@ -484,6 +494,7 @@ const mapStateToProps = (state) => {
     questions: state.question.questions,
     selectedQuestion: state.question.selectedQuestion,
     renderCreateQuestion: state.question.renderCreateQuestion,
+    renderProfile: state.question.renderProfile,
     user: state.auth.user,
     renderUpdateQuestion: state.question.renderUpdateQuestion,
     maxPageQuestion: state.question.maxPageQuestion,
@@ -498,6 +509,7 @@ const Container = connect(mapStateToProps, {
   setSelectedQuestion,
   backFromSelectedQuestion,
   createQuestionToggle,
+  createProfileToggle,
   deleteSelectedQuestion,
   updateQuestionToggle,
   voteSelectedQuestion,

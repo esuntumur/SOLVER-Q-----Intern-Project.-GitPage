@@ -2,6 +2,8 @@ import {
   GET_QUESTION_BY_PAGE_NUMBER,
   CREATE_QUESTION_TOGGLE,
   CREATE_QUESTION,
+  CREATE_PROFILE_TOGGLE,
+  GET_BACK_FROM_EDIT_PROFILE,
   SET_SELECTED_QUESTION,
   BACK_FROM_SELECTED_QUESTION,
   UPDATE_SELECTED_QUESTION,
@@ -50,6 +52,14 @@ export const createQuestion = (params) => async (dispatch) => {
   });
 
   dispatch({ type: CREATE_QUESTION, payload: response.data.object });
+};
+
+export const createProfileToggle = () => async (dispatch) => {
+  dispatch({ type: CREATE_PROFILE_TOGGLE });
+};
+
+export const getBackFromSelectedQuestion = () => async (dispatch) => {
+  dispatch({ type: GET_BACK_FROM_EDIT_PROFILE });
 };
 
 export const setSelectedQuestion = (selectedQuestion) => async (dispatch) => {
