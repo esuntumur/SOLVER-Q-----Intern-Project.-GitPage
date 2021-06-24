@@ -86,7 +86,7 @@ function Navigation(props) {
                     blurBackground();
                   }}
                 >
-                  Edit profile
+                  Profile
                 </button>
                 <button
                   className="btn dropdown-item"
