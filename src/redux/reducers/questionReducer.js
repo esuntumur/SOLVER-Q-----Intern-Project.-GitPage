@@ -4,6 +4,7 @@ import {
   BACK_FROM_SELECTED_QUESTION,
   CREATE_QUESTION,
   CREATE_QUESTION_TOGGLE,
+  CREATE_PROFILE_TOGGLE,
   DELETE_SELECTED_QUESTION,
   UPDATE_QUESTION_TOGGLE,
   UPDATE_SELECTED_QUESTION,
@@ -17,6 +18,7 @@ import {
   SET_IMAGE_URL,
   SET_HTML_STRING,
   TOGGLE_RENDER_AUDIO_RECORDER,
+  GET_BACK_FROM_EDIT_PROFILE,
 } from "../actions/type";
 
 const initialState = {
@@ -25,6 +27,7 @@ const initialState = {
   selectedQuestion: false,
   renderCreateQuestion: false,
   renderUpdateQuestion: false,
+  renderProfile: false,
   selectedCommentId: null,
   maxPageQuestion: 1,
   currentPageQuestion: 1,
@@ -183,6 +186,20 @@ export const questionReducer = (
         ...state,
         renderCreateQuestion: !state.renderCreateQuestion,
       };
+    }
+
+    case CREATE_PROFILE_TOGGLE: {
+      return {
+        ...state,
+        renderProfile: !state.renderProfile,
+      }
+    }
+
+    case GET_BACK_FROM_EDIT_PROFILE: {
+      return {
+        ...state,
+        renderProfile: !state.renderProfile,
+      }
     }
 
     case UPDATE_SELECTED_QUESTION: {

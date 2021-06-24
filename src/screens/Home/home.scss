@@ -62,20 +62,10 @@ $black-color: #000000;
 }
 
 .pg-btn {
-  color: $black-color;
-  border: none !important;
-
-  &:focus {
-    background-color: $primary-color !important;
-    color: $white-color !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-  &:hover {
-    background-color: $primary-color !important;
-    color: $white-color !important;    
-  }
+  background-color: $primary-color !important;
+  color: $white-color !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .q-vote-btn {
@@ -110,4 +100,23 @@ $black-color: #000000;
 .navbar-brand {
   box-shadow: none !important;
   outline: none !important;
+}
+
+.pg-button {
+  border: none;
+  color: $black-color;
+  box-shadow: none !important;
+  outline: none;
+
+  &:hover {
+    background-color: $primary-color !important;
+    color: $white-color !important;    
+  }
+
+  &:focus {
+    background-color: $primary-color !important;
+    color: $white-color !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
 }

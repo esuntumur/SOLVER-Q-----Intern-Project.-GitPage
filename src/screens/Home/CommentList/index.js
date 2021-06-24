@@ -100,7 +100,19 @@ export class CommentList extends Component {
                 <b>Comments:</b>
               </h4>
             </div>
-          ):("")}
+          ):(
+            <div className="ms-3 me-3">
+              <div><hr/></div>
+              <div className="align-items-center">
+                <h4 className="mt-5">
+                  <b>Comments:</b>
+                </h4>
+                <div className="card mt-3 rounded">
+                  <div className="card-body text-secondary">Nothing to show. Please check back for updates.</div>
+                </div>
+              </div>
+            </div>            
+          )}
           {comments &&
             comments.length > 0 &&
             comments.map((comment, idx) => (
@@ -196,64 +208,65 @@ export class CommentList extends Component {
             ))}
         </div>
         {/* //* comment PAGINATION - prev, next buttons  222222222222222 */}
-        <nav aria-label="Page navigation example">
-          <div>
-            <ul className="pagination justify-content-center">
-              {currentPageComment >= 2 ? (
-                <li className="page-item">
-                  <button
-                    type="button"
-                    className="btn pg-btn"
-                    onClick={() =>
-                      getCommentsByPageNumber(
-                        this.props.selectedQuestion,
-                        --currentPageComment
-                      )
-                    }
-                  >
-                    <span aria-hidden="true">&laquo;</span>
-                  </button>{" "}
-                </li>
-              ) : (
-                <button className="btn btn-dark pg-btn" disabled>
-                  <span aria-hidden="true">&laquo;</span>
-                </button>
-              )}
-
-              {pageNum &&
-                pageNum.length > 0 &&
-                pageNum.map((number, idx) => (
-                  <li key={idx} className="page-item">
+        {comments.length > 0 ? (
+          <nav aria-label="Page navigation example">
+            <div>
+              <ul className="pagination justify-content-center">
+                {currentPageComment >= 2 ? (
+                  <li className="page-item">
                     <button
-                      className="page-link pg-btn"
-                      onClick={() => {
-                        getCommentsByPageNumber(this.props.selectedQuestion, number);
-                      }}
+                      type="button"
+                      className="btn pg-btn"
+                      onClick={() =>
+                        getCommentsByPageNumber(
+                          this.props.selectedQuestion,
+                          --currentPageComment
+                        )
+                      }
                     >
-                      {number}
+                      <span aria-hidden="true">&laquo;</span>
+                    </button>{" "}
+                  </li>
+                ) : (
+                  <button className="btn btn-dark pg-btn" disabled>
+                    <span aria-hidden="true">&laquo;</span>
+                  </button>
+                )}
+
+                {pageNum &&
+                  pageNum.length > 0 &&
+                  pageNum.map((number, idx) => (
+                    <li key={idx} className="page-item">
+                      <button
+                        className="page-link pg-btn"
+                        onClick={() => {
+                          getCommentsByPageNumber(this.props.selectedQuestion, number);
+                        }}
+                      >
+                        {number}
+                      </button>
+                    </li>
+                  ))}
+                {currentPageComment >= maxPageComment ? null : (
+                  <li className="page-item">
+                    <button
+                      type="button"
+                      className="btn pg-btn"
+                      onClick={() =>
+                        getCommentsByPageNumber(
+                          this.props.selectedQuestion,
+                          ++currentPageComment
+                        )
+                      }
+                    >
+                      <span aria-hidden="true">&raquo;</span>
                     </button>
                   </li>
-                ))}
-              {currentPageComment >= maxPageComment ? null : (
-                <li className="page-item">
-                  <button
-                    type="button"
-                    className="btn pg-btn"
-                    onClick={() =>
-                      getCommentsByPageNumber(
-                        this.props.selectedQuestion,
-                        ++currentPageComment
-                      )
-                    }
-                  >
-                    <span aria-hidden="true">&raquo;</span>
-                  </button>
-                </li>
-              )}
-            </ul>
-          </div>
-        </nav>
-        )
+                )}
+              </ul>
+            </div>
+          </nav>
+        ): null}
       </div>
     );
   }
