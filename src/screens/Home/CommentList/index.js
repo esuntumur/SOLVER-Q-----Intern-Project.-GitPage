@@ -78,9 +78,7 @@ export class CommentList extends Component {
       user_id,
       selectedCommentId,
     } = this.props;
-
     user_id *= 1;
-
     return (
       <div>
         {/* //* Create COMMENT */}
@@ -160,13 +158,19 @@ export class CommentList extends Component {
                     </div>
                   </div>
                   <div className="col-9">
-                    {/* //* Comment -> Answer TEXT */}
+                    {/* //* Comment -> Answer  & audio */}
                     <div className="card">
                       <div className="card-body">
                         <div
                           className="comment"
                           dangerouslySetInnerHTML={{ __html: comment.answer }}
                         ></div>
+                        {comment.audio_url && (
+                          <audio controls>
+                            <source src={comment.audio_url} type="audio/ogg" />
+                            Your browser does not support the audio element.
+                          </audio>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -283,6 +287,7 @@ const mapStateToProps = (state) => {
     maxPageComment: state.question.maxPageComment,
     currentPageComment: state.question.currentPageComment,
     selectedCommentId: state.question.selectedCommentId,
+    audioUrl: state.question.audioUrl,
   };
 };
 

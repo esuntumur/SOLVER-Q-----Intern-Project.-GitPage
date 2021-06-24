@@ -29,7 +29,6 @@ export class QuestionEditor extends React.Component {
   }
 
   handleEditorChange({ html }) {
-    console.log("html: ", typeof html);
     this.props.setHtmlString(html);
     //  return <div dangerouslySetInnerHTML={{ __html: htmlString }}></div>;
   }
@@ -43,12 +42,9 @@ export class QuestionEditor extends React.Component {
     };
     await this.props.createQuestion(payload);
     this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
-
-    console.log(`Logged Output ~ this.props`, this.props);
   }
 
   render() {
-    console.log(this.props);
     return (
       <div id="createQuestion">
         <div className="form-bg">
@@ -88,7 +84,6 @@ export class QuestionEditor extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(`redux state`, state);
   return {
     imageUrl: state.question.imageUrl,
     htmlString: state.question.htmlString,

@@ -24,7 +24,6 @@ class UpdateQuestion extends Component {
   }
 
   handleEditorChange({ html }) {
-    console.log("html: ", typeof html);
     this.props.setHtmlString(html);
   }
   submitHandler(event) {
@@ -85,7 +84,6 @@ class UpdateQuestion extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(`redux state`, state);
   return {
     imageUrl: state.question.imageUrl,
     htmlString: state.question.htmlString,

@@ -19,7 +19,6 @@ const token = localStorage.getItem("token");
 export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
   await API.post("/questions/page", { questionPage: pageNum }).then((response) => {
     dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER, payload: response.data });
-    console.log(`Logged Output ~ response.data`, response.data);
   });
 };
 // TODO => searchQuestion
@@ -29,7 +28,6 @@ export const searchQuestion = (searchValue, order) => async (dispatch) => {
     order: order, //эрэмблэлт
     currentPage: "1", //Одоогийн page
   }).then((response) => {
-    console.log(`Logged Output ~ response.data `, response.data);
     const questions = response.data.questions;
     const maxPage = response.data.maxPage;
     const currentPage = response.data.currentPage;
@@ -41,10 +39,12 @@ export const searchQuestion = (searchValue, order) => async (dispatch) => {
 };
 
 export const createQuestionToggle = () => async (dispatch) => {
+  console.log(`Logged Output ~ createQuestionToggle`);
   dispatch({ type: CREATE_QUESTION_TOGGLE });
 };
 
 export const createQuestion = (params) => async (dispatch) => {
+  console.log(`Logged Output ~ createQuestion`);
   const response = await API.post("/questions", params, {
     headers: {
       Authorization: token,
@@ -71,9 +71,7 @@ export const backFromSelectedQuestion = () => async (dispatch) => {
 };
 
 export const updateQuestionToggle = () => async (dispatch) => {
-  console.log(`Logged Output ~ updateQuestionToggle`);
   dispatch({ type: UPDATE_QUESTION_TOGGLE });
-  console.log(`Logged Output ~ updateQuestionToggle`);
 };
 
 // TODO => update question
@@ -88,12 +86,9 @@ export const updateQuestion = (payload) => async (dispatch) => {
 };
 
 export const deleteSelectedQuestion = (selectedQuestion) => async (dispatch) => {
-  console.log(`Logged Output ~ selectedQuestion`, selectedQuestion);
   const response = await API.delete(`/questions/${selectedQuestion.id}`, {
     headers: { Authorization: token },
   });
-
-  console.log(`Logged Output ~ response.data`, response.data);
   dispatch({ type: DELETE_SELECTED_QUESTION, payload: response.data.object });
 };
 

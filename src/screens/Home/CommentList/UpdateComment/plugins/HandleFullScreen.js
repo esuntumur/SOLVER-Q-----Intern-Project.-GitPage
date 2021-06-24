@@ -12,7 +12,6 @@ export default class HandleFullScreen extends PluginComponent {
   }
 
   handleFullScreen() {
-    console.log("on full screen change");
   }
 
   componentDidMount() {

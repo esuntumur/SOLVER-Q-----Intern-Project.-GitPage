@@ -6,17 +6,16 @@ import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import HandleFullScreen from "./plugins/HandleFullScreen";
 import AudioPlugin from "./plugins/AudioPlugin";
-import MyCounterB from "./plugins/MyCounterB";
 import {
   reqImageUrl,
   createComment,
   setHtmlString,
   getCommentsByPageNumber,
-  setAudioFile,
+  reqAudioUrl,
 } from "../../../redux/actions/commentAction";
 import { connect } from "react-redux";
 import "./commentList.scss";
-import { Recorder } from "react-voice-recorder";
+import Recorder from "./Recorder/index";
 import "react-voice-recorder/dist/index.css";
 MdEditor.use(AudioPlugin);
 MdEditor.use(HandleFullScreen);
@@ -29,44 +28,8 @@ export class CommentEditor extends React.Component {
     this.mdParser = new MarkdownIt(/* Markdown-it options */);
     this.onImageUpload = this.onImageUpload.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
-    this.handleAudioStop = this.handleAudioStop.bind(this);
-    this.handleAudioUpload = this.handleAudioUpload.bind(this);
-    this.handleReset = this.handleReset.bind(this);
-    this.state = {
-      audioDetails: {
-        url: null,
-        blob: null,
-        chunks: null,
-        duration: {
-          h: null,
-          m: null,
-          s: null,
-        },
-      },
-    };
-  }
-  handleAudioStop(data) {
-    this.setState({ audioDetails: data });
   }
 
-  handleAudioUpload(file) {
-    console.log("file: ", file);
-    this.props.setAudioFile(file);
-  }
-
-  handleReset() {
-    const reset = {
-      url: null,
-      blob: null,
-      chunks: null,
-      duration: {
-        h: null,
-        m: null,
-        s: null,
-      },
-    };
-    this.setState({ audioDetails: reset });
-  }
   async onImageUpload(e, callback) {
     await this.props.reqImageUrl(e);
     await callback(this.props.imageUrl);
@@ -78,7 +41,11 @@ export class CommentEditor extends React.Component {
   async postComment(e) {
     e.preventDefault();
 
-    await this.props.createComment(this.props.htmlString, this.props.selectedQuestion);
+    await this.props.createComment(
+      this.props.htmlString,
+      this.props.selectedQuestion,
+      this.props.audioId
+    );
     await this.props.getCommentsByPageNumber(
       this.props.selectedQuestion,
       this.props.currentPageComment
@@ -105,19 +72,14 @@ export class CommentEditor extends React.Component {
               </div>
             </div>
             {this.props.renderAudioRecorder && (
-              <Recorder
-                record={true}
-                title={"New recording"}
-                audioURL={this.state.audioDetails.url}
-                showUIAudio
-                handleAudioStop={(data) => this.handleAudioStop(data)}
-                handleOnChange={(value) => this.handleOnChange(value, "firstname")}
-                handleAudioUpload={(data) => this.handleAudioUpload(data)}
-                handleRest={() => this.handleRest()}
-                mimeTypeToUseWhenRecording={`audio/webm`}
-              />
+              <Recorder reqAudioUrl={this.props.reqAudioUrl} />
             )}
-
+            {this.props.audioUrl && (
+              <audio controls>
+                <source src={this.props.audioUrl} type="audio/ogg" />
+                Your browser does not support the audio element.
+              </audio>
+            )}
             <button className="btn btn-lg mt-3 comment-post-btn" type="submit">
               Post
             </button>
@@ -135,6 +97,8 @@ const mapStateToProps = (state) => {
     selectedQuestion: state.question.selectedQuestion,
     currentPageComment: state.question.currentPageComment,
     renderAudioRecorder: state.question.renderAudioRecorder,
+    audioUrl: state.question.audioUrl,
+    audioId: state.question.audioId,
   };
 };
 // selectedQuestion, ;
@@ -144,7 +108,7 @@ const mapDispatchToProps = {
   setHtmlString,
   createComment,
   getCommentsByPageNumber,
-  setAudioFile,
+  reqAudioUrl,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentEditor);

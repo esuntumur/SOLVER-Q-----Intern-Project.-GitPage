@@ -14,26 +14,20 @@ import {
 
 const token = localStorage.getItem("token");
 export const setRenderAudioRecorder = (html) => async (dispatch) => {
-  console.log(`Logged Output ~ setRenderAudioRecorder`);
   dispatch({ type: TOGGLE_RENDER_AUDIO_RECORDER });
 };
 
 export const setHtmlString = (html) => async (dispatch) => {
   dispatch({ type: SET_HTML_STRING, payload: html });
 };
-export const setAudioFile = (audio) => async (dispatch) => {
-  console.log(`Logged Output ~ setAudioFile`, audio);
+export const reqAudioUrl = (audio) => async (dispatch) => {
   let form = new FormData();
   try {
     form.append("audio", audio, audio.name);
-    console.log("formdata get: ", form.get("audio"));
     await API.post("upload/audio", form).then((res) => {
-      console.log(`Logged Output ~ res`, res);
-      dispatch({ type: SET_AUDIO_URL, payload: res.data.url });
+      dispatch({ type: SET_AUDIO_URL, payload: res.data });
     });
-  } catch (err) {
-    console.log("setAudioFile error: ", err);
-  }
+  } catch (err) {}
 };
 
 export const reqImageUrl = (e) => async (dispatch) => {
@@ -41,17 +35,13 @@ export const reqImageUrl = (e) => async (dispatch) => {
   try {
     form.append("image", e, e.name);
     await API.post(`/upload`, form).then((res) => {
-      console.log(`Logged Output ~ res.data`, res.data);
-      console.log(`Logged Output ~ res.data.url`, typeof res.data.url);
       dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
       return res.data.url;
     });
-  } catch (error) {
-    console.log("reqImageUrl error: ", error);
-  }
+  } catch (error) {}
 };
 
-export const createComment = (htmlString, selectedQuestion) => async (dispatch) => {
+export const createComment = (htmlString, selectedQuestion, id) => async (dispatch) => {
   //  this.props.createComment(this.props.htmlString, this.props.selectedQuestion);
 
   await API.post(
@@ -60,6 +50,7 @@ export const createComment = (htmlString, selectedQuestion) => async (dispatch) 
       comment: {
         question_id: selectedQuestion.id,
         answer: htmlString,
+        audio: id,
       },
     },
     {
@@ -68,7 +59,6 @@ export const createComment = (htmlString, selectedQuestion) => async (dispatch) 
       },
     }
   ).then((response) => {
-    console.log(`Logged Output ~ response.data.object`, response.data.object);
     dispatch({ type: SEND_COMMENT, payload: response.data.object });
   });
 };

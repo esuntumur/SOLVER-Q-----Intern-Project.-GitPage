@@ -35,20 +35,20 @@ const initialState = {
   maxPageComment: 1,
   currentPageComment: 1,
   imageUrl: "",
+  audioUrl: "",
+  audioId: null,
   htmlString: "",
   searchValue: "",
   renderOrderButton: false,
   renderAudioRecorder: false,
 };
-export const questionReducer = (
-  state = JSON.parse(JSON.stringify(initialState)),
-  action
-) => {
+export const questionReducer = (state = JSON.parse(JSON.stringify(initialState)), action) => {
   switch (action.type) {
-    // dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
     case SET_AUDIO_URL: {
       return {
         ...state,
+        audioUrl: action.payload.audio_url,
+        audioId: action.payload.public_id,
       };
     }
     case TOGGLE_RENDER_AUDIO_RECORDER: {
@@ -58,7 +58,6 @@ export const questionReducer = (
       };
     }
     case UPDATE_QUESTION_TOGGLE: {
-      console.log(`Logged Output ~ updateQuestionToggle`);
       return {
         ...state,
         renderUpdateQuestion: !state.renderUpdateQuestion,
@@ -125,7 +124,10 @@ export const questionReducer = (
     }
     case SEND_COMMENT: {
       state.comments.unshift(action.payload);
-      return { ...state };
+      return {
+        ...state,
+        // comments: [action.payload, ...state.comments],
+      };
     }
     case GET_QUESTION_BY_PAGE_NUMBER: {
       return action.payload && action.payload.searchValue
@@ -158,6 +160,7 @@ export const questionReducer = (
         renderUpdateQuestion: false,
         renderOrderButton: false,
         searchValue: false,
+        audioUrl: false,
       };
     }
     case VOTE_SELECTED_QUESTION: {
@@ -181,6 +184,7 @@ export const questionReducer = (
       return { ...state, questions: q };
     }
     case CREATE_QUESTION: {
+      console.log(`Logged Output ~ CREATE_QUESTION`, CREATE_QUESTION);
       return {
         ...state,
         questions: [...state.questions, action.payload],
@@ -198,14 +202,14 @@ export const questionReducer = (
       return {
         ...state,
         renderProfile: !state.renderProfile,
-      }
+      };
     }
 
     case GET_BACK_FROM_EDIT_PROFILE: {
       return {
         ...state,
         renderProfile: !state.renderProfile,
-      }
+      };
     }
 
     case UPDATE_SELECTED_QUESTION: {

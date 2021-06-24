@@ -6,92 +6,79 @@ import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import HandleFullScreen from "./plugins/HandleFullScreen";
 import { connect } from "react-redux";
-import CreateQuestionForm from "./CreateQuestionForm";
+import { useForm } from "react-hook-form";
 
 import "./style.scss";
-import {
-  createQuestion,
-  getQuestionsByPageNumber,
-} from "../../../redux/actions/question";
+import { createQuestion, getQuestionsByPageNumber } from "../../../redux/actions/question";
 import { setHtmlString, reqImageUrl } from "../../../redux/actions/commentAction";
 MdEditor.use(HandleFullScreen);
 
-// * ---------------- CLASS -----------------
-export class QuestionEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.mdParser = new MarkdownIt(/* Markdown-it options */);
-    this.onImageUpload = this.onImageUpload.bind(this);
-    this.handleEditorChange = this.handleEditorChange.bind(this);
-  }
-  async onImageUpload(e, callback) {
-    await this.props.reqImageUrl(e);
-    await callback(this.props.imageUrl);
-  }
+export const QuestionEditor = (props) => {
+  const mdParser = new MarkdownIt(/* Markdown-it options */);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
-  handleEditorChange({ html }) {
-    console.log("html: ", typeof html);
-    this.props.setHtmlString(html);
-    //  return <div dangerouslySetInnerHTML={{ __html: htmlString }}></div>;
-  }
-  async submitHandler(event) {
-    event.preventDefault();
+  const onImageUpload = async (e, callback) => {
+    await props.reqImageUrl(e);
+    await callback(props.imageUrl);
+  };
+
+  const handleEditorChange = ({ html }) => {
+    props.setHtmlString(html);
+  };
+
+  const submitHandler = async (data) => {
     const payload = {
       questions: {
-        title: event.target.title.value,
-        question: this.props.htmlString,
+        title: data.title,
+        question: props.htmlString,
       },
     };
-    await this.props.createQuestion(payload);
-    await this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
-
+    await props.createQuestion(payload);
+    await props.getQuestionsByPageNumber(props.currentPageQuestion);
     const divTC = document.getElementById("blur");
     divTC.classList.toggle("big-container");
-
-    console.log(`Logged Output ~ this.props`, this.props);
-  }
-
-  render() {
-    console.log(this.props);
-    return (
-      <div id="createQuestion">
-        <div className="form-bg">
-          <form className="form" onSubmit={this.submitHandler.bind(this)}>
-            <CreateQuestionForm />
-            <div className="form-group">
-              <label className="sr-only">Title</label>{" "}
-              <input
-                type="text"
-                className="form-control"
-                required
-                placeholder="Title"
-                name="title"
+  };
+  return (
+    <div id="createQuestion">
+      <div className="form-bg">
+        <form className="form" onSubmit={handleSubmit(submitHandler)}>
+          {/* <CreateQuestionForm /> */}
+          <div className="form-group">
+            <label className="sr-only">Title</label>{" "}
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Title"
+              {...register("title", { required: true, minLength: 7, maxLength: 150 })}
+            />
+            {errors.title?.type === "required" && "Title is required"}
+            {errors.title?.type === "minLength" && "is too short (minimum characters: 7 )"}
+            {errors.title?.type === "maxLength" && "is too long (maximum characters: 150 )"}
+          </div>
+          <div className="form-group">
+            <label className="sr-only">Question details</label>
+            <div style={{ height: "400px" }} className="mdEditor">
+              <MdEditor
+                onImageUpload={onImageUpload}
+                renderHTML={(text) => mdParser.render(text)}
+                onChange={handleEditorChange}
+                style={{ height: "400px" }}
               />
             </div>
-            <div className="form-group">
-              <label className="sr-only">Question details</label>
-              <div style={{ height: "400px" }} className="mdEditor">
-                <MdEditor
-                  onImageUpload={this.onImageUpload}
-                  renderHTML={(text) => this.mdParser.render(text)}
-                  onChange={this.handleEditorChange}
-                  style={{ height: "400px" }}
-                  ref={this.mdEditor}
-                />
-              </div>
-            </div>
-            <button type="submit" className="btn btn-sm text-center btn-blue">
-              Post Question
-            </button>
-          </form>
-        </div>
+          </div>
+          <button type="submit" className="btn btn-sm text-center btn-blue">
+            Post Question
+          </button>
+        </form>
       </div>
-    );
-  }
-}
-
+    </div>
+  );
+};
 const mapStateToProps = (state) => {
-  console.log(`redux state`, state);
   return {
     imageUrl: state.question.imageUrl,
     htmlString: state.question.htmlString,
@@ -99,12 +86,10 @@ const mapStateToProps = (state) => {
     currentPageQuestion: state.question.currentPageQuestion,
   };
 };
-
 const mapDispatchToProps = {
   setHtmlString,
   reqImageUrl,
   createQuestion,
   getQuestionsByPageNumber,
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionEditor);

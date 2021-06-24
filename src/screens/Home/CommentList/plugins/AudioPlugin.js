@@ -15,7 +15,6 @@ export class AudioPlugin extends PluginComponent {
 
   handleClick() {
     this.props.setRenderAudioRecorder();
-    console.log("renderAudioRecorder: ", this.props.renderAudioRecorder);
   }
 
   render() {

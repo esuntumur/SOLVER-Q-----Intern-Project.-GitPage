@@ -15,6 +15,7 @@ import {
   searchQuestion,
   updateQuestion,
 } from "../../redux/actions/question";
+import ReactPlayer from "react-player";
 import ReactPaginate from "react-paginate";
 
 import QuestionEditor from "./CreateQuestion/QuestionEditor";
@@ -82,7 +83,6 @@ class Home extends Component {
       updateQuestionToggle,
       renderUpdateQuestion,
       getQuestionsByPageNumber,
-      voteSelectedQuestion,
     } = this.props;
     let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
 
@@ -113,12 +113,10 @@ class Home extends Component {
           >
             <i className="fa fa-plus plus-icon"></i>
           </button>
-          {/* CREATE QUESTION -> FORM */}
+          {/*//* -------------------CREATE QUESTION -> FORM */}
           {this.props.renderCreateQuestion && <QuestionEditor />}
         </div>
-
         {this.props.renderProfile && <Profile />}
-
         <div className="container-fluid" id="blur">
           <div className="row d-flex">
             {/*//*------------------NAVIGATION BAR------------------- */}
