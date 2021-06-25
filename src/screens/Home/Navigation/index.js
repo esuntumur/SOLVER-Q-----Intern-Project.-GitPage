@@ -5,7 +5,6 @@ function Navigation(props) {
   const {
     backFromSelectedQuestion,
     getQuestionsByPageNumber,
-    blurLogo,
     searchSubmitHandler,
     createProfileToggle,
     blurBackground,
@@ -18,17 +17,17 @@ function Navigation(props) {
       <div className="container-fluid">
         {/* LOGO */}
         <button
-          className="navbar-brand btn"
+          className="navbar-brand btn me-0"
           onClick={() => {
             backFromSelectedQuestion();
             getQuestionsByPageNumber(1);
-            blurLogo();
           }}
           id="logo"
         >
-          <img src="./logo192.png" alt="Logo" width="50" height="50" />
+          <img src="https://svgsilh.com/svg_v2/341059.svg" alt="Logo" width="50" height="50" />
         </button>
         {/* NAVBAR TOGGLER IN MOBILE -> BUTTON */}
+        <p className="navbar-brand mt-3 me-5 ms-0">SOLVER-Q</p>
         <button
           className="navbar-toggler toggler-btn"
           type="button"

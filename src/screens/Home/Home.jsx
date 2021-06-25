@@ -14,12 +14,13 @@ import {
   voteSelectedQuestion,
   searchQuestion,
   updateQuestion,
+  getBackFromEditProfile
 } from "../../redux/actions/question";
 import ReactPlayer from "react-player";
 import ReactPaginate from "react-paginate";
 
 import QuestionEditor from "./CreateQuestion/QuestionEditor";
-import Profile from "./Profile";
+import Profile from "./Profile/Profile";
 import UpdateQuestion from "./UpdateQuestion/index";
 import Navigation from "./Navigation";
 import QuestionDetails from "./QuestionDetails";
@@ -27,7 +28,7 @@ import QuestionOrderButtons from "./Navigation/QuestionOrderButtons";
 import QuestionList from "./QuestionList";
 import QuestionPagination from "./QuestionPagination";
 import "./home.scss";
-// import "./logo192.png";
+// import "./logo.png";
 
 class Home extends Component {
   constructor(props) {
@@ -62,16 +63,6 @@ class Home extends Component {
     divTC.classList.toggle("big-container");
   }
 
-  blurLogo() {
-    const divATT = document.getElementById("blur").getAttribute("class");
-    if (divATT == "container-fluid") {
-      document.getElementById("blur").setAttribute("class", "container-fluid");
-    } else {
-      document.getElementById("blur").removeAttribute("class");
-      document.getElementById("blur").setAttribute("class", "container-fluid");
-    }
-  }
-
   render() {
     const {
       questions,
@@ -83,6 +74,7 @@ class Home extends Component {
       updateQuestionToggle,
       renderUpdateQuestion,
       getQuestionsByPageNumber,
+      getBackFromEditProfile
     } = this.props;
     let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
 
@@ -113,10 +105,10 @@ class Home extends Component {
             <i className="fa fa-plus plus-icon"></i>
           </button>
           {/*//* -------------------CREATE QUESTION -> FORM */}
-          {this.props.renderCreateQuestion && <QuestionEditor />}
+          {this.props.renderCreateQuestion && <QuestionEditor backFromSelectedQuestion={backFromSelectedQuestion} blurBackground={this.blurBackground}/>}
         </div>
 
-        {this.props.renderProfile && <Profile user_name={user_name} user_bio={user_bio} user_email={user_email} user_photo={user_photo} />}
+        {this.props.renderProfile && <Profile user_name={user_name} user_bio={user_bio} user_email={user_email} user_photo={user_photo} blurBackground={this.blurBackground} getBackFromEditProfile={getBackFromEditProfile}/>}
 
         <div className="container-fluid" id="blur">
           <div className="row d-flex">
@@ -124,7 +116,6 @@ class Home extends Component {
             <Navigation
               backFromSelectedQuestion={backFromSelectedQuestion}
               getQuestionsByPageNumber={getQuestionsByPageNumber}
-              blurLogo={this.blurLogo}
               searchSubmitHandler={this.searchSubmitHandler}
               createProfileToggle={createProfileToggle}
               blurBackground={this.blurBackground}
@@ -146,20 +137,25 @@ class Home extends Component {
                 />
               ) : (
                 <div>
+                  {/* //* -------QUESTION LIST -------------- */}
                   {/* //* ------QUESTION ORDER BUTTON-------- */}
                   {this.props.renderOrderButton && <QuestionOrderButtons searchOrderHandler={this.searchOrderHandler} />}
-                  {/* //* -------QUESTION LIST -------------- */}
-                  {questions && questions.length > 0 && (
-                    <QuestionList
-                      questions={questions}
-                      user_id={user_id}
-                      asyncVoteSelectedQuestion={this.asyncVoteSelectedQuestion}
-                      setSelectedQuestion={this.props.setSelectedQuestion}
-                    />
+                  {questions && questions.length > 0 ? (
+                    <div>
+                      <QuestionList
+                        questions={questions}
+                        user_id={user_id}
+                        asyncVoteSelectedQuestion={this.asyncVoteSelectedQuestion}
+                        setSelectedQuestion={this.props.setSelectedQuestion}
+                      />
+                    </div>
+                  ): (
+                    <div>
+                      <h3 className="mt-5 text-center text-secondary">Nothing to show. Please check back later.</h3>
+                    </div>
                   )}
                 </div>
               )}
-
               {/*  ----------Pagination---------------- */}
               {!selectedQuestion && (
                 <QuestionPagination
@@ -200,6 +196,7 @@ const Container = connect(mapStateToProps, {
   updateQuestionToggle,
   voteSelectedQuestion,
   searchQuestion,
+  getBackFromEditProfile
 })(Home);
 
 export default Container;

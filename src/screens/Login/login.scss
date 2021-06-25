@@ -165,4 +165,11 @@ $black-color: #000000;
     color: $white-color !important;
     outline: none !important;
     box-shadow: none !important;
+  
+    &:focus {
+      background-color: $secondary-color;
+      color: $white-color !important;
+      outline: none !important;
+      box-shadow: none !important;     
+    }
 }

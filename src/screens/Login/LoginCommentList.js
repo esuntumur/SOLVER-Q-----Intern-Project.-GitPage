@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import UpdateComment from "./UpdateComment/index";
 import {
   getCommentsByPageNumber,
   voteComment,
@@ -8,8 +7,7 @@ import {
   deleteComment,
   updateComment,
   updateCommentToggle,
-} from "../../../redux/actions/commentAction";
-import CommentEditor from "./CommentEditor";
+} from "../../redux/actions/commentAction";
 
 export class CommentList extends Component {
   constructor(props) {
@@ -40,17 +38,6 @@ export class CommentList extends Component {
     //   this.props.currentPageComment
     // );
   }
-  async voteCommentAsync(comment) {
-    await this.props.voteComment(
-      comment,
-      this.props.user_id,
-      this.props.getCommentsByPageNumber
-    );
-    await this.props.getCommentsByPageNumber(
-      this.props.selectedQuestion,
-      this.props.currentPageComment
-    );
-  }
   async deleteCommentAsync(comment) {
     await this.props.deleteComment(comment);
     await this.props.getCommentsByPageNumber(
@@ -75,10 +62,8 @@ export class CommentList extends Component {
       currentPageComment,
       maxPageComment,
       selectedQuestion,
-      user_id,
       selectedCommentId,
     } = this.props;
-    user_id *= 1;
     return (
       <div>
         {/* //* Create COMMENT */}
@@ -87,8 +72,6 @@ export class CommentList extends Component {
           href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
           type="text/css"
         />
-        {/* //* Create COMMENT */}
-        <CommentEditor />
         {/* //* Comment LIST */}
         <div>
           {comments.length > 0 ? (
@@ -129,30 +112,6 @@ export class CommentList extends Component {
                         <div className="card-text">
                           <span>{comment.votes.length} </span>
                           {comment.votes.length >= 2 ? "votes" : "vote"}
-                          <div>
-                            {/* //* VOTE Comment */}
-                            {!comment.votes.includes(user_id) ? (
-                              <div>
-                                <button
-                                  className="btn c-vote-btn"
-                                  onClick={() => {
-                                    this.voteCommentAsync.bind(this)(comment);
-                                  }}
-                                >
-                                  <i className="fa fa-heart-o"></i>
-                                </button>
-                              </div>
-                            ) : (
-                              <button
-                                className="btn c-vote-btn"
-                                onClick={() => {
-                                  this.voteCommentAsync.bind(this)(comment);
-                                }}
-                              >
-                                <i className="fa fa-heart"></i>
-                              </button>
-                            )}
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -175,42 +134,6 @@ export class CommentList extends Component {
                     </div>
                   </div>
                   <div className="col-2">
-                    <div className="card align-items-end">
-                      {/* //* Comment -> Delete, Update -> buttons */}
-                      {comment.user.id === user_id && (
-                        <div>
-                          <div className="row">
-                            <button
-                              className="rounded btn shadow"
-                              type="button"
-                              onClick={() => {
-                                this.deleteCommentAsync.bind(this)(comment);
-                              }}
-                            >
-                              Delete
-                            </button>{" "}
-                          </div>
-                          <br />
-                          <div className="row">
-                            {" "}
-                            <button
-                              className="rounded btn shadow"
-                              type="button"
-                              onClick={() => {
-                                updateCommentToggle(comment.id);
-                              }}
-                            >
-                              Update
-                            </button>{" "}
-                            <div className="d-flex">
-                              {selectedCommentId === comment.id ? (
-                                <UpdateComment selectedCommentId={selectedCommentId} />
-                              ) : null}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
                   </div>
                 </div>
               </div>

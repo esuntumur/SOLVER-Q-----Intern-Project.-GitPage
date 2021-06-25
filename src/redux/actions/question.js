@@ -86,8 +86,8 @@ export const createProfileToggle = () => async (dispatch) => {
   dispatch({ type: CREATE_PROFILE_TOGGLE });
 };
 
-export const getBackFromSelectedQuestion = () => async (dispatch) => {
-  dispatch({ type: GET_BACK_FROM_EDIT_PROFILE });
+export const getBackFromEditProfile = () => async (dispatch) => {
+  dispatch({ type: GET_BACK_FROM_EDIT_PROFILE});
 };
 
 export const setSelectedQuestion = (selectedQuestion) => async (dispatch) => {

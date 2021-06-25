@@ -4,12 +4,16 @@ function QuestionOrderButtons(props) {
   const { searchOrderHandler } = props;
   return (
     <div
-      className="btn-group"
+      className="btn-group mt-4 ms-5"
       role="group"
       aria-label="Button group with nested dropdown"
     >
+      <button className="btn"
+              disabled>
+        <i>sort by</i>
+      </button>
       <button
-        className="btn btn-primary"
+        className="btn me-4 rounded shadow-sm border"
         onClick={() => {
           searchOrderHandler(1);
         }}
@@ -17,7 +21,7 @@ function QuestionOrderButtons(props) {
         Votes
       </button>
       <button
-        className="btn btn-primary"
+        className="btn me-4 rounded shadow-sm border"
         onClick={() => {
           searchOrderHandler(2);
         }}
@@ -25,7 +29,7 @@ function QuestionOrderButtons(props) {
         Solved
       </button>
       <button
-        className="btn btn-primary"
+        className="btn rounded shadow-sm border"
         onClick={() => {
           searchOrderHandler(3);
         }}
