@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import UpdateComment from "./UpdateComment/index";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart, faHeartBroken } from '@fortawesome/free-solid-svg-icons';
 import {
   getCommentsByPageNumber,
   voteComment,
@@ -139,7 +141,7 @@ export class CommentList extends Component {
                                     this.voteCommentAsync.bind(this)(comment);
                                   }}
                                 >
-                                  <i className="fa fa-heart-o"></i>
+                                  <FontAwesomeIcon icon={faHeartBroken} />
                                 </button>
                               </div>
                             ) : (
@@ -149,7 +151,7 @@ export class CommentList extends Component {
                                   this.voteCommentAsync.bind(this)(comment);
                                 }}
                               >
-                                <i className="fa fa-heart"></i>
+                                <FontAwesomeIcon icon={faHeart} />
                               </button>
                             )}
                           </div>

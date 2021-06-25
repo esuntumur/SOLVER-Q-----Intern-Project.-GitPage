@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/authentication";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import {
   getQuestionsByPageNumber,
   setSelectedQuestion,
@@ -102,7 +104,7 @@ class Home extends Component {
               this.blurBackground();
             }}
           >
-            <i className="fa fa-plus plus-icon"></i>
+            <FontAwesomeIcon icon={faPlus} />
           </button>
           {/*//* -------------------CREATE QUESTION -> FORM */}
           {this.props.renderCreateQuestion && <QuestionEditor backFromSelectedQuestion={backFromSelectedQuestion} blurBackground={this.blurBackground}/>}

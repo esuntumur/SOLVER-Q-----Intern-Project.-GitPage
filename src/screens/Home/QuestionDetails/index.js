@@ -1,6 +1,8 @@
 import React from "react";
 import UpdateQuestion from "../UpdateQuestion";
 import CommentList from "../CommentList";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart, faHeartBroken } from '@fortawesome/free-solid-svg-icons';
 
 export default function QuestionDetails(props) {
   const {
@@ -58,7 +60,7 @@ export default function QuestionDetails(props) {
                         asyncVoteSelectedQuestion(selectedQuestion, user_id);
                       }}
                     >
-                      <i className="fa fa-heart-o"></i>
+                      <FontAwesomeIcon icon={faHeartBroken} />
                     </button>
                   </div>
                 ) : (
@@ -69,7 +71,7 @@ export default function QuestionDetails(props) {
                         asyncVoteSelectedQuestion(selectedQuestion, user_id);
                       }}
                     >
-                      <i className="fa fa-heart"></i>
+                      <FontAwesomeIcon icon={faHeart} />
                     </button>
                   </div>
                 )}

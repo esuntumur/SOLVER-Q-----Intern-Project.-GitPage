@@ -1,5 +1,7 @@
 import React from "react";
 import "./profile.scss";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 export default function Profile(props) {
     const {
@@ -19,7 +21,7 @@ export default function Profile(props) {
                                 blurBackground();
                                 getBackFromEditProfile()
                             }}>
-                        <i className="fa fa-times-circle"></i>
+                        <FontAwesomeIcon icon={faTimesCircle} />
                     </button>
                 </div>
             </div>

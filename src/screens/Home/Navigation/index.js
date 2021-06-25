@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch} from '@fortawesome/free-solid-svg-icons';
 
 function Navigation(props) {
   const {
@@ -54,7 +56,7 @@ function Navigation(props) {
                 />
                 <input type="hidden" name="order" value={1} />
                 <button className="btn btn-sm search-btn" type="submit">
-                  <i className="fa fa-search"></i>
+                  <FontAwesomeIcon icon={faSearch} />
                 </button>
               </form>
             </li>
