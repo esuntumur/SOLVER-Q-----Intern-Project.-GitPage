@@ -6,6 +6,8 @@ import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import HandleFullScreen from "./plugins/HandleFullScreen";
 import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 
 import "./style.scss";
@@ -55,7 +57,7 @@ export const QuestionEditor = (props) => {
                 backFromSelectedQuestion();
               }}
             >
-              <i className="fa fa-times-circle">X</i>
+              <FontAwesomeIcon icon={faTimesCircle} />
             </button>
           </div>
           {/* <CreateQuestionForm /> */}

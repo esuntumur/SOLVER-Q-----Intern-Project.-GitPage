@@ -1,38 +1,29 @@
 import React from "react";
 import "./profile.scss";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 export default function Profile(props) {
-  const { user_name, user_bio, user_email, user_photo, blurBackground, getBackFromEditProfile } = props;
-  return (
-    <div id="createProfile" className="container-fluid rounded shadow-lg">
-      <div>
-        <div className="card ms-4 align-items-end">
-          <button
-            className="btn btn-lg card-item x-btn"
-            onClick={() => {
-              blurBackground();
-              getBackFromEditProfile();
-            }}
-          >
-            <i className="fa fa-times-circle">X</i>
-          </button>
-        </div>
-      </div>
-      <div className="card-group mt-5">
-        <div className="profile-image">
-          <div className="card me-5 ms-5">
-            <img src={user_photo} />
-          </div>
-        </div>
-        <div className="mt-4">
-          <div className="card">
-            <div className="card-item">
-              <div>
-                <p>
-                  <b>Username:</b>
-                </p>
-                <p className="text-secondary">{user_name}</p>
-              </div>
+    const {
+        user_name, 
+        user_bio,
+        user_email,
+        user_photo,
+        blurBackground,
+        getBackFromEditProfile,
+    } = props;     
+    return(
+        <div id="createProfile" className="container-fluid rounded shadow-lg">
+            <div>
+                <div className="card ms-4 align-items-end">
+                    <button className="btn btn-lg card-item x-btn"
+                            onClick={() => {
+                                blurBackground();
+                                getBackFromEditProfile()
+                            }}>
+                        <FontAwesomeIcon icon={faTimesCircle} />
+                    </button>
+                </div>
             </div>
             <hr />
             <div className="card-item">
