@@ -87,7 +87,7 @@ export const createProfileToggle = () => async (dispatch) => {
 };
 
 export const getBackFromEditProfile = () => async (dispatch) => {
-  dispatch({ type: GET_BACK_FROM_EDIT_PROFILE});
+  dispatch({ type: GET_BACK_FROM_EDIT_PROFILE });
 };
 
 export const setSelectedQuestion = (selectedQuestion) => async (dispatch) => {
@@ -110,23 +110,26 @@ export const deleteSelectedQuestion = (selectedQuestion) => async (dispatch) => 
 };
 
 export const voteSelectedQuestion = (selectedQuestion, user_id) => async (dispatch) => {
-  await API.post(
-    `/questions/${selectedQuestion.id}/vote`,
-    {
-      vote: { question_id: selectedQuestion.id },
-    },
-    {
-      headers: {
-        Authorization: token,
+  try {
+    await API.post(
+      `/questions/${selectedQuestion.id}/vote`,
+      {
+        vote: { question_id: selectedQuestion.id },
       },
-    }
-  )
-    .then((res) => {
-      dispatch({
-        type: VOTE_SELECTED_QUESTION,
-        payload: { selectedQuestion, user_id },
-      });
-    })
-    //!CATCH ILREH ?
-    .catch((error) => {});
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    )
+      .then((res) => {
+        dispatch({
+          type: VOTE_SELECTED_QUESTION,
+          payload: { selectedQuestion, user_id },
+        });
+      })
+      .catch((error) => {});
+  } catch (error) {
+    console.log(`Console.log  =>  ~ voteSelectedQuestion ~ error`, error);
+  }
 };

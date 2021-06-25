@@ -35,7 +35,7 @@ export class CommentEditor extends React.Component {
   async postComment(e) {
     e.preventDefault();
 
-    await this.props.createComment(this.props.htmlString, this.props.selectedQuestion, this.props.audioId);
+    await this.props.createComment(this.props.htmlString, this.props.selectedQuestion, this.props.audioId, this.props.audioUrl);
     await this.props.getCommentsByPageNumber(this.props.selectedQuestion, this.props.currentPageComment);
   }
 

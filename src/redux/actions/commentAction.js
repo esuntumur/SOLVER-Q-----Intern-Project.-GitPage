@@ -44,56 +44,76 @@ export const reqImageUrl = (e) => async (dispatch) => {
   } catch (error) {}
 };
 
-export const createComment = (htmlString, selectedQuestion, id) => async (dispatch) => {
+export const createComment = (htmlString, selectedQuestion, id, url) => async (dispatch) => {
+  console.log(`Console.log  =>  ~ createComment ~ id`, id);
+  console.log(`Console.log  =>  ~ createComment ~ htmlString`, htmlString);
+  console.log(`Console.log  =>  ~ createComment ~ selectedQuestion`, selectedQuestion);
   //  this.props.createComment(this.props.htmlString, this.props.selectedQuestion);
-
-  await API.post(
-    "comments",
-    {
-      comment: {
-        question_id: selectedQuestion.id,
-        answer: htmlString,
-        audio: id,
+  try {
+    await API.post(
+      "comments",
+      {
+        comment: {
+          question_id: selectedQuestion.id,
+          answer: htmlString,
+          public_id: id,
+          audio_url: url,
+        },
       },
-    },
-    {
-      headers: {
-        Authorization: token,
-      },
-    }
-  ).then((response) => {
-    dispatch({ type: SEND_COMMENT, payload: response.data.object });
-  });
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    ).then((response) => {
+      console.log(`Console.log  =>  ~ ).then ~ response`, response);
+      dispatch({ type: SEND_COMMENT, payload: response.data.object });
+    });
+  } catch (error) {
+    console.log(`Console.log  =>  ~ createComment ~ error`, error);
+  }
 };
 
 export const getCommentsByPageNumber = (selectedQuestion, currentPageComment) => async (dispatch) => {
-  await API.post(`questions/${selectedQuestion.id}/comments`, {
-    commentPage: currentPageComment,
-  }).then((response) => {
-    dispatch({ type: GET_COMMENTS_BY_PAGE_NUMBER, payload: response.data });
-  });
+  try {
+    await API.post(`questions/${selectedQuestion.id}/comments`, {
+      commentPage: currentPageComment,
+    }).then((response) => {
+      dispatch({ type: GET_COMMENTS_BY_PAGE_NUMBER, payload: response.data });
+    });
+  } catch (error) {
+    console.log(`Console.log  =>  ~ getCommentsByPageNumber ~ error`, error);
+  }
 };
 
 export const deleteComment = (comment) => async (dispatch) => {
-  await API.delete(`/comments/${comment.id}`, {
-    headers: { Authorization: token },
-  }).then((response) => {
-    dispatch({ type: DELETE_COMMENT, payload: response.data.object });
-  });
+  try {
+    await API.delete(`/comments/${comment.id}`, {
+      headers: { Authorization: token },
+    }).then((response) => {
+      dispatch({ type: DELETE_COMMENT, payload: response.data.object });
+    });
+  } catch (error) {
+    console.log(`Console.log  =>  ~ deleteComment ~ error`, error);
+  }
 };
 
 export const updateComment = (payload) => async (dispatch) => {
-  await API.put(
-    `/comments/${payload.commentId}`,
-    { answer: payload.answer },
-    {
-      headers: {
-        Authorization: token,
-      },
-    }
-  ).then((response) => {
-    dispatch({ type: UPDATE_COMMENT, payload: response.data.object });
-  });
+  try {
+    await API.put(
+      `/comments/${payload.commentId}`,
+      { answer: payload.answer },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    ).then((response) => {
+      dispatch({ type: UPDATE_COMMENT, payload: response.data.object });
+    });
+  } catch (error) {
+    console.log(`Console.log  =>  ~ updateComment ~ error`, error);
+  }
 };
 export const updateCommentToggle = (payload) => async (dispatch) => {
   dispatch({ type: UPDATE_COMMENT_TOGGLE, payload: payload });
@@ -101,15 +121,18 @@ export const updateCommentToggle = (payload) => async (dispatch) => {
 
 export const voteComment = (selectedComment, user_id) => async (dispatch) => {
   // todo VOTE COMMENT: questions/1/comments/18/vote   json => {vote: { comment_id: selectedComment.id }}
-  await API.post(`/comments/${selectedComment.id}/vote`, null, {
-    headers: {
-      Authorization: token,
-    },
-  }).then(() => {
-    dispatch({
-      type: VOTE_COMMENT,
-      payload: { selectedComment, user_id },
+  try {
+    await API.post(`/comments/${selectedComment.id}/vote`, null, {
+      headers: {
+        Authorization: token,
+      },
+    }).then(() => {
+      dispatch({
+        type: VOTE_COMMENT,
+        payload: { selectedComment, user_id },
+      });
     });
-  });
-  // await API.post("url", null);
+  } catch (error) {
+    console.log(`Console.log  =>  ~ voteComment ~ error`, error);
+  }
 };
