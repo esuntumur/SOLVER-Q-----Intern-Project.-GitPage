@@ -48,12 +48,14 @@ export const QuestionEditor = (props) => {
       <div className="form-bg">
         <form className="form" onSubmit={handleSubmit(submitHandler)}>
           <div className="card align-items-end mb-3">
-            <button className="btn-sm  x-btn"
-                    onClick={() => {
-                      blurBackground();
-                      backFromSelectedQuestion();
-                    }}>
-              <i className="fa fa-times-circle"></i>
+            <button
+              className="btn-sm  x-btn"
+              onClick={() => {
+                blurBackground();
+                backFromSelectedQuestion();
+              }}
+            >
+              <i className="fa fa-times-circle">X</i>
             </button>
           </div>
           {/* <CreateQuestionForm /> */}

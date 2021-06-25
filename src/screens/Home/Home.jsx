@@ -102,7 +102,7 @@ class Home extends Component {
               this.blurBackground();
             }}
           >
-            <i className="fa fa-plus plus-icon"></i>
+            <i className="fa fa-plus plus-icon">Create Q</i>
           </button>
           {/*//* -------------------CREATE QUESTION -> FORM */}
           {this.props.renderCreateQuestion && (
