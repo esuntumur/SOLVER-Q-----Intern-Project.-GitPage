@@ -35,8 +35,14 @@ export default class App extends Component {
       <div id="recorder">
         <AudioReactRecorder state={recordState} onStop={this.onStop.bind(this)} />
 
-        <button onClick={this.start}>Start</button>
-        <button onClick={this.stop}>Stop</button>
+        <button onClick={this.start}
+                className="recorder-btn rounded">
+          Start
+        </button>
+        <button onClick={this.stop}
+                className="recorder-btn rounded ms-3">
+          Stop
+        </button>
       </div>
     );
   }

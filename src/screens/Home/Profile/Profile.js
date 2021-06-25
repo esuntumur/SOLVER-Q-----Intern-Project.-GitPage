@@ -1,6 +1,5 @@
 import React from "react";
 import "./profile.scss";
-import "./logo192.png";
 
 export default function Profile(props) {
     const {

@@ -18,17 +18,27 @@ export default function QuestionPagination(props) {
                 className="btn pg-button"
                 onClick={() => getQuestionsByPageNumber(--currentPageQuestion)}
               >
+                <span aria-hidden="true"><b>&laquo;</b></span>
+              </button>{" "}
+            </li>
+          ) : (
+            <li className="page-item">
+              <button
+                type="button"
+                className="btn"
+                disabled
+              >
                 <span aria-hidden="true">&laquo;</span>
               </button>{" "}
             </li>
-          ) : null}
+          )}
 
           {pageNum &&
             pageNum.length > 0 &&
             pageNum.map((number, idx) => (
               <li key={idx} className="page-item">
                 <button
-                  className="page-link pg-button"
+                  className="page-link pg-button rounded"
                   onClick={() => {
                     getQuestionsByPageNumber(number);
                   }}
@@ -39,7 +49,7 @@ export default function QuestionPagination(props) {
               </li>
             ))}
           {currentPageQuestion >= maxPageQuestion ? (
-            <button type="button" className="btn  btn-dark pg-btn" disabled>
+            <button type="button" className="btn" disabled>
               <span aria-hidden="true">&raquo;</span>
             </button>
           ) : (
@@ -49,7 +59,7 @@ export default function QuestionPagination(props) {
                 className="btn pg-button"
                 onClick={() => getQuestionsByPageNumber(++currentPageQuestion)}
               >
-                <span aria-hidden="true">&raquo;</span>
+                <span aria-hidden="true"><b>&raquo;</b></span>
               </button>
             </li>
           )}

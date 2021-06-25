@@ -14,6 +14,7 @@ import { setHtmlString, reqImageUrl } from "../../../redux/actions/commentAction
 MdEditor.use(HandleFullScreen);
 
 export const QuestionEditor = (props) => {
+  const { backFromSelectedQuestion, blurBackground } = props;
   const mdParser = new MarkdownIt(/* Markdown-it options */);
   const {
     register,
@@ -46,6 +47,15 @@ export const QuestionEditor = (props) => {
     <div id="createQuestion">
       <div className="form-bg">
         <form className="form" onSubmit={handleSubmit(submitHandler)}>
+          <div className="card align-items-end mb-3">
+            <button className="btn-sm  x-btn"
+                    onClick={() => {
+                      blurBackground();
+                      backFromSelectedQuestion();
+                    }}>
+              <i className="fa fa-times-circle"></i>
+            </button>
+          </div>
           {/* <CreateQuestionForm /> */}
           <div className="form-group">
             <label className="sr-only">Title</label>{" "}

@@ -84,6 +84,7 @@ $black-color: #000000;
 
 .big-container {
   filter: blur(10px);
+  pointer-events: none !important;
 }
 
 .q-del-up {

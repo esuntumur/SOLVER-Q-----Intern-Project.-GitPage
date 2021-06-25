@@ -1,7 +1,24 @@
 import "./login.scss";
+import "../Home/home.scss";
 import React from "react";
 import { connect } from "react-redux";
 import { loginUser, signupUser } from "../../redux/actions/authentication";
+import QuestionPagination from "../Home/QuestionPagination";
+import LoginQuestionList from "./LoginQuestionList";
+import LoginQuestionDetails from "./LoginQuestionDetails";
+import {
+  getQuestionsByPageNumber,
+  setSelectedQuestion,
+  backFromSelectedQuestion,
+  createQuestionToggle,
+  createProfileToggle,
+  deleteSelectedQuestion,
+  updateQuestionToggle,
+  voteSelectedQuestion,
+  searchQuestion,
+  updateQuestion,
+  getBackFromEditProfile
+} from "../../redux/actions/question";
 // email: "dannd@example.com",
 // password: "238523a",
 
@@ -12,7 +29,12 @@ class Login extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitSignUp = this.handleSubmitSignUp.bind(this);
   }
-
+  componentWillMount() {
+    this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
+  }
+  componentDidMount() {
+    this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
+  }
   handleSubmit(event) {
     event.preventDefault();
     const payload = {
@@ -37,11 +59,34 @@ class Login extends React.Component {
   }
 
   render() {
+    const {
+      questions,
+      logoutUser,
+      backFromSelectedQuestion,
+      deleteSelectedQuestion,
+      updateQuestionToggle,
+      renderUpdateQuestion,
+      getQuestionsByPageNumber,
+    } = this.props;
+
+    let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
+    console.log(questions)
     return (
       <div id="login">
-        
         <div className="dropdown">
           <nav className="navbar navbar-expand-lg py-4 shadow rounded navbar-light bg-light">
+            {/* LOGO */}
+            <button
+              className="navbar-brand btn ms-3"
+              onClick={() => {
+                backFromSelectedQuestion();
+                getQuestionsByPageNumber(1);
+              }}
+              id="logo"
+            >
+              <img src="./logo192.png" alt="Logo" width="50" height="50" />
+            </button>
+            <p className="text-secondary navbar-brand mt-3">Log in to do more</p>
             <div className="ms-auto">
               {/* ---------------LOG-IN-------------- */}
               <button
@@ -137,11 +182,63 @@ class Login extends React.Component {
             </div>         
           </nav>
       </div>
+      {selectedQuestion ? (
+        <LoginQuestionDetails
+          selectedQuestion={selectedQuestion}
+          deleteSelectedQuestion={deleteSelectedQuestion}
+          updateQuestionToggle={updateQuestionToggle}
+          renderUpdateQuestion={renderUpdateQuestion}
+          asyncVoteSelectedQuestion={this.asyncVoteSelectedQuestion}
+        />
+      ): (
+        <LoginQuestionList
+          questions={questions}
+          asyncVoteSelectedQuestion={this.asyncVoteSelectedQuestion}
+          setSelectedQuestion={this.props.setSelectedQuestion}
+        />
+      )}
+      {/*  ----------Pagination---------------- */}
+      {!selectedQuestion && (
+        <QuestionPagination
+          currentPageQuestion={currentPageQuestion}
+          getQuestionsByPageNumber={getQuestionsByPageNumber}
+          maxPageQuestion={maxPageQuestion}
+        />
+      )}
     </div>
     );
   }
 }
 
-const Container = connect(null, { loginUser, signupUser })(Login);
+const mapStateToProps = (state) => {
+  return {
+    questions: state.question.questions,
+    selectedQuestion: state.question.selectedQuestion,
+    renderCreateQuestion: state.question.renderCreateQuestion,
+    renderProfile: state.question.renderProfile,
+    user: state.auth.user,
+    renderUpdateQuestion: state.question.renderUpdateQuestion,
+    maxPageQuestion: state.question.maxPageQuestion,
+    currentPageQuestion: state.question.currentPageQuestion,
+    searchValue: state.question.searchValue,
+    renderOrderButton: state.question.renderOrderButton,
+  };
+};
+
+const Container = connect(mapStateToProps, 
+  { loginUser, 
+    signupUser, 
+    getQuestionsByPageNumber,
+    setSelectedQuestion,
+    backFromSelectedQuestion,
+    createQuestionToggle,
+    createProfileToggle,
+    deleteSelectedQuestion,
+    updateQuestionToggle,
+    voteSelectedQuestion,
+    searchQuestion,
+    updateQuestion,
+    getBackFromEditProfile}
+  )(Login);
 
 export default Container;
