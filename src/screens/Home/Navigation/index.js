@@ -10,7 +10,7 @@ function Navigation(props) {
     blurBackground,
     logoutUser,
     user_name,
-    user_photo
+    user_photo,
   } = props;
   return (
     <nav className="navbar navbar-expand-lg py-4 shadow rounded navbar-light bg-light">
@@ -45,13 +45,7 @@ function Navigation(props) {
           <ul className="navbar-nav">
             <li className="nav-item">
               <form className="d-flex form-horizontal" onSubmit={searchSubmitHandler}>
-                <input
-                  className="form-control"
-                  type="text"
-                  placeholder="Search..."
-                  aria-label="Search"
-                  name="searchValue"
-                />
+                <input className="form-control" type="text" placeholder="Search..." aria-label="Search" name="searchValue" />
                 <input type="hidden" name="order" value={1} />
                 <button className="btn btn-sm search-btn" type="submit">
                   <i className="fa fa-search"></i>
@@ -70,12 +64,9 @@ function Navigation(props) {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <img src={user_photo} width="50px" height="50px"/>
+                <img src={user_photo} width="50px" height="50px" />
               </button>
-              <div
-                className="dropdown-menu dropdown-menu-lg-end"
-                aria-labelledby="navbarDropdownMenu"
-              >
+              <div className="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenu">
                 <p className="dropdown-header text-dark">
                   <b>{user_name}</b>
                 </p>
