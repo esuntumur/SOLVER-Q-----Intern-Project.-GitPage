@@ -71,7 +71,6 @@ export const questionReducer = (state = JSON.parse(JSON.stringify(initialState))
     }
     case SET_IMAGE_URL: {
       console.log(`Logged Output ~ SET_IMAGE_URL action.payload `, action.payload);
-
       return { ...state, imageUrl: action.payload };
     }
     case UPDATE_COMMENT_TOGGLE: {

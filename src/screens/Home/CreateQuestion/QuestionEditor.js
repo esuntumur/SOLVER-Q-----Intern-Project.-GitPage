@@ -22,15 +22,11 @@ export const QuestionEditor = (props) => {
   } = useForm();
 
   const onImageUpload = async (e, callback) => {
-    console.log(`Console.log  =>  ~ onImageUpload ~ props`, props);
-    await props.reqImageUrl(e);
-    console.log(`Console.log  =>  ~ onImageUpload ~ props`, props);
-    await callback(props.imageUrl);
-    console.log(`Console.log  =>  ~ onImageUpload ~ props`, props);
+    let url = await props.reqImageUrl(e);
+    await callback(url);
   };
 
   const handleEditorChange = ({ html }) => {
-    console.log(`Console.log  =>  ~ handleEditorChange ~ props`, props);
     props.setHtmlString(html);
   };
 

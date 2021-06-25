@@ -34,11 +34,13 @@ export const reqImageUrl = (e) => async (dispatch) => {
   let form = new FormData();
   try {
     form.append("image", e, e.name);
-    await API.post(`/upload`, form).then((res) => {
+    let url = await API.post(`/upload`, form).then((res) => {
       console.log(`Console.log  =>  ~ awaitAPI.post ~ res.data.url`, res.data.url);
       dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
       return res.data.url;
     });
+    console.log(`~~~~~~~~~~ url`, url);
+    return url;
   } catch (error) {}
 };
 

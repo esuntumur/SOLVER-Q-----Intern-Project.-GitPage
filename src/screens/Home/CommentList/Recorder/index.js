@@ -10,9 +10,14 @@ export default class App extends Component {
     };
   }
   start = () => {
-    this.setState({
-      recordState: RecordState.START,
-    });
+    try {
+      console.log(`Console.log  =>  ~ App ~ try`);
+      this.setState({
+        recordState: RecordState.START,
+      });
+    } catch (error) {
+      console.log(`Console.log  =>  ~ App ~ error`, error);
+    }
   };
   stop = () => {
     this.setState({

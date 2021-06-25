@@ -6,13 +6,7 @@ import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import HandleFullScreen from "./plugins/HandleFullScreen";
 import AudioPlugin from "./plugins/AudioPlugin";
-import {
-  reqImageUrl,
-  createComment,
-  setHtmlString,
-  getCommentsByPageNumber,
-  reqAudioUrl,
-} from "../../../redux/actions/commentAction";
+import { reqImageUrl, createComment, setHtmlString, getCommentsByPageNumber, reqAudioUrl } from "../../../redux/actions/commentAction";
 import { connect } from "react-redux";
 import "./commentList.scss";
 import Recorder from "./Recorder/index";
@@ -41,15 +35,8 @@ export class CommentEditor extends React.Component {
   async postComment(e) {
     e.preventDefault();
 
-    await this.props.createComment(
-      this.props.htmlString,
-      this.props.selectedQuestion,
-      this.props.audioId
-    );
-    await this.props.getCommentsByPageNumber(
-      this.props.selectedQuestion,
-      this.props.currentPageComment
-    );
+    await this.props.createComment(this.props.htmlString, this.props.selectedQuestion, this.props.audioId);
+    await this.props.getCommentsByPageNumber(this.props.selectedQuestion, this.props.currentPageComment);
   }
 
   render() {
@@ -71,9 +58,7 @@ export class CommentEditor extends React.Component {
                 />
               </div>
             </div>
-            {this.props.renderAudioRecorder && (
-              <Recorder reqAudioUrl={this.props.reqAudioUrl} />
-            )}
+            {this.props.renderAudioRecorder && <Recorder reqAudioUrl={this.props.reqAudioUrl} />}
             {this.props.audioUrl && (
               <audio controls>
                 <source src={this.props.audioUrl} type="audio/ogg" />

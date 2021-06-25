@@ -17,25 +17,51 @@ const token = localStorage.getItem("token");
 // todo VOTE QUESTION: questions/1/vote      json => {vote: { question_id: selectedQuestion.id }}
 
 export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
-  await API.post("/questions/page", { questionPage: pageNum }).then((response) => {
-    dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER, payload: response.data });
-  });
+  try {
+    await API.post("/questions/page", { questionPage: pageNum }).then((response) => {
+      dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER, payload: response.data });
+    });
+  } catch (error) {
+    console.log(`Console.log  =>  ~ getQuestionsByPageNumber ~ error`, error);
+  }
 };
 // TODO => searchQuestion
 export const searchQuestion = (searchValue, order) => async (dispatch) => {
-  await API.post("/questions/page", {
-    keyWord: searchValue, //хайх утга
-    order: order, //эрэмблэлт
-    currentPage: "1", //Одоогийн page
-  }).then((response) => {
-    const questions = response.data.questions;
-    const maxPage = response.data.maxPage;
-    const currentPage = response.data.currentPage;
-    dispatch({
-      type: GET_QUESTION_BY_PAGE_NUMBER,
-      payload: { questions, maxPage, currentPage, searchValue },
+  try {
+    await API.post("/questions/page", {
+      keyWord: searchValue, //хайх утга
+      order: order, //эрэмблэлт
+      currentPage: "1", //Одоогийн page
+    }).then((response) => {
+      const questions = response.data.questions;
+      const maxPage = response.data.maxPage;
+      const currentPage = response.data.currentPage;
+      dispatch({
+        type: GET_QUESTION_BY_PAGE_NUMBER,
+        payload: { questions, maxPage, currentPage, searchValue },
+      });
     });
-  });
+  } catch (error) {
+    console.log(`Console.log  =>  ~ searchQuestion ~ error`, error);
+  }
+};
+export const updateQuestionToggle = () => async (dispatch) => {
+  dispatch({ type: UPDATE_QUESTION_TOGGLE });
+};
+
+// TODO => update question
+export const updateQuestion = (payload) => async (dispatch) => {
+  try {
+    await API.put(`/questions/${payload.id}`, payload.params, {
+      headers: {
+        Authorization: token,
+      },
+    }).then((response) => {
+      dispatch({ type: UPDATE_SELECTED_QUESTION, payload: response.data.object });
+    });
+  } catch (error) {
+    console.log(`Console.log  =>  ~ updateQuestion ~ error`, error);
+  }
 };
 
 export const createQuestionToggle = () => async (dispatch) => {
@@ -43,14 +69,17 @@ export const createQuestionToggle = () => async (dispatch) => {
 };
 
 export const createQuestion = (params) => async (dispatch) => {
-  console.log(`Logged Output ~ createQuestion`);
-  const response = await API.post("/questions", params, {
-    headers: {
-      Authorization: token,
-    },
-  });
-
-  dispatch({ type: CREATE_QUESTION, payload: response.data.object });
+  try {
+    await API.post("/questions", params, {
+      headers: {
+        Authorization: token,
+      },
+    }).then((response) => {
+      dispatch({ type: CREATE_QUESTION, payload: response.data.object });
+    });
+  } catch (error) {
+    console.log(`Console.log  =>  ~ createQuestion ~ error`, error);
+  }
 };
 
 export const createProfileToggle = () => async (dispatch) => {
@@ -69,26 +98,15 @@ export const backFromSelectedQuestion = () => async (dispatch) => {
   dispatch({ type: BACK_FROM_SELECTED_QUESTION });
 };
 
-export const updateQuestionToggle = () => async (dispatch) => {
-  dispatch({ type: UPDATE_QUESTION_TOGGLE });
-};
-
-// TODO => update question
-export const updateQuestion = (payload) => async (dispatch) => {
-  await API.put(`/questions/${payload.id}`, payload.params, {
-    headers: {
-      Authorization: token,
-    },
-  }).then((response) => {
-    dispatch({ type: UPDATE_SELECTED_QUESTION, payload: response.data.object });
-  });
-};
-
 export const deleteSelectedQuestion = (selectedQuestion) => async (dispatch) => {
-  const response = await API.delete(`/questions/${selectedQuestion.id}`, {
-    headers: { Authorization: token },
-  });
-  dispatch({ type: DELETE_SELECTED_QUESTION, payload: response.data.object });
+  try {
+    const response = await API.delete(`/questions/${selectedQuestion.id}`, {
+      headers: { Authorization: token },
+    });
+    dispatch({ type: DELETE_SELECTED_QUESTION, payload: response.data.object });
+  } catch (error) {
+    console.log(`Console.log  =>  ~ deleteSelectedQuestion ~ error`, error);
+  }
 };
 
 export const voteSelectedQuestion = (selectedQuestion, user_id) => async (dispatch) => {
