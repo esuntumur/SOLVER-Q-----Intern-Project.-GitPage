@@ -14,7 +14,7 @@ import {
   voteSelectedQuestion,
   searchQuestion,
   updateQuestion,
-  getBackFromEditProfile
+  getBackFromEditProfile,
 } from "../../redux/actions/question";
 import ReactPlayer from "react-player";
 import ReactPaginate from "react-paginate";
@@ -28,7 +28,7 @@ import QuestionOrderButtons from "./Navigation/QuestionOrderButtons";
 import QuestionList from "./QuestionList";
 import QuestionPagination from "./QuestionPagination";
 import "./home.scss";
-// import "./logo.png";
+import "./logo.png";
 
 class Home extends Component {
   constructor(props) {
@@ -74,7 +74,7 @@ class Home extends Component {
       updateQuestionToggle,
       renderUpdateQuestion,
       getQuestionsByPageNumber,
-      getBackFromEditProfile
+      getBackFromEditProfile,
     } = this.props;
     let { selectedQuestion, maxPageQuestion, currentPageQuestion } = this.props;
 
@@ -86,7 +86,7 @@ class Home extends Component {
 
     return (
       <div>
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type="text/css" />
+        {/* <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type="text/css" /> */}
         {/* CREATE QUESTION -> BUTTON*/}
         <div>
           <ReactTooltip id="createQtip" place="top" effect="solid">
@@ -105,10 +105,21 @@ class Home extends Component {
             <i className="fa fa-plus plus-icon"></i>
           </button>
           {/*//* -------------------CREATE QUESTION -> FORM */}
-          {this.props.renderCreateQuestion && <QuestionEditor backFromSelectedQuestion={backFromSelectedQuestion} blurBackground={this.blurBackground}/>}
+          {this.props.renderCreateQuestion && (
+            <QuestionEditor backFromSelectedQuestion={backFromSelectedQuestion} blurBackground={this.blurBackground} />
+          )}
         </div>
 
-        {this.props.renderProfile && <Profile user_name={user_name} user_bio={user_bio} user_email={user_email} user_photo={user_photo} blurBackground={this.blurBackground} getBackFromEditProfile={getBackFromEditProfile}/>}
+        {this.props.renderProfile && (
+          <Profile
+            user_name={user_name}
+            user_bio={user_bio}
+            user_email={user_email}
+            user_photo={user_photo}
+            blurBackground={this.blurBackground}
+            getBackFromEditProfile={getBackFromEditProfile}
+          />
+        )}
 
         <div className="container-fluid" id="blur">
           <div className="row d-flex">
@@ -149,7 +160,7 @@ class Home extends Component {
                         setSelectedQuestion={this.props.setSelectedQuestion}
                       />
                     </div>
-                  ): (
+                  ) : (
                     <div>
                       <h3 className="mt-5 text-center text-secondary">Nothing to show. Please check back later.</h3>
                     </div>
@@ -196,7 +207,7 @@ const Container = connect(mapStateToProps, {
   updateQuestionToggle,
   voteSelectedQuestion,
   searchQuestion,
-  getBackFromEditProfile
+  getBackFromEditProfile,
 })(Home);
 
 export default Container;
