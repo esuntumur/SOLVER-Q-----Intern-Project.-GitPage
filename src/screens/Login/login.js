@@ -28,10 +28,10 @@ export function Login(props) {
   if (!mounted) {
     props.getQuestionsByPageNumber(props.currentPageQuestion);
   }
-
   useEffect(() => {
     setMounted(true);
   }, []);
+
   const {
     register,
     formState: { errors },
@@ -49,27 +49,7 @@ export function Login(props) {
     props.loginUser(payload);
   };
 
-  const handleSubmitSignUp = (data) => {
-    const payload = {
-      user: {
-        username: data.username,
-        email: data.email,
-        password: data.password,
-      },
-    };
-
-    if (props.signupUser(payload)) console.log("sign up success");
-    else console.log("sign up failed");
-  };
-  const {
-    questions,
-    logoutUser,
-    backFromSelectedQuestion,
-    deleteSelectedQuestion,
-    updateQuestionToggle,
-    renderUpdateQuestion,
-    getQuestionsByPageNumber,
-  } = props;
+  const { questions, backFromSelectedQuestion, deleteSelectedQuestion, updateQuestionToggle, renderUpdateQuestion, getQuestionsByPageNumber } = props;
 
   let { selectedQuestion, maxPageQuestion, currentPageQuestion } = props;
   console.log(questions);

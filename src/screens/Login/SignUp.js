@@ -3,8 +3,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { signupUser } from "../../redux/actions/authentication";
 import { useForm } from "react-hook-form";
-// email: "dannd@example.com",
-// password: "238523a",
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
+const success = () => toast("You're signed up!");
+const fail = () => toast("Sign up inputs are invalid!");
+
 export function SignUp(props) {
   const {
     register,
@@ -12,10 +17,8 @@ export function SignUp(props) {
     handleSubmit,
     watch,
   } = useForm();
-  console.log(watch());
-  console.log(`Console.log  =>  ~ Login ~ errors`, errors);
 
-  const handleSubmitSignUp = (data) => {
+  const handleSubmitSignUp = async (data) => {
     const payload = {
       user: {
         username: data.username,
@@ -23,13 +26,15 @@ export function SignUp(props) {
         password: data.password2,
       },
     };
-
-    if (props.signupUser(payload)) console.log("sign up success");
-    else console.log("sign up failed");
+    const res = await props.signupUser(payload);
+    console.log(`Console.log  =>  ~ handleSubmitSignUp ~ res`, res);
+    if (res) success();
+    else fail();
   };
 
   return (
     <form className="form" onSubmit={handleSubmit(handleSubmitSignUp)}>
+      <ToastContainer />
       <h4 className="form__title">Sign Up</h4>
       {/* ---------------username--------------- */}
       <div className="form_div">

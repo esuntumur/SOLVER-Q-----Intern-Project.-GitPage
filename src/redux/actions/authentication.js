@@ -12,7 +12,7 @@ export const loginUser = (formVlaues) => async (dispatch) => {
     localStorage.setItem("user_email", response.data.user.email);
     localStorage.setItem("user_bio", response.data.user.bio);
     localStorage.setItem("user_photo", response.data.user.profile);
-    console.log("user", response.data.user)
+    console.log("user", response.data.user);
     dispatch({ type: LOGIN, payload: response.data });
   }
 };
@@ -24,8 +24,19 @@ export const logoutUser = () => async (dispatch) => {
 };
 
 export const signupUser = (formVlaues) => async (dispatch) => {
-  await api.post("/users", formVlaues).then((response) => {
-    return true;
-  });
-  return false;
+  console.log("true");
+  try {
+    await api
+      .post("/users", formVlaues)
+      .then((res) => {
+        console.log("true");
+        return true;
+      })
+      .catch((err) => {
+        console.log("false");
+        return false;
+      });
+  } catch (error) {
+    console.log(`Console.log  =>  ~ signupUser ~ error`, error);
+  }
 };
