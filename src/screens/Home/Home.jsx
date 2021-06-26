@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/authentication";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import {
   getQuestionsByPageNumber,
   setSelectedQuestion,
@@ -15,15 +15,11 @@ import {
   updateQuestionToggle,
   voteSelectedQuestion,
   searchQuestion,
-  updateQuestion,
   getBackFromEditProfile,
 } from "../../redux/actions/question";
-import ReactPlayer from "react-player";
-import ReactPaginate from "react-paginate";
 
 import QuestionEditor from "./CreateQuestion/QuestionEditor";
 import Profile from "./Profile/Profile";
-import UpdateQuestion from "./UpdateQuestion/index";
 import Navigation from "./Navigation";
 import QuestionDetails from "./QuestionDetails";
 import QuestionOrderButtons from "./Navigation/QuestionOrderButtons";
@@ -40,12 +36,13 @@ class Home extends Component {
     this.searchSubmitHandler = this.searchSubmitHandler.bind(this);
     this.searchOrderHandler = this.searchOrderHandler.bind(this);
   }
-  componentWillMount() {
-    this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
+  async componentWillMount() {
+    await this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
   }
-  componentDidMount() {
-    this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
+  async componentDidMount() {
+    await this.props.getQuestionsByPageNumber(this.props.currentPageQuestion);
   }
+
   async searchSubmitHandler(event) {
     event.preventDefault();
     await this.props.searchQuestion(event.target.searchValue.value, null);
@@ -135,6 +132,7 @@ class Home extends Component {
               logoutUser={logoutUser}
               user_name={user_name}
               user_photo={user_photo}
+              clearSearchValue={this.clearSearchValue}
             />
             {/*//*------------------HOME BODY------------------- */}
             <div>

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function Navigation(props) {
   const {
@@ -14,6 +14,7 @@ function Navigation(props) {
     user_name,
     user_photo,
   } = props;
+
   return (
     <nav className="navbar navbar-expand-lg py-4 shadow rounded navbar-light bg-light">
       <div className="container-fluid">
@@ -47,7 +48,7 @@ function Navigation(props) {
           <ul className="navbar-nav">
             <li className="nav-item">
               <form className="d-flex form-horizontal" onSubmit={searchSubmitHandler}>
-                <input className="form-control" type="text" placeholder="Search..." aria-label="Search" name="searchValue" />
+                <input className="form-control" type="text" placeholder="Search..." aria-label="Search" name="searchValue" id="searchValue" />
                 <input type="hidden" name="order" value={1} />
                 <button className="btn btn-sm search-btn" type="submit">
                   <FontAwesomeIcon icon={faSearch} />

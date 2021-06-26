@@ -3,17 +3,12 @@ import React from "react";
 function QuestionOrderButtons(props) {
   const { searchOrderHandler } = props;
   return (
-    <div
-      className="btn-group mt-4 ms-5"
-      role="group"
-      aria-label="Button group with nested dropdown"
-    >
-      <button className="btn"
-              disabled>
+    <div className="btn-group mt-4 ms-5" role="group" aria-label="Button group with nested dropdown">
+      <button className="btn" disabled>
         <i>sort by</i>
       </button>
       <button
-        className="btn me-4 rounded shadow-sm border"
+        className="btn me-4 rounded shadow-sm border btn-primary"
         onClick={() => {
           searchOrderHandler(1);
         }}
@@ -21,7 +16,7 @@ function QuestionOrderButtons(props) {
         Votes
       </button>
       <button
-        className="btn me-4 rounded shadow-sm border"
+        className="btn me-4 rounded shadow-sm border btn-primary"
         onClick={() => {
           searchOrderHandler(2);
         }}
@@ -29,7 +24,7 @@ function QuestionOrderButtons(props) {
         Solved
       </button>
       <button
-        className="btn rounded shadow-sm border"
+        className="btn rounded shadow-sm border btn-primary"
         onClick={() => {
           searchOrderHandler(3);
         }}

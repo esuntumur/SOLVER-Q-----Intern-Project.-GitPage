@@ -12,19 +12,22 @@ import {
   UPDATE_QUESTION_TOGGLE,
 } from "./type";
 import API from "../../API";
-
 const token = localStorage.getItem("token");
-// todo VOTE QUESTION: questions/1/vote      json => {vote: { question_id: selectedQuestion.id }}
 
+// todo VOTE QUESTION: questions/1/vote      json => {vote: { question_id: selectedQuestion.id }}
 export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
   try {
     await API.post("/questions/page", { questionPage: pageNum }).then((response) => {
       dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER, payload: response.data });
     });
+    console.log(document.getElementById("searchValue"));
+
+    document.getElementById("searchValue").value = "";
   } catch (error) {
     console.log(`Console.log  =>  ~ getQuestionsByPageNumber ~ error`, error);
   }
 };
+
 // TODO => searchQuestion
 export const searchQuestion = (searchValue, order) => async (dispatch) => {
   try {
@@ -69,6 +72,7 @@ export const createQuestionToggle = () => async (dispatch) => {
 };
 
 export const createQuestion = (params) => async (dispatch) => {
+  console.log(`Console.log  =>  ~ createQuestion ~ token`, token);
   try {
     await API.post("/questions", params, {
       headers: {

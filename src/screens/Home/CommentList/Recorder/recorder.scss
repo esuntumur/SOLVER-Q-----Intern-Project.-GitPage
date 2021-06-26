@@ -5,10 +5,17 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-
+  border: 5px #618ab8 solid;
   .recorder-btn {
-    background-color:#618ab8 !important;
+    padding: 6px;
+    margin: 20px 15px 0 10px;
+    background-color: #618ab8 !important;
     color: white !important;
     border: none !important;
   }
+}
+.loader {
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 20px;
 }

@@ -5,6 +5,8 @@ import Login from "./screens/Login/login";
 import Home from "./screens/Home/Home";
 import { connect } from "react-redux";
 import NotFoundPage from "../src/screens/NotFoundPage";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -17,11 +19,7 @@ class App extends React.Component {
       <BrowserRouter>
         <div className="App">
           <Switch>
-            {isSignedIn ? (
-              <Route path="/" component={Home} />
-            ) : (
-              <Route path="/" component={Login} />
-            )}
+            {isSignedIn ? <Route path="/" component={Home} /> : <Route path="/" component={Login} />}
             <Route component={NotFoundPage} />
           </Switch>
         </div>

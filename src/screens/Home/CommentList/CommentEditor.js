@@ -6,7 +6,14 @@ import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import HandleFullScreen from "./plugins/HandleFullScreen";
 import AudioPlugin from "./plugins/AudioPlugin";
-import { reqImageUrl, createComment, setHtmlString, getCommentsByPageNumber, reqAudioUrl } from "../../../redux/actions/commentAction";
+import {
+  reqImageUrl,
+  createComment,
+  setHtmlString,
+  getCommentsByPageNumber,
+  reqAudioUrl,
+  setRenderAudioRecorder,
+} from "../../../redux/actions/commentAction";
 import { connect } from "react-redux";
 import "./commentList.scss";
 import Recorder from "./Recorder/index";
@@ -58,14 +65,16 @@ export class CommentEditor extends React.Component {
                 />
               </div>
             </div>
-            {this.props.renderAudioRecorder && <Recorder reqAudioUrl={this.props.reqAudioUrl} />}
+            {this.props.renderAudioRecorder && (
+              <Recorder reqAudioUrl={this.props.reqAudioUrl} setRenderAudioRecorder={this.props.setRenderAudioRecorder} />
+            )}
             {this.props.audioUrl && (
               <audio controls>
                 <source src={this.props.audioUrl} type="audio/ogg" />
                 Your browser does not support the audio element.
               </audio>
             )}
-            <button className="btn btn-lg mt-3 comment-post-btn" type="submit">
+            <button className="btn btn-lg mt-3 comment-post-btn" type="button">
               Post
             </button>
           </form>
@@ -94,6 +103,7 @@ const mapDispatchToProps = {
   createComment,
   getCommentsByPageNumber,
   reqAudioUrl,
+  setRenderAudioRecorder,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentEditor);
