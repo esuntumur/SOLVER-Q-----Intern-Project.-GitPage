@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import "./commentList.scss";
 import Recorder from "./Recorder/index";
 import "react-voice-recorder/dist/index.css";
+import { ToastContainer, toast } from "react-toastify";
 MdEditor.use(AudioPlugin);
 MdEditor.use(HandleFullScreen);
 
@@ -29,6 +30,8 @@ export class CommentEditor extends React.Component {
     this.mdParser = new MarkdownIt(/* Markdown-it options */);
     this.onImageUpload = this.onImageUpload.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
+    this.success = this.success.bind(this);
+    this.fail = this.fail.bind(this);
   }
 
   async onImageUpload(e, callback) {
@@ -39,16 +42,23 @@ export class CommentEditor extends React.Component {
   handleEditorChange({ html }) {
     this.props.setHtmlString(html);
   }
+  success = () => toast("Your answer is successfully posted!");
+  fail = () => toast("Answer needed at least title :))");
   async postComment(e) {
     e.preventDefault();
-
-    await this.props.createComment(this.props.htmlString, this.props.selectedQuestion, this.props.audioId, this.props.audioUrl);
-    await this.props.getCommentsByPageNumber(this.props.selectedQuestion, this.props.currentPageComment);
+    if (this.props.htmlString.length > 7) {
+      await this.props.createComment(this.props.htmlString, this.props.selectedQuestion, this.props.audioId, this.props.audioUrl);
+      await this.props.getCommentsByPageNumber(this.props.selectedQuestion, this.props.currentPageComment);
+      this.success();
+    } else {
+      this.fail();
+    }
   }
 
   render() {
     return (
       <div id="createComment">
+        <ToastContainer />
         <div className="form-bg">
           <form className="form" onSubmit={this.postComment.bind(this)}>
             <div className="form-group">
@@ -74,7 +84,7 @@ export class CommentEditor extends React.Component {
                 Your browser does not support the audio element.
               </audio>
             )}
-            <button className="btn btn-lg mt-3 comment-post-btn" type="button">
+            <button className="btn btn-lg mt-3 comment-post-btn" type="submit">
               Post
             </button>
           </form>

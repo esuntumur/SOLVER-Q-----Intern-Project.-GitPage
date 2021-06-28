@@ -15,23 +15,15 @@ export class CommentList extends Component {
     this.state = {};
   }
   async componentWillMount() {
-    await this.props.getCommentsByPageNumber(
-      this.props.selectedQuestion,
-      this.props.currentPageComment
-    );
+    await this.props.getCommentsByPageNumber(this.props.selectedQuestion, this.props.currentPageComment);
   }
   async componentDidMount() {
-    await this.props.getCommentsByPageNumber(
-      this.props.selectedQuestion,
-      this.props.currentPageComment
-    );
+    await this.props.getCommentsByPageNumber(this.props.selectedQuestion, this.props.currentPageComment);
   }
 
   async createCommentAsync(event) {
     event.preventDefault();
     // event.target.myFile.value
-    console.log(`Logged Output ~ event`, event);
-    console.log(`Logged Output ~ event.target.myFile.value`, event.target.myFile.value);
     // await this.props.createComment(this.props.selectedQuestion, event.target.answer.value);
     // await this.props.getCommentsByPageNumber(
     //   this.props.selectedQuestion,
@@ -40,10 +32,7 @@ export class CommentList extends Component {
   }
   async deleteCommentAsync(comment) {
     await this.props.deleteComment(comment);
-    await this.props.getCommentsByPageNumber(
-      this.props.selectedQuestion,
-      this.props.currentPageComment
-    );
+    await this.props.getCommentsByPageNumber(this.props.selectedQuestion, this.props.currentPageComment);
   }
   async updateCommentAsync(event) {
     // await this.props.updateComment(comment);
@@ -58,20 +47,11 @@ export class CommentList extends Component {
       pageNum.push(i);
     }
     const { getCommentsByPageNumber, comments, updateCommentToggle } = this.props;
-    let {
-      currentPageComment,
-      maxPageComment,
-      selectedQuestion,
-      selectedCommentId,
-    } = this.props;
+    let { currentPageComment, maxPageComment, selectedQuestion, selectedCommentId } = this.props;
     return (
       <div>
         {/* //* Create COMMENT */}
-        <link
-          rel="stylesheet"
-          href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
-          type="text/css"
-        />
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type="text/css" />
         {/* //* Comment LIST */}
         <div>
           {comments.length > 0 ? (
@@ -93,9 +73,7 @@ export class CommentList extends Component {
                   <b>Comments:</b>
                 </h4>
                 <div className="card mt-3 rounded">
-                  <div className="card-body text-secondary">
-                    Nothing to show. Please check back for updates.
-                  </div>
+                  <div className="card-body text-secondary">Nothing to show. Please check back for updates.</div>
                 </div>
               </div>
             </div>
@@ -120,10 +98,7 @@ export class CommentList extends Component {
                     {/* //* Comment -> Answer  & audio */}
                     <div className="card">
                       <div className="card-body">
-                        <div
-                          className="comment"
-                          dangerouslySetInnerHTML={{ __html: comment.answer }}
-                        ></div>
+                        <div className="comment" dangerouslySetInnerHTML={{ __html: comment.answer }}></div>
                         {comment.audio_url && (
                           <audio controls>
                             <source src={comment.audio_url} type="audio/ogg" />
@@ -133,8 +108,7 @@ export class CommentList extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="col-2">
-                  </div>
+                  <div className="col-2"></div>
                 </div>
               </div>
             ))}
@@ -149,14 +123,11 @@ export class CommentList extends Component {
                     <button
                       type="button"
                       className="btn pg-button"
-                      onClick={() =>
-                        getCommentsByPageNumber(
-                          this.props.selectedQuestion,
-                          --currentPageComment
-                        )
-                      }
+                      onClick={() => getCommentsByPageNumber(this.props.selectedQuestion, --currentPageComment)}
                     >
-                      <span aria-hidden="true"><b>&laquo;</b></span>
+                      <span aria-hidden="true">
+                        <b>&laquo;</b>
+                      </span>
                     </button>{" "}
                   </li>
                 ) : (
@@ -188,12 +159,7 @@ export class CommentList extends Component {
                     <button
                       type="button"
                       className="btn pg-button"
-                      onClick={() =>
-                        getCommentsByPageNumber(
-                          this.props.selectedQuestion,
-                          ++currentPageComment
-                        )
-                      }
+                      onClick={() => getCommentsByPageNumber(this.props.selectedQuestion, ++currentPageComment)}
                     >
                       <span aria-hidden="true">&raquo;</span>
                     </button>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./recorder.scss";
 import AudioReactRecorder, { RecordState } from "audio-react-recorder";
 import Loader from "react-loader-spinner";
+import { ToastContainer, toast } from "react-toastify";
 
 export default class App extends Component {
   constructor(props) {
@@ -10,10 +11,11 @@ export default class App extends Component {
       recordState: null,
       loading: false,
     };
+    this.success = this.success.bind(this);
+    this.fail = this.fail.bind(this);
   }
   start = () => {
     try {
-      console.log(`Console.log  =>  ~ App ~ try`);
       this.setState({
         recordState: RecordState.START,
       });
@@ -26,6 +28,9 @@ export default class App extends Component {
       recordState: RecordState.STOP,
     });
   };
+  success = () => toast("You're signed up!");
+  fail = () => toast("Email has already been taken");
+
   //audioData contains blob and blobUrl
   async onStop(audioData) {
     this.setState({ loading: true });
@@ -38,14 +43,15 @@ export default class App extends Component {
 
     return (
       <div id="recorder">
+        <ToastContainer />
         <div className="wave">
           <AudioReactRecorder state={recordState} onStop={this.onStop.bind(this)} />
-          <button type="button " onClick={this.start} className="recorder-btn rounded">
+          <span type="button" onClick={this.start} className="recorder-btn rounded">
             Start
-          </button>
-          <button type="button" onClick={this.stop} className="recorder-btn rounded ms-3">
+          </span>
+          <span type="button" onClick={this.stop} className="recorder-btn rounded ms-3">
             Stop
-          </button>
+          </span>
           <div className="loader">
             {this.state.loading && (
               <Loader

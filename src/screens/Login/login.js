@@ -38,10 +38,7 @@ export function Login(props) {
     handleSubmit,
     watch,
   } = useForm();
-  console.log(watch());
-  console.log(`Console.log  =>  ~ Login ~ errors`, errors);
   const loginSubmit = (data) => {
-    console.log(`Console.log  =>  ~ loginSubmit ~ loginSubmit`);
     const payload = {
       email: data.email,
       password: data.password,
@@ -52,7 +49,6 @@ export function Login(props) {
   const { questions, backFromSelectedQuestion, deleteSelectedQuestion, updateQuestionToggle, renderUpdateQuestion, getQuestionsByPageNumber } = props;
 
   let { selectedQuestion, maxPageQuestion, currentPageQuestion } = props;
-  console.log(questions);
   return (
     <div id="login">
       <div className="dropdown">

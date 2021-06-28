@@ -34,8 +34,6 @@ export class CommentList extends Component {
   async createCommentAsync(event) {
     event.preventDefault();
     // event.target.myFile.value
-    console.log(`Logged Output ~ event`, event);
-    console.log(`Logged Output ~ event.target.myFile.value`, event.target.myFile.value);
     // await this.props.createComment(this.props.selectedQuestion, event.target.answer.value);
     // await this.props.getCommentsByPageNumber(
     //   this.props.selectedQuestion,

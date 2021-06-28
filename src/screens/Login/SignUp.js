@@ -8,7 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const success = () => toast("You're signed up!");
-const fail = () => toast("Sign up inputs are invalid!");
+const fail = () => toast("Email has already been taken");
 
 export function SignUp(props) {
   const {
@@ -27,7 +27,6 @@ export function SignUp(props) {
       },
     };
     const res = await props.signupUser(payload);
-    console.log(`Console.log  =>  ~ handleSubmitSignUp ~ res`, res);
     if (res) success();
     else fail();
   };

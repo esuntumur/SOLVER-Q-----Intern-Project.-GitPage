@@ -20,7 +20,6 @@ export const getQuestionsByPageNumber = (pageNum) => async (dispatch) => {
     await API.post("/questions/page", { questionPage: pageNum }).then((response) => {
       dispatch({ type: GET_QUESTION_BY_PAGE_NUMBER, payload: response.data });
     });
-    console.log(document.getElementById("searchValue"));
 
     document.getElementById("searchValue").value = "";
   } catch (error) {
@@ -72,7 +71,6 @@ export const createQuestionToggle = () => async (dispatch) => {
 };
 
 export const createQuestion = (params) => async (dispatch) => {
-  console.log(`Console.log  =>  ~ createQuestion ~ token`, token);
   try {
     await API.post("/questions", params, {
       headers: {

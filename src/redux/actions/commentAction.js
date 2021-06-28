@@ -27,7 +27,9 @@ export const reqAudioUrl = (audio) => async (dispatch) => {
     await API.post("upload/audio", form).then((res) => {
       dispatch({ type: SET_AUDIO_URL, payload: res.data });
     });
-  } catch (err) {}
+  } catch (err) {
+    console.log(`Console.log  =>  ~ reqAudioUrl ~ err`, err);
+  }
 };
 
 export const reqImageUrl = (e) => async (dispatch) => {
@@ -35,19 +37,14 @@ export const reqImageUrl = (e) => async (dispatch) => {
   try {
     form.append("image", e, e.name);
     let url = await API.post(`/upload`, form).then((res) => {
-      console.log(`Console.log  =>  ~ awaitAPI.post ~ res.data.url`, res.data.url);
       dispatch({ type: SET_IMAGE_URL, payload: res.data.url });
       return res.data.url;
     });
-    console.log(`~~~~~~~~~~ url`, url);
     return url;
   } catch (error) {}
 };
 
 export const createComment = (htmlString, selectedQuestion, id, url) => async (dispatch) => {
-  console.log(`Console.log  =>  ~ createComment ~ id`, id);
-  console.log(`Console.log  =>  ~ createComment ~ htmlString`, htmlString);
-  console.log(`Console.log  =>  ~ createComment ~ selectedQuestion`, selectedQuestion);
   //  this.props.createComment(this.props.htmlString, this.props.selectedQuestion);
   try {
     await API.post(
@@ -66,7 +63,6 @@ export const createComment = (htmlString, selectedQuestion, id, url) => async (d
         },
       }
     ).then((response) => {
-      console.log(`Console.log  =>  ~ ).then ~ response`, response);
       dispatch({ type: SEND_COMMENT, payload: response.data.object });
     });
   } catch (error) {

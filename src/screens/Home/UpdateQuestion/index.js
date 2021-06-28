@@ -23,7 +23,6 @@ export const UpdateQuestion = (props) => {
 
   const onImageUpload = async (e, callback) => {
     let url = await props.reqImageUrl(e);
-    console.log("url : ", url);
     await callback(url);
   };
 
@@ -43,7 +42,6 @@ export const UpdateQuestion = (props) => {
       },
       backFromSelectedQuestion: props.backFromSelectedQuestion,
     };
-    console.log(`Console.log  =>  ~ submitHandler ~ payload`, payload);
     props.updateQuestion(payload);
     // props.backFromSelectedQuestion();
   };
